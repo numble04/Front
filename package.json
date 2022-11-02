@@ -1,0 +1,83 @@
+{
+  "name": "boardker",
+  "description": "Boardker for NextJS, Styled-components, Storybook, Recoil",
+  "version": "1.0.0",
+  "keywords": [
+    "nextjs",
+    "storybook",
+    "styled-components",
+    "recoil"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:css": "stylelint --ignore-path .gitignore **/*.css",
+    "lint:md": "remark . --quiet --frail",
+    "format": "prettier --check --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore .",
+    "storybook": "start-storybook -p 6006 -s ./public",
+    "build-storybook": "build-storybook -s public"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "next": "12.3.1",
+    "next-i18next": "^12.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "recoil": "^0.7.5",
+    "styled-components": "^5.3.6"
+  },
+  "devDependencies": {
+    "@arkweid/lefthook": "^0.7.7",
+    "@babel/core": "^7.19.3",
+    "@storybook/addon-actions": "^6.5.9",
+    "@storybook/addon-essentials": "^6.5.12",
+    "@storybook/addon-interactions": "^6.5.12",
+    "@storybook/addon-links": "^6.5.12",
+    "@storybook/builder-webpack5": "^6.5.12",
+    "@storybook/manager-webpack5": "^6.5.12",
+    "@storybook/react": "^6.5.12",
+    "@storybook/testing-library": "^0.0.13",
+    "@stylelint/postcss-css-in-js": "^0.38.0",
+    "@types/i18next": "^13.0.0",
+    "@types/node": "18.8.0",
+    "@types/react": "18.0.21",
+    "@types/react-test-renderer": "^18.0.0",
+    "@types/recoil": "^0.0.9",
+    "@types/styled-components": "^5.1.26",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
+    "axios-mock-adapter": "^1.21.2",
+    "babel-loader": "^8.2.5",
+    "eslint": "8.24.0",
+    "eslint-config-next": "12.3.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-storybook": "^0.6.4",
+    "postcss": "^8.4.18",
+    "postcss-syntax": "^0.36.2",
+    "prettier": "^2.7.1",
+    "react-test-renderer": "^18.2.0",
+    "remark-cli": "^11.0.0",
+    "remark-lint": "^9.1.1",
+    "remark-preset-lint-recommended": "^6.1.2",
+    "sb": "^6.5.12",
+    "storybook-addon-next-router": "^4.0.0",
+    "stylelint": "^14.14.0",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-standard": "^29.0.0",
+    "tsconfig-paths-webpack-plugin": "^4.0.0",
+    "typescript": "4.8.4"
+  },
+  "remarkConfig": {
+    "plugins": [
+      "remark-preset-lint-recommended",
+      [
+        "remark-lint-list-item-indent",
+        "mixed"
+      ]
+    ]
+  }
+}

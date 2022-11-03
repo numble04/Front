@@ -1,8 +1,11 @@
-interface Post {
-  readonly userId: number;
-  readonly id: number;
-  readonly title: string;
-  readonly body: string;
-}
-
-export type { Post };
+export type MeetingCardProps = {
+  meeting: {
+    id: number;
+    title: string;
+    location: string;
+    date: string;
+    numberOfParticipants: number;
+    maximumNumber: number;
+    image: string;
+  };
+};

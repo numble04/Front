@@ -1,16 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 import { DateIcon, LocationIcon, MeetingIcon } from 'components/common/Icon';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { MeetingCardProps } from 'types';
 
 export const MeetingCard = (props: MeetingCardProps) => {
   const { meeting } = props;
+  const router = useRouter();
   const existMeeting =
     meeting.numberOfParticipants === meeting.maximumNumber ? false : true;
   return (
-    <Container>
+    <Container onClick={() => router.push(`/meeting/${meeting.id}`)}>
       <ImgWrapper>
-        <Img src={meeting.image} alt={meeting.image} />
+        <Img src={meeting.image[0]} alt={meeting.id} />
       </ImgWrapper>
       <ContentWrapper>
         <Title>

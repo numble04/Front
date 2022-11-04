@@ -1,5 +1,5 @@
 import { MeetingCard } from 'components/meeting/MeetingCard';
-import { meeting } from 'constant/meeting';
+import { meetings } from 'constant/meeting';
 import type { NextPage } from 'next';
 import styled from 'styled-components';
 
@@ -9,7 +9,7 @@ const Page: NextPage = () => {
       <Title>모임</Title>
       <CardWrapper>
         <div>매칭</div>
-        {meeting.map((item) => (
+        {meetings.map((item) => (
           <MeetingCard key={item.id} meeting={item} />
         ))}
       </CardWrapper>

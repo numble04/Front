@@ -1,5 +1,5 @@
 import { BackIcon } from 'components/common/Icon';
-import { MeetingCard } from 'components/meeting/MeetingCard';
+import Map from 'components/meeting/Map';
 import { meetings } from 'constant/meeting';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -27,9 +27,11 @@ const Page: NextPage = () => {
   }, [router.isReady]);
   return (
     <Container>
-      <BackWrapper onClick={() => router.back()}><BackIcon /></BackWrapper>
+      <BackWrapper onClick={() => router.back()}>
+        <BackIcon />
+      </BackWrapper>
       <ImgWrapper>
-        <Img src={meeting.image[0]} alt={meeting.id}/>
+        <Img src={meeting.image[0]} alt={meeting.id} />
       </ImgWrapper>
       <MainWrapper>
         <TitleWrapper>
@@ -47,7 +49,7 @@ const Page: NextPage = () => {
         </GuideWrapper>
         <TapWrapper>
           <Title>위치</Title>
-          <div>{meeting.location}</div>
+          <div><Map latitude={33.450701} longitude={126.570667} /></div>
         </TapWrapper>
       </MainWrapper>
     </Container>
@@ -63,7 +65,7 @@ const Container = styled.div`
 `;
 
 const BackWrapper = styled.div`
-  background-color: #ffffff;  
+  background-color: #ffffff;
   padding: 1rem;
 `;
 
@@ -71,7 +73,7 @@ const ImgWrapper = styled.div`
   position: relative;
   width: 100%;
   &:after {
-    content: "";
+    content: '';
     display: block;
     padding-bottom: 100%;
   }
@@ -92,7 +94,7 @@ const MainWrapper = styled.div`
 const TitleWrapper = styled.div`
   background-color: #ffffff;
   padding: 1rem 1rem 3rem 1rem;
-  border-bottom: 2px solid #E5E5E5;
+  border-bottom: 2px solid #e5e5e5;
 `;
 
 const Title = styled.h2`
@@ -100,13 +102,12 @@ const Title = styled.h2`
   font-weight: 600;
 `;
 
-const Content = styled.div`
-`;
+const Content = styled.div``;
 
 const GuideWrapper = styled.div`
   background-color: #ffffff;
   padding: 2rem 1rem 4rem 1rem;
-  border-bottom: 2px solid #E5E5E5;
+  border-bottom: 2px solid #e5e5e5;
 `;
 
 const GridWrapper = styled.div`
@@ -114,9 +115,9 @@ const GridWrapper = styled.div`
   grid-template-rows: repeat(2, 100px);
   grid-template-columns: repeat(2, 1fr);
   row-gap: 1rem;
-  column-gap: 1rem; 
+  column-gap: 1rem;
   & > div {
-    border: 1px solid #E5E5E5;
+    border: 1px solid #e5e5e5;
     text-align: center;
     line-height: 100px;
   }
@@ -126,4 +127,3 @@ const TapWrapper = styled.div`
   background-color: #ffffff;
   padding: 2rem 1rem 4rem 1rem;
 `;
-

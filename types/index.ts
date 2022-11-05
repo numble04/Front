@@ -8,7 +8,7 @@ export type MeetingProps = {
   numberOfParticipants: number;
   maximumNumber: number;
   image: string[];
-}
+};
 
 export type MeetingCardProps = {
   meeting: MeetingProps;

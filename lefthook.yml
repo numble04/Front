@@ -7,5 +7,3 @@ pre-commit:
     stylelint:
       glob: '*.{css,tsx}'
       run: npm run lint:css
-    prettier:
-      run: npx prettier --write {staged_files}

@@ -2,7 +2,12 @@ export type MeetingProps = {
   id: string;
   title: string;
   content: string;
-  location: string;
+  location: {
+    name: string;
+    detail: string;
+    lat: number;
+    lng: number;
+  };
   date: string;
   price: number;
   numberOfParticipants: number;

@@ -22,7 +22,10 @@ function Map({ latitude, longitude }: MapProps) {
           center: new window.kakao.maps.LatLng(latitude, longitude),
         };
         const map = new window.kakao.maps.Map(container, options);
-        const markerPosition = new window.kakao.maps.LatLng(latitude, longitude);
+        const markerPosition = new window.kakao.maps.LatLng(
+          latitude,
+          longitude,
+        );
         const marker = new window.kakao.maps.Marker({
           position: markerPosition,
         });
@@ -34,9 +37,7 @@ function Map({ latitude, longitude }: MapProps) {
     return () => mapScript.removeEventListener('load', onLoadKakaoMap);
   }, [latitude, longitude]);
 
-  return (
-    <MapContainer id='map' />
-  );
+  return <MapContainer id="map" />;
 }
 
 const MapContainer = styled.div`

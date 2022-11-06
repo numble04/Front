@@ -14,7 +14,12 @@ const Page: NextPage = () => {
     id: '',
     title: '',
     content: '',
-    location: '',
+    location: {
+      name: '',
+      detail: '',
+      lat: 0,
+      lng: 0,
+    },
     date: '',
     price: 0,
     numberOfParticipants: 0,
@@ -49,7 +54,12 @@ const Page: NextPage = () => {
         </GuideWrapper>
         <TapWrapper>
           <Title>위치</Title>
-          <div><Map latitude={33.450701} longitude={126.570667} /></div>
+          <div>
+            <Map
+              latitude={meeting.location.lat}
+              longitude={meeting.location.lng}
+            />
+          </div>
         </TapWrapper>
       </MainWrapper>
     </Container>

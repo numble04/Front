@@ -20,7 +20,7 @@ export const MeetingCard = (props: MeetingCardProps) => {
         </Title>
         <Text>
           <LocationIcon />
-          <span>{meeting.location}</span>
+          <span>{meeting.location.detail}</span>
         </Text>
         <TextWrapper>
           <Text>

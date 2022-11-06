@@ -4,6 +4,12 @@ import type { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
 import { Container } from 'components/common/Container';
 
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>

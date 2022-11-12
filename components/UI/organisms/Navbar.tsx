@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
-import { HomeIcon, MyPageIcon } from './Icon';
+import { HomeIcon, MyPageIcon } from '../atoms/Icon';
 
 export const Navbar = () => {
   const router = useRouter();

@@ -1,3 +1,4 @@
+import Map from 'components/UI/atoms/Map';
 import { MeetingCard } from 'components/UI/molecules/MeetingCard';
 import { meetings } from 'constant/meeting';
 import type { NextPage } from 'next';
@@ -7,6 +8,9 @@ const Page: NextPage = () => {
   return (
     <Container>
       <Title>모임</Title>
+      <div>
+        <Map latitude={37.502166} longitude={127.026608}/>
+      </div>
       <CardWrapper>
         <div>매칭</div>
         {meetings.map((item) => (

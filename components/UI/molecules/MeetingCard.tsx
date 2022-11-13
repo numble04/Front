@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { DateIcon, LocationIcon, MeetingIcon } from 'components/common/Icon';
+import { DateIcon, LocationIcon, MeetingIcon } from 'components/UI/atoms/Icon';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { MeetingCardProps } from 'types';
@@ -7,8 +7,6 @@ import { MeetingCardProps } from 'types';
 export const MeetingCard = (props: MeetingCardProps) => {
   const { meeting } = props;
   const router = useRouter();
-  const existMeeting =
-    meeting.numberOfParticipants === meeting.maximumNumber ? false : true;
   return (
     <Container onClick={() => router.push(`/meeting/${meeting.id}`)}>
       <ImgWrapper>
@@ -23,7 +21,7 @@ export const MeetingCard = (props: MeetingCardProps) => {
           <span>{meeting.location.detail}</span>
         </Text>
         <TextWrapper>
-          <Text>
+          <Text style={{ marginRight: `40px` }}>
             <DateIcon />
             <span>{meeting.date}</span>
           </Text>
@@ -35,28 +33,20 @@ export const MeetingCard = (props: MeetingCardProps) => {
           </Text>
         </TextWrapper>
       </ContentWrapper>
-      <ButtonWrapper>
-        <Button existMeeting={existMeeting}>
-          {existMeeting ? '모집' : '완료'}
-        </Button>
-      </ButtonWrapper>
     </Container>
   );
 };
 
 const Container = styled.div`
-  height: 5rem;
-  border: 1px solid #e5e5e5;
-  border-radius: 0.2rem;
-  margin: 0.4rem 0;
+  height: 5.5rem;
   display: flex;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin: 0.2rem 0;
 `;
 
 const Img = styled.img`
-  width: 4rem;
-  height: 4rem;
-  border-radius: 0.4rem;
+  width: 110px;
+  height: 68px;
+  border-radius: 4px;
 `;
 
 const ImgWrapper = styled.div`
@@ -91,7 +81,6 @@ const Title = styled.div`
 
 const TextWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
 `;
 
 const Text = styled.div`
@@ -102,26 +91,4 @@ const Text = styled.div`
   & > svg {
     margin-right: 0.2rem;
   }
-`;
-
-const ButtonWrapper = styled.div`
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-`;
-
-type ButtonProps = {
-  existMeeting: boolean;
-};
-
-const Button = styled.button<ButtonProps>`
-  border: none;
-  border-radius: 102px;
-  width: 60px;
-  height: 36px;
-  align-text: center;
-  line-height: 36px;
-  background-color: ${({ existMeeting }) =>
-    existMeeting ? '#7b2ef0' : '#E5E5E5'};
-  color: #ffffff;
 `;

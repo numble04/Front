@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
-import { Container } from 'components/common/Container';
+import { Container } from 'components/templetes/Container';
 
 declare global {
   interface Window {

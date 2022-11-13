@@ -41,7 +41,8 @@ function Map({ latitude, longitude }: MapProps) {
 }
 
 const MapContainer = styled.div`
-  aspect-ratio: 320 / 220;
+  width: 100%;
+  height: calc(100vh - 48px);
 `;
 
 export default Map;

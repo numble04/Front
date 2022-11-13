@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
-import { HomeIcon, MyPageIcon } from './Icon';
+import { HomeIcon, MyPageIcon } from '../atoms/Icon';
 
 export const Navbar = () => {
   const router = useRouter();
@@ -42,14 +42,16 @@ export const Navbar = () => {
 };
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
+  max-width: 32rem;
   height: 4rem;
   background-color: #ffffff;
   display: flex;
   flex-wrap: nowrap;
   border-top: 2px solid #e5e5e5;
+  z-index: 999;
 `;
 
 const Wrapper = styled.button`

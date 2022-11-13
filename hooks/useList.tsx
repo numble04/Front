@@ -11,48 +11,51 @@ import { ExpandMoreSmallIcon } from '../components/UI/atoms/Icon';
 import { MeetingCard } from '../components/UI/molecules/MeetingCard';
 
 const HEADER = 110;
-const INNER_HEADER = 60;
 const NAVBAR = 60;
-const HEIGHT_MARGIN = HEADER + INNER_HEADER + NAVBAR;
-const PERCENTAGE = 0.8;
+const HEIGHT_MARGIN = HEADER + NAVBAR;
+const PERCENTAGE = 0.7;
 
 const useList = () => {
   const $list = useRef<HTMLDivElement>(null);
-  const $drag = useRef<HTMLDivElement>(null);
   const $cardWrapper = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (!$list.current || !$drag.current || !$cardWrapper.current) return;
-    $list.current.style.transform = `translateY(${
+    if (!$list.current || !$cardWrapper.current) return;
+    $list.current.style.top = `${
       window.innerHeight * (1 - PERCENTAGE)
-    }px)`;
+    }px`;
     $cardWrapper.current.style.height = `${
       window.innerHeight * PERCENTAGE - HEIGHT_MARGIN
     }px`;
   }, []);
 
   useEffect(() => {
-    if (!$list.current || !$drag.current) return;
+    if (!$list.current) return;
     const MARGIN = window.innerHeight * (1 - PERCENTAGE);
     $list.current.classList.add('open');
-    $list.current.style.transform = `translateY(${MARGIN}px)`;
+    $list.current.style.top = `${MARGIN}px`;
 
     let touchStartTime: Date, touchEndTime: Date;
     let touchStartPoint = 0,
-      touchEndPoint = 0;
+      touchEndPoint = 0, touchStartTop = 0;
 
     const onTouchStart = (e: TouchEvent) => {
+      if (!$list.current) return;
+
       touchStartTime = new Date();
       touchStartPoint = e.touches[0].clientY;
+      touchStartTop = $list.current.offsetTop;
     };
 
     const onTouchMove = (e: TouchEvent) => {
-      if (!$drag.current || !$list.current || !$cardWrapper.current) return;
+      if (!$list.current || !$cardWrapper.current) return;
+      if($cardWrapper.current.contains(e.target as Element)) return;
 
-      let position = e.touches[0].clientY - HEADER - 20; // header 크기 제외
+      let position = e.touches[0].clientY - touchStartPoint + touchStartTop;
+      if(position < HEADER) return;
 
       $list.current.style.transition = 'all 0s ease';
-      $list.current.style.transform = `translateY(${position || 0}px)`;
+      $list.current.style.top = `${position || 0}px`;
       $cardWrapper.current.style.height = `${
         window.innerHeight - position - HEIGHT_MARGIN
       }px`;
@@ -61,7 +64,9 @@ const useList = () => {
     };
 
     const onTouchEnd = (e: TouchEvent) => {
-      if (!$drag.current || !$list.current) return;
+      if (!$list.current || !$cardWrapper.current) return;
+      if($cardWrapper.current.contains(e.target as Element)) return;
+
       touchEndTime = new Date();
       touchEndPoint = e.changedTouches[0].clientY;
       if (!touchEndTime || !touchStartTime) return;
@@ -91,21 +96,23 @@ const useList = () => {
     };
 
     const onMouseStart = (e: MouseEvent) => {
-      if (!$drag.current) return;
+      if (!$list.current || !$cardWrapper.current) return;
+      if($cardWrapper.current.contains(e.target as Element)) return;
 
       touchStartTime = new Date();
       touchStartPoint = e.clientY;
-      $drag.current.addEventListener('mousemove', onMouseMove);
-      $drag.current.addEventListener('mouseup', onMouseEnd);
+      touchStartTop = $list.current.offsetTop;
+      $list.current.addEventListener('mousemove', onMouseMove);
+      $list.current.addEventListener('mouseup', onMouseEnd);
     };
 
     const onMouseMove = (e: MouseEvent) => {
-      if (!$drag.current || !$list.current || !$cardWrapper.current) return;
+      if (!$list.current || !$cardWrapper.current) return;
 
-      let position = e.clientY - HEADER - 20; // header 크기 제외
+      let position = e.clientY - touchStartPoint + touchStartTop;
 
       $list.current.style.transition = 'all 0s ease';
-      $list.current.style.transform = `translateY(${position || 0}px)`;
+      $list.current.style.top = `${position || 0}px`;
       $cardWrapper.current.style.height = `${
         window.innerHeight - position - HEIGHT_MARGIN
       }px`;
@@ -114,13 +121,13 @@ const useList = () => {
     };
 
     const onMouseEnd = (e: MouseEvent) => {
-      if (!$drag.current || !$list.current) return;
+      if (!$list.current) return;
       touchEndTime = new Date();
       touchEndPoint = e.clientY;
       if (!touchEndTime || !touchStartTime) return;
 
-      $drag.current.removeEventListener('mousemove', onMouseMove);
-      $drag.current.removeEventListener('mouseup', onMouseEnd);
+      $list.current.removeEventListener('mousemove', onMouseMove);
+      $list.current.removeEventListener('mouseup', onMouseEnd);
 
       // @ts-ignore
       const timeInterval = touchEndTime - touchStartTime;
@@ -146,23 +153,23 @@ const useList = () => {
       }
     };
 
-    $drag.current.addEventListener('touchstart', onTouchStart);
-    $drag.current.addEventListener('touchmove', onTouchMove);
-    $drag.current.addEventListener('touchend', onTouchEnd);
-    $drag.current.addEventListener('mousedown', onMouseStart);
+    $list.current.addEventListener('touchstart', onTouchStart);
+    $list.current.addEventListener('touchmove', onTouchMove);
+    $list.current.addEventListener('touchend', onTouchEnd);
+    $list.current.addEventListener('mousedown', onMouseStart);
 
     return () => {
-      $drag.current?.removeEventListener('touchstart', onTouchStart);
-      $drag.current?.removeEventListener('touchmove', onTouchMove);
-      $drag.current?.removeEventListener('touchend', onTouchEnd);
-      $drag.current?.removeEventListener('mousedown', onMouseStart);
+      $list.current?.removeEventListener('touchstart', onTouchStart);
+      $list.current?.removeEventListener('touchmove', onTouchMove);
+      $list.current?.removeEventListener('touchend', onTouchEnd);
+      $list.current?.removeEventListener('mousedown', onMouseStart);
     };
-  }, [$drag.current, $list.current]);
+  }, [$list.current, $list.current]);
 
   const closeList = () => {
     if (!$list.current || !$cardWrapper.current) return;
 
-    $list.current.style.transform = `translateY(120%)`;
+    $list.current.style.top = `100%`;
     $list.current.style.transition = `all 0.3s linear`;
     $list.current.classList.add('close');
     $list.current.classList.remove('open');
@@ -175,9 +182,9 @@ const useList = () => {
   const openList = () => {
     if (!$list.current || !$cardWrapper.current) return;
 
-    $list.current.style.transform = `translateY(${
+    $list.current.style.top = `${
       window.innerHeight * (1 - PERCENTAGE)
-    }px)`;
+    }px`;
     $list.current.style.transition = `all 0.2s linear`;
     $list.current.classList.add('open');
     $list.current.classList.remove('close');
@@ -190,7 +197,7 @@ const useList = () => {
   const coverList = () => {
     if (!$list.current || !$cardWrapper.current) return;
 
-    $list.current.style.transform = `translateY(0px)`;
+    $list.current.style.top = `${HEADER}px`;
     $list.current.style.transition = `all 0.2s linear`;
     $list.current.classList.add('cover');
     $list.current.classList.remove('open');
@@ -203,7 +210,7 @@ const useList = () => {
   const List = useCallback(() => {
     return (
       <Container ref={$list}>
-        <Header ref={$drag}>
+        <Header>
           <HeaderLeft />
           <HeaderCenter>
             <Bar />

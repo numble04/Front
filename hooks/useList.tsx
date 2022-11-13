@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState,
 } from 'react';
 import styled from 'styled-components';
 import { ExpandMoreSmallIcon } from '../components/UI/atoms/Icon';
@@ -50,7 +49,7 @@ const useList = () => {
     const onTouchMove = (e: TouchEvent) => {
       if (!$drag.current || !$list.current || !$cardWrapper.current) return;
 
-      let position = e.touches[0].clientY - HEADER; // header 크기 제외
+      let position = e.touches[0].clientY - HEADER - 20; // header 크기 제외
 
       $list.current.style.transition = 'all 0s ease';
       $list.current.style.transform = `translateY(${position || 0}px)`;
@@ -91,14 +90,72 @@ const useList = () => {
       }
     };
 
+    const onMouseStart = (e: MouseEvent) => {
+      if (!$drag.current) return;
+
+      touchStartTime = new Date();
+      touchStartPoint = e.clientY;
+      $drag.current.addEventListener('mousemove', onMouseMove);
+      $drag.current.addEventListener('mouseup', onMouseEnd);
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!$drag.current || !$list.current || !$cardWrapper.current) return;
+
+      let position = e.clientY - HEADER - 20; // header 크기 제외
+
+      $list.current.style.transition = 'all 0s ease';
+      $list.current.style.transform = `translateY(${position || 0}px)`;
+      $cardWrapper.current.style.height = `${
+        window.innerHeight - position - HEIGHT_MARGIN
+      }px`;
+
+      if (e.cancelable) e.preventDefault();
+    };
+
+    const onMouseEnd = (e: MouseEvent) => {
+      if (!$drag.current || !$list.current) return;
+      touchEndTime = new Date();
+      touchEndPoint = e.clientY;
+      if (!touchEndTime || !touchStartTime) return;
+
+      $drag.current.removeEventListener('mousemove', onMouseMove);
+      $drag.current.removeEventListener('mouseup', onMouseEnd);
+
+      // @ts-ignore
+      const timeInterval = touchEndTime - touchStartTime;
+      const velocity = (touchEndPoint - touchStartPoint) / timeInterval;
+      if ($list.current.classList.contains('cover')) {
+        if (velocity > 0.7) {
+          return openList();
+        }
+      } else if ($list.current.classList.contains('open')) {
+        if (velocity > 0.7) {
+          return closeList();
+        } else if (velocity < -0.4) {
+          return coverList();
+        }
+      }
+
+      if (touchEndPoint < MARGIN * 0.7) {
+        return coverList();
+      } else if (touchEndPoint > MARGIN * 1.5) {
+        return closeList();
+      } else {
+        return openList();
+      }
+    };
+
     $drag.current.addEventListener('touchstart', onTouchStart);
     $drag.current.addEventListener('touchmove', onTouchMove);
     $drag.current.addEventListener('touchend', onTouchEnd);
+    $drag.current.addEventListener('mousedown', onMouseStart);
 
     return () => {
       $drag.current?.removeEventListener('touchstart', onTouchStart);
       $drag.current?.removeEventListener('touchmove', onTouchMove);
       $drag.current?.removeEventListener('touchend', onTouchEnd);
+      $drag.current?.removeEventListener('mousedown', onMouseStart);
     };
   }, [$drag.current, $list.current]);
 

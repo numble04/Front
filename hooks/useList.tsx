@@ -11,8 +11,9 @@ import { ExpandMoreSmallIcon } from '../components/UI/atoms/Icon';
 import { MeetingCard } from '../components/UI/molecules/MeetingCard';
 
 const HEADER = 110;
+const INNER_HEADER = 60;
 const NAVBAR = 60;
-const HEIGHT_MARGIN = HEADER + NAVBAR;
+const HEIGHT_MARGIN = INNER_HEADER + NAVBAR;
 const PERCENTAGE = 0.7;
 
 const useList = () => {

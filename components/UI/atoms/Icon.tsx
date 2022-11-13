@@ -96,3 +96,36 @@ export const BackIcon = () => {
     </svg>
   );
 };
+
+export const ExpandMoreSmallIcon = () => {
+  return (
+    <svg
+      width="9"
+      height="5"
+      viewBox="0 0 9 5"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M1 0.5L5 4L8.5 0.5" stroke="black" strokeLinecap="round" />
+    </svg>
+  );
+};
+
+export const ExpandMoreIcon = () => {
+  return (
+    <svg
+      width="13"
+      height="8"
+      viewBox="0 0 13 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1 1L6.5 6.5L11.5 1"
+        stroke="#3A3A3A"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+    </svg>
+  );
+};

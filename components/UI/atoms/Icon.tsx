@@ -123,8 +123,8 @@ export const ExpandMoreIcon = () => {
       <path
         d="M1 1L6.5 6.5L11.5 1"
         stroke="#3A3A3A"
-        stroke-width="1.5"
-        stroke-linecap="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
     </svg>
   );

@@ -1,26 +1,35 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { meetings } from 'constant/meeting';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import styled from 'styled-components';
-import { ExpandMoreSmallIcon } from '../atoms/Icon';
-import { MeetingCard } from '../molecules/MeetingCard';
+import { ExpandMoreSmallIcon } from '../components/UI/atoms/Icon';
+import { MeetingCard } from '../components/UI/molecules/MeetingCard';
 
 const HEADER = 110;
 const INNER_HEADER = 60;
 const NAVBAR = 60;
+const HEIGHT_MARGIN = HEADER + INNER_HEADER + NAVBAR;
 const PERCENTAGE = 0.8;
 
-const List = () => {
+const useList = () => {
   const $list = useRef<HTMLDivElement>(null);
   const $drag = useRef<HTMLDivElement>(null);
-  const [wrapperHeight, setWrapperHeight] = useState(0);
+  const $cardWrapper = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (!$list.current || !$drag.current) return;
+    if (!$list.current || !$drag.current || !$cardWrapper.current) return;
     $list.current.style.transform = `translateY(${
       window.innerHeight * (1 - PERCENTAGE)
     }px)`;
-    setWrapperHeight(window.innerHeight * PERCENTAGE);
+    $cardWrapper.current.style.height = `${
+      window.innerHeight * PERCENTAGE - HEIGHT_MARGIN
+    }px`;
   }, []);
 
   useEffect(() => {
@@ -39,13 +48,15 @@ const List = () => {
     };
 
     const onTouchMove = (e: TouchEvent) => {
-      if (!$drag.current || !$list.current) return;
+      if (!$drag.current || !$list.current || !$cardWrapper.current) return;
 
       let position = e.touches[0].clientY - HEADER; // header 크기 제외
 
       $list.current.style.transition = 'all 0s ease';
       $list.current.style.transform = `translateY(${position || 0}px)`;
-      setWrapperHeight(window.innerHeight - position);
+      $cardWrapper.current.style.height = `${
+        window.innerHeight - position - HEIGHT_MARGIN
+      }px`;
 
       if (e.cancelable) e.preventDefault();
     };
@@ -61,22 +72,22 @@ const List = () => {
       const velocity = (touchEndPoint - touchStartPoint) / timeInterval;
       if ($list.current.classList.contains('cover')) {
         if (velocity > 0.7) {
-          return openModal();
+          return openList();
         }
       } else if ($list.current.classList.contains('open')) {
         if (velocity > 0.7) {
-          return closeModal();
+          return closeList();
         } else if (velocity < -0.4) {
-          return coverModal();
+          return coverList();
         }
       }
 
       if (touchEndPoint < MARGIN * 0.7) {
-        return coverModal();
+        return coverList();
       } else if (touchEndPoint > MARGIN * 1.5) {
-        return closeModal();
+        return closeList();
       } else {
-        return openModal();
+        return openList();
       }
     };
 
@@ -91,19 +102,21 @@ const List = () => {
     };
   }, [$drag.current, $list.current]);
 
-  const closeModal = () => {
-    if (!$list.current) return;
+  const closeList = () => {
+    if (!$list.current || !$cardWrapper.current) return;
 
     $list.current.style.transform = `translateY(120%)`;
     $list.current.style.transition = `all 0.3s linear`;
     $list.current.classList.add('close');
     $list.current.classList.remove('open');
     $list.current.classList.remove('cover');
-    setWrapperHeight(window.innerHeight);
+    $cardWrapper.current.style.height = `${
+      window.innerHeight - HEIGHT_MARGIN
+    }px`;
   };
 
-  const openModal = () => {
-    if (!$list.current) return;
+  const openList = () => {
+    if (!$list.current || !$cardWrapper.current) return;
 
     $list.current.style.transform = `translateY(${
       window.innerHeight * (1 - PERCENTAGE)
@@ -112,48 +125,51 @@ const List = () => {
     $list.current.classList.add('open');
     $list.current.classList.remove('close');
     $list.current.classList.remove('cover');
-    setWrapperHeight(window.innerHeight * PERCENTAGE);
+    $cardWrapper.current.style.height = `${
+      window.innerHeight * PERCENTAGE - HEIGHT_MARGIN
+    }px`;
   };
 
-  const coverModal = () => {
-    if (!$list.current) return;
+  const coverList = () => {
+    if (!$list.current || !$cardWrapper.current) return;
 
     $list.current.style.transform = `translateY(0px)`;
     $list.current.style.transition = `all 0.2s linear`;
     $list.current.classList.add('cover');
     $list.current.classList.remove('open');
     $list.current.classList.remove('close');
-    setWrapperHeight(window.innerHeight);
+    $cardWrapper.current.style.height = `${
+      window.innerHeight - HEIGHT_MARGIN
+    }px`;
   };
 
-  return (
-    <Container ref={$list}>
-      <Header ref={$drag}>
-        <HeaderLeft />
-        <HeaderCenter>
-          <Bar />
-        </HeaderCenter>
-        <HeaderRight>
-          <div>신규순</div>
-          <ExpandMoreSmallIcon />
-        </HeaderRight>
-      </Header>
-      <Content>
-        <CardWrapper
-          style={{
-            height: `${wrapperHeight - HEADER - INNER_HEADER - NAVBAR}px`,
-          }}
-        >
-          {meetings.map((item) => (
-            <MeetingCard key={item.id} meeting={item} />
-          ))}
-        </CardWrapper>
-      </Content>
-    </Container>
-  );
+  const List = useCallback(() => {
+    return (
+      <Container ref={$list}>
+        <Header ref={$drag}>
+          <HeaderLeft />
+          <HeaderCenter>
+            <Bar />
+          </HeaderCenter>
+          <HeaderRight>
+            <div>신규순</div>
+            <ExpandMoreSmallIcon />
+          </HeaderRight>
+        </Header>
+        <Content>
+          <CardWrapper ref={$cardWrapper}>
+            {meetings.map((item) => (
+              <MeetingCard key={item.id} meeting={item} />
+            ))}
+          </CardWrapper>
+        </Content>
+      </Container>
+    );
+  }, []);
+  return { List, openList, closeList };
 };
 
-export default List;
+export default useList;
 
 const Container = styled.div`
   width: 100%;
@@ -161,7 +177,7 @@ const Container = styled.div`
   height: 100vh;
   background-color: #ffffff;
   position: fixed;
-  z-index: 1;
+  z-index: 4;
   border-radius: 10px 10px 0 0;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -14,6 +14,8 @@ import AreaSearch from './AreaSearch';
 import EmailStep from './EmailStep';
 import PasswordStep from './PasswordStep';
 import PersonalInfoStep from './PersonalInfoStep';
+import { emailPattern, passwordPattern } from 'constant/validate';
+import { useSignup } from 'hooks/users';
 
 const Container = styled.div`
   margin-top: 30px;
@@ -56,17 +58,24 @@ const Signup = () => {
     nickname: '',
     phone: '',
     password: '',
+    passwordConfirm: '',
     region: '',
   });
+
+  const { signup, isLoading: signupLoading } = useSignup();
 
   const isNextButtonActive = useMemo(() => {
     if (signupStep === 1 && signupParams.region) {
       return true;
     }
-    if (signupStep === 2 && signupParams.email) {
+    if (signupStep === 2 && emailPattern.test(signupParams.email)) {
       return true;
     }
-    if (signupStep === 3 && signupParams.password) {
+    if (
+      signupStep === 3 &&
+      passwordPattern.test(signupParams.password) &&
+      signupParams.password === signupParams.passwordConfirm
+    ) {
       return true;
     }
     if (
@@ -91,11 +100,29 @@ const Signup = () => {
           />
         );
       case 2:
-        return <EmailStep />;
+        return (
+          <EmailStep
+            email={signupParams.email}
+            onChangeSignupParams={setSignupParams}
+          />
+        );
       case 3:
-        return <PasswordStep />;
+        return (
+          <PasswordStep
+            password={signupParams.password}
+            passwordConfirm={signupParams.passwordConfirm}
+            onChangeSignupParams={setSignupParams}
+          />
+        );
       case 4:
-        return <PersonalInfoStep />;
+        return (
+          <PersonalInfoStep
+            name={signupParams.name}
+            phone={signupParams.phone}
+            nickname={signupParams.nickname}
+            onChangeSignupParams={setSignupParams}
+          />
+        );
       case 5:
         return <></>;
       default:
@@ -113,6 +140,19 @@ const Signup = () => {
       return setModalVisible(true);
     }
     setSignupStep((signupStep) => signupStep - 1);
+  };
+
+  const handleClickNextButton = () => {
+    if (signupStep >= 1 && signupStep < 4) {
+      setSignupStep((signupStep) => signupStep + 1);
+    } else if (signupStep === 4) {
+      signup(signupParams, {
+        onSuccess: () => {
+          alert('회원가입이 완료되었습니다.');
+          router.push('/login');
+        },
+      });
+    }
   };
 
   if (isAreaSearching) {
@@ -155,9 +195,10 @@ const Signup = () => {
           <Button
             full
             isActive={isNextButtonActive}
-            onClick={() => setSignupStep((signupStep) => signupStep + 1)}
+            loading={signupLoading}
+            onClick={handleClickNextButton}
           >
-            다음
+            {signupStep === 4 ? '가입하기' : '다음'}
           </Button>
         </Footer>
       </Container>

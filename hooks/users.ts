@@ -13,8 +13,16 @@ export const useSignup = () => {
 };
 
 export const useLogin = () => {
-  const { mutate: login, isLoading } = useMutation((params: LoginParamsType) =>
-    api.post(`/users/login`, params),
+  const { mutate: login, isLoading } = useMutation(
+    (params: LoginParamsType) => api.post(`/users/login`, params),
+    {
+      onSuccess: (res) => {
+        const { accessToken, refreshToken } = res.data;
+
+        api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        localStorage.setItem('refreshToken', refreshToken);
+      },
+    },
   );
 
   return { login, isLoading };

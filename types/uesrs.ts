@@ -4,6 +4,7 @@ export interface SingupParamsType {
   nickname: string;
   phone: string;
   password: string;
+  passwordConfirm: string;
   region: string;
 }
 

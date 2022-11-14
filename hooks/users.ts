@@ -5,7 +5,8 @@ import { LoginParamsType, SingupParamsType } from 'types/uesrs';
 
 export const useSignup = () => {
   const { mutate: signup, isLoading } = useMutation(
-    (params: SingupParamsType) => api.post(`/users/signup`, params),
+    ({ passwordConfirm, ...rest }: SingupParamsType) =>
+      api.post(`/users/signup`, rest),
   );
 
   return { signup, isLoading };

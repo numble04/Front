@@ -6,6 +6,8 @@ export interface SingupParamsType {
   password: string;
   passwordConfirm: string;
   region: string;
+  city: string;
+  dong: string;
 }
 
 export interface LoginParamsType {

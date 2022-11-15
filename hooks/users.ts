@@ -6,7 +6,7 @@ import { LoginParamsType, SingupParamsType } from 'types/uesrs';
 export const useSignup = () => {
   const { mutate: signup, isLoading } = useMutation(
     ({ passwordConfirm, ...rest }: SingupParamsType) =>
-      api.post(`/users/signup`, rest),
+      api.post(`/auth/signup`, rest),
   );
 
   return { signup, isLoading };
@@ -14,10 +14,10 @@ export const useSignup = () => {
 
 export const useLogin = () => {
   const { mutate: login, isLoading } = useMutation(
-    (params: LoginParamsType) => api.post(`/users/login`, params),
+    (params: LoginParamsType) => api.post(`/auth/login`, params),
     {
       onSuccess: (res) => {
-        const { accessToken, refreshToken } = res.data;
+        const { accessToken, refreshToken } = res.data.data;
 
         api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
         localStorage.setItem('refreshToken', refreshToken);

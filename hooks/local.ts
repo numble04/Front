@@ -91,7 +91,7 @@ export const useLocalInfos = ({
 
 // 검색을 통한 지역 정보 가져오기
 export const useSearchAddress = (query: string) => {
-  const { data, isLoading } = useQuery(
+  const { data: searchedLocalInfos = [], isLoading } = useQuery(
     ['useSearchAddress', query],
     () =>
       axios.get<KakaoAPIResponse<SearchAddressType[]>>(
@@ -108,5 +108,15 @@ export const useSearchAddress = (query: string) => {
     { enabled: query.length > 0, select: (res) => res.data.documents },
   );
 
-  return { data, isLoading };
+  const filteredLocalInfos = searchedLocalInfos.filter(
+    (item) =>
+      (item.address &&
+        (item.address.region_3depth_name ||
+          item.address.region_3depth_h_name)) ||
+      (item.road_address &&
+        (item.road_address.region_3depth_name ||
+          item.road_address.region_3depth_h_name)),
+  );
+
+  return { searchedLocalInfos: filteredLocalInfos, isLoading };
 };

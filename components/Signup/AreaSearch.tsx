@@ -14,6 +14,7 @@ import { Input } from 'components/ui/Input/Input';
 import { useLocalInfos, useSearchAddress } from 'hooks/local';
 import { Flex } from 'components/ui/Flex/Flex';
 import { SingupParamsType } from 'types/uesrs';
+import { SearchAddressType } from 'types/local';
 
 const AreaSearchWrapper = styled(Flex)`
   padding: 16px 20px;
@@ -42,12 +43,39 @@ const AreaSearch = ({
     lat,
   });
 
-  const { data } = useSearchAddress(searchedValue);
+  const { searchedLocalInfos } = useSearchAddress(searchedValue);
 
   const handleSearch = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
       setSearchedValue(searchValue);
     }
+  };
+
+  const getCityName = (localInfo: SearchAddressType) => {
+    if (localInfo.address) {
+      return localInfo.address.region_1depth_name;
+    } else if (localInfo.road_address) {
+      return localInfo.road_address.region_1depth_name;
+    }
+
+    return localInfo.address_name.split(' ')[0];
+  };
+
+  const getDongName = (localInfo: SearchAddressType) => {
+    if (localInfo.address) {
+      return (
+        localInfo.address.region_3depth_h_name ||
+        localInfo.address.region_3depth_name
+      );
+    } else if (localInfo.road_address) {
+      return (
+        localInfo.road_address.region_3depth_h_name ||
+        localInfo.road_address.region_3depth_name
+      );
+    }
+
+    const splitAddressName = localInfo.address_name.split(' ');
+    return splitAddressName[splitAddressName.length - 1];
   };
 
   return (
@@ -70,10 +98,10 @@ const AreaSearch = ({
         />
       </AreaSearchWrapper>
       <AreaSearchResultWrapper>
-        {data ? (
+        {searchedLocalInfos ? (
           <>
-            {data.length > 0 ? (
-              data.map((item) => (
+            {searchedLocalInfos.length > 0 ? (
+              searchedLocalInfos.map((item) => (
                 <div
                   style={{
                     padding: '16px 0 12px',
@@ -85,6 +113,8 @@ const AreaSearch = ({
                     onChangeSignupParams((signupParams) => ({
                       ...signupParams,
                       region: item.address_name,
+                      city: getCityName(item),
+                      dong: getDongName(item),
                     }));
                     onChangeIsAreaSearching(false);
                   }}

@@ -60,6 +60,8 @@ const Signup = () => {
     password: '',
     passwordConfirm: '',
     region: '',
+    city: '',
+    dong: '',
   });
 
   const { signup, isLoading: signupLoading } = useSignup();

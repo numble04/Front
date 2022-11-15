@@ -30,7 +30,6 @@ const PersonalInfoStep = ({
     register,
     watch,
     setValue,
-    getValues,
     formState: { errors },
   } = useForm<SingupParamsType>({
     mode: 'onChange',

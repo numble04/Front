@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
-import { Navbar } from '../UI/organisms/Navbar';
+import { Navbar } from '../ui/organisms/Navbar';
 
 type Props = {
   children: JSX.Element;
@@ -11,8 +11,15 @@ export const Container = ({ children }: Props) => {
   // TODO: 공통 레이아웃이 적용되어 있어 임시적으로 제외해두었습니다. 추후 수정 필요
   const { pathname } = useRouter();
 
-  if (pathname === '/' || pathname === '/signup' || pathname === '/login')
-    return <>{children}</>;
+  if (pathname === '/' || pathname === '/signup' || pathname === '/login') {
+    return (
+      <Wrapper>
+        <D1>
+          <Main>{children}</Main>
+        </D1>
+      </Wrapper>
+    );
+  }
 
   return (
     <Wrapper>
@@ -41,5 +48,5 @@ const D1 = styled.div`
   max-width: 32rem;
   width: 100%;
   height: 100%;
-  background-color: #e5e5e5;
+  background-color: #ffffff;
 `;

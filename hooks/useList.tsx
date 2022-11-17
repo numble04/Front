@@ -1,14 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { meetings } from 'constant/meeting';
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-} from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { ExpandMoreSmallIcon } from '../components/UI/atoms/Icon';
-import { MeetingCard } from '../components/UI/molecules/MeetingCard';
+import { ExpandMoreSmallIcon } from 'components/ui/atoms/Icon';
+import { MeetingCard } from 'components/ui/molecules/MeetingCard';
 
 const HEADER = 110;
 const INNER_HEADER = 60;
@@ -22,9 +17,7 @@ const useList = () => {
 
   useLayoutEffect(() => {
     if (!$list.current || !$cardWrapper.current) return;
-    $list.current.style.top = `${
-      window.innerHeight * (1 - PERCENTAGE)
-    }px`;
+    $list.current.style.top = `${window.innerHeight * (1 - PERCENTAGE)}px`;
     $cardWrapper.current.style.height = `${
       window.innerHeight * PERCENTAGE - HEIGHT_MARGIN
     }px`;
@@ -38,7 +31,8 @@ const useList = () => {
 
     let touchStartTime: Date, touchEndTime: Date;
     let touchStartPoint = 0,
-      touchEndPoint = 0, touchStartTop = 0;
+      touchEndPoint = 0,
+      touchStartTop = 0;
 
     const onTouchStart = (e: TouchEvent) => {
       if (!$list.current) return;
@@ -50,10 +44,10 @@ const useList = () => {
 
     const onTouchMove = (e: TouchEvent) => {
       if (!$list.current || !$cardWrapper.current) return;
-      if($cardWrapper.current.contains(e.target as Element)) return;
+      if ($cardWrapper.current.contains(e.target as Element)) return;
 
       let position = e.touches[0].clientY - touchStartPoint + touchStartTop;
-      if(position < HEADER) return;
+      if (position < HEADER) return;
 
       $list.current.style.transition = 'all 0s ease';
       $list.current.style.top = `${position || 0}px`;
@@ -66,7 +60,7 @@ const useList = () => {
 
     const onTouchEnd = (e: TouchEvent) => {
       if (!$list.current || !$cardWrapper.current) return;
-      if($cardWrapper.current.contains(e.target as Element)) return;
+      if ($cardWrapper.current.contains(e.target as Element)) return;
 
       touchEndTime = new Date();
       touchEndPoint = e.changedTouches[0].clientY;
@@ -98,7 +92,7 @@ const useList = () => {
 
     const onMouseStart = (e: MouseEvent) => {
       if (!$list.current || !$cardWrapper.current) return;
-      if($cardWrapper.current.contains(e.target as Element)) return;
+      if ($cardWrapper.current.contains(e.target as Element)) return;
 
       touchStartTime = new Date();
       touchStartPoint = e.clientY;
@@ -183,9 +177,7 @@ const useList = () => {
   const openList = () => {
     if (!$list.current || !$cardWrapper.current) return;
 
-    $list.current.style.top = `${
-      window.innerHeight * (1 - PERCENTAGE)
-    }px`;
+    $list.current.style.top = `${window.innerHeight * (1 - PERCENTAGE)}px`;
     $list.current.style.transition = `all 0.2s linear`;
     $list.current.classList.add('open');
     $list.current.classList.remove('close');

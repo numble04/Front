@@ -7,9 +7,11 @@ import { Flex } from '../Flex/Flex';
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100vw;
   height: 100vh;
+  max-width: 32rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,8 +71,8 @@ const Modal = ({
     if (isOpen) {
       document.body.style.cssText = `
         position: fixed; 
-        top: -${window.scrollY}px;
-        overflow-y: scroll;
+        // top: -${window.scrollY}px;
+        // overflow-y: scroll;
         width: 100%;
       `;
 

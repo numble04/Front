@@ -172,9 +172,8 @@ const Signup = () => {
         isOpen={modalVisible}
         onClose={() => setModalVisible(false)}
         onOK={() => router.push('/')}
-      >
-        <div>회원가입을 종료하시겠습니까?</div>
-      </Modal>
+        type={'back'}
+      />
       <ProgressBarBackground>
         <ProgressBar signupStep={signupStep} />
       </ProgressBarBackground>

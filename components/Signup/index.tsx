@@ -7,15 +7,15 @@ import { Typography } from 'components/ui/Typography/Typography';
 import { Button } from 'components/ui/Button/Button';
 import { theme } from 'styles/theme';
 import Modal from 'components/ui/Modal';
-import { titleInfos } from 'constant/users';
-import { SingupParamsType } from 'types/uesrs';
+import { titleInfos } from 'constant/user';
+import { SingupParamsType } from 'types/uesr';
 import CurrentAreaStep from './CurrentAreaStep';
 import AreaSearch from './AreaSearch';
 import EmailStep from './EmailStep';
 import PasswordStep from './PasswordStep';
 import PersonalInfoStep from './PersonalInfoStep';
 import { emailPattern, passwordPattern } from 'constant/validate';
-import { useSignup } from 'hooks/users';
+import { useSignup } from 'hooks/user';
 
 const Container = styled.div`
   margin-top: 30px;

@@ -91,7 +91,7 @@ export const useLocalInfos = ({
 
 // 검색을 통한 지역 정보 가져오기
 export const useSearchAddress = (query: string) => {
-  const { data: searchedLocalInfos = [], isLoading } = useQuery(
+  const { data: searchedLocalInfos, isLoading } = useQuery(
     ['useSearchAddress', query],
     () =>
       axios.get<KakaoAPIResponse<SearchAddressType[]>>(
@@ -108,7 +108,7 @@ export const useSearchAddress = (query: string) => {
     { enabled: query.length > 0, select: (res) => res.data.documents },
   );
 
-  const filteredLocalInfos = searchedLocalInfos.filter(
+  const filteredLocalInfos = searchedLocalInfos?.filter(
     (item) =>
       (item.address &&
         (item.address.region_3depth_name ||

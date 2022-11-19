@@ -39,7 +39,7 @@ const ProgressBar = styled.div<{ signupStep: number }>`
 `;
 
 const Footer = styled.div`
-  position: relative;
+  position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;

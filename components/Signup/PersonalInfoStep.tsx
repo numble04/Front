@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 
 import { FormItem } from 'components/ui/FormItem/FormItem';
 import { Input } from 'components/ui/Input/Input';
-import { SingupParamsType } from 'types/uesrs';
+import { SingupParamsType } from 'types/uesr';
 import {
   nicknamePattern,
   NICKNAME_FORMAT,

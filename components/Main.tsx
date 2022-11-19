@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { Button } from 'components/ui/Button/Button';
 import { Flex } from 'components/ui/Flex/Flex';
 import { Typography } from 'components/ui/Typography/Typography';
+import { useRecoilValue } from 'recoil';
+import { isLoggedInState } from 'recoil/user';
 
 const Container = styled.div`
   padding: 60px 20px 97px;
@@ -16,6 +18,16 @@ const TitleWrapper = styled.div`
 `;
 
 const Main = () => {
+  const isLoggedIn = useRecoilValue(isLoggedInState);
+
+  if (isLoggedIn) {
+    return (
+      <div style={{ padding: 20 }}>
+        <Typography.Text>Boardker</Typography.Text>
+      </div>
+    );
+  }
+
   return (
     <Container>
       <TitleWrapper>

@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+import { isLoggedInState } from 'recoil/user';
 import styled from 'styled-components';
 import { Navbar } from '../ui/organisms/Navbar';
 
@@ -10,8 +12,12 @@ type Props = {
 export const Container = ({ children }: Props) => {
   // TODO: 공통 레이아웃이 적용되어 있어 임시적으로 제외해두었습니다. 추후 수정 필요
   const { pathname } = useRouter();
+  const isLoggedIn = useRecoilValue(isLoggedInState);
 
-  if (pathname === '/' || pathname === '/signup' || pathname === '/login') {
+  if (
+    !isLoggedIn &&
+    (pathname === '/' || pathname === '/signup' || pathname === '/login')
+  ) {
     return (
       <Wrapper>
         <D1>

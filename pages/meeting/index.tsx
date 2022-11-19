@@ -1,11 +1,13 @@
-import { ExpandMoreIcon } from 'components/ui/atoms/Icon';
+import { CreateIcon, ExpandMoreIcon, SortIcon } from 'components/ui/atoms/Icon';
 import Map from 'components/ui/atoms/Map';
 import useList from 'hooks/useList';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 const Page: NextPage = () => {
   const { List, openList, closeList } = useList();
+  const router = useRouter();
   return (
     <Container>
       <Header>
@@ -13,10 +15,20 @@ const Page: NextPage = () => {
           <div>삼성동</div>
           <ExpandMoreIcon />
         </Title>
-        <FilterWrapper>
-          <Filter>지역</Filter>
-          <Filter>날짜</Filter>
-        </FilterWrapper>
+        <TitleContent>
+          <FilterWrapper>
+            <Filter>지역</Filter>
+            <Filter>날짜</Filter>
+          </FilterWrapper>
+          <IconWrapper>
+            <div>
+              <SortIcon />
+            </div>
+            <div onClick={() => router.push('/createMeeting')}>
+              <CreateIcon />
+            </div>
+          </IconWrapper>
+        </TitleContent>
       </Header>
       <MapWrapper onClick={closeList}>
         <Map latitude={37.502166} longitude={127.026608} />
@@ -60,6 +72,12 @@ const Header = styled.div`
   padding: 16px 30px;
 `;
 
+const TitleContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const FilterWrapper = styled.div`
   background-color: #ffffff;
 `;
@@ -71,6 +89,16 @@ const Filter = styled.button`
   border-radius: 20px;
   border: none;
   margin-right: 8px;
+`;
+
+const IconWrapper = styled.div`
+  width: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > div {
+    cursor: pointer;
+  }
 `;
 
 const ListButton = styled.button`
@@ -86,6 +114,7 @@ const ListButton = styled.button`
   border: none;
   margin-right: 8px;
   z-index: 3;
+  cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;

@@ -2,7 +2,26 @@ import Image from 'next/image';
 import React from 'react';
 import styled from 'styled-components';
 
-const Board = () => {
+interface BoardType {
+  data: {
+    commentCount: number;
+    content: string;
+    createDate: string;
+    id: number;
+    likeCount: number;
+    myLike: boolean;
+    myPost: boolean;
+    nickname: string;
+    thumbnail: any; // TODO: 타입 수정하기
+    title: string;
+    type: string;
+    updateDate: string;
+    userImg: any; // TODO: 타입 수정하기
+    viewCount: number;
+  };
+}
+
+const Board = ({ data }: BoardType) => {
   return (
     <StyledBoard>
       <BoardHeader>
@@ -17,7 +36,7 @@ const Board = () => {
             />
           </div>
           <HeaderTitle>
-            <span className="name">시술</span>
+            <span className="name">{data.nickname}</span>
             <span className="time">6시간 전</span>
           </HeaderTitle>
         </HeaderMain>
@@ -29,12 +48,9 @@ const Board = () => {
           height={3.3}
         />
       </BoardHeader>
-      <BoardContent>
-        OO동에 이사온지 얼마 되지 않아 아는 친구가 한 명도 없어요ㅜㅜ 나이는
-        25살 여자입니다! 같이 보드게임 하실 동네 친구 구해요!
-      </BoardContent>
+      <BoardContent>{data.content}</BoardContent>
       <BoardBottom>
-        <span className="viewCount">조회수 290</span>
+        <span className="viewCount">{data.viewCount}</span>
         <div className="boardIcons">
           <IconBox>
             <Image
@@ -44,7 +60,7 @@ const Board = () => {
               height={20}
               alt="heart"
             />
-            <span>120</span>
+            <span>{data.likeCount}</span>
           </IconBox>
           <IconBox>
             <Image
@@ -54,7 +70,7 @@ const Board = () => {
               height={17.5}
               alt="chat"
             />
-            <span>20</span>
+            <span>{data.commentCount}</span>
           </IconBox>
         </div>
       </BoardBottom>

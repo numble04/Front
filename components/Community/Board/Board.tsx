@@ -30,6 +30,7 @@ const Board = ({ data, onClick }: BoardDetailType) => {
           height={3.3}
         />
       </BoardHeader>
+      {data.thumbnail !== null && <img src={data.thumbnail} alt="thumbnail" />}
       <BoardContent>{data.content}</BoardContent>
       <BoardBottom>
         <span className="viewCount">조회수 {data.viewCount}</span>

@@ -15,8 +15,14 @@ export const useSignup = () => {
     }: SingupParamsType) =>
       api.post(`/auth/signup`, {
         ...rest,
-        region: rest.region.replace('서울특별시', '서울'),
-        city: rest.city.replace('서울특별시', '서울'),
+        region:
+          rest.region.split(' ')[0] === '서울'
+            ? rest.region.replace('서울', '서울특별시')
+            : rest.region,
+        city:
+          rest.city === '서울'
+            ? rest.city.replace('서울', '서울특별시')
+            : rest.city,
       }),
   );
 

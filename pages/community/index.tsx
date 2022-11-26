@@ -62,6 +62,10 @@ const Page: NextPage = () => {
     }
   }, [menu]);
 
+  const handleDetailPage = (id: number) => {
+    router.push(`community/${id}`);
+  };
+
   useEffect(() => {
     getCommunityList();
   }, [getCommunityList]);
@@ -103,7 +107,7 @@ const Page: NextPage = () => {
         ))}
       </TabList>
       {data?.map((item, index) => (
-        <Board data={item} key={index} />
+        <Board data={item} key={index} onClick={handleDetailPage} />
       ))}
     </CommunityStyled>
   );

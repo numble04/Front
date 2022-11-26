@@ -37,6 +37,11 @@ const TabList = styled.div`
   display: flex;
 `;
 
+const BoardList = styled.div`
+  max-height: calc(100vh - 192px);
+  overflow-y: auto;
+`;
+
 const Page: NextPage = () => {
   const router = useRouter();
   const [data, setData] = useState([]);
@@ -106,9 +111,11 @@ const Page: NextPage = () => {
           </Tab>
         ))}
       </TabList>
-      {data?.map((item, index) => (
-        <Board data={item} key={index} onClick={handleDetailPage} />
-      ))}
+      <BoardList>
+        {data?.map((item, index) => (
+          <Board data={item} key={index} onClick={handleDetailPage} />
+        ))}
+      </BoardList>
     </CommunityStyled>
   );
 };

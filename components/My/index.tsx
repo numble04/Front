@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/Button/Button';
 import { Flex } from 'components/ui/Flex/Flex';
 import { Typography } from 'components/ui/Typography/Typography';
 import { useUserDetail } from 'hooks/user';
@@ -31,7 +32,11 @@ const My = () => {
       <TitleSection>
         <Typography.Text type="h4">프로필</Typography.Text>
       </TitleSection>
-      <ProfileSection></ProfileSection>
+      <ProfileSection>
+        <Button full height={36} padding={10} fontSize={12}>
+          내 활동
+        </Button>
+      </ProfileSection>
       <CommunityTab>
         <div
           style={{

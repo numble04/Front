@@ -37,6 +37,34 @@ export const useLogin = () => {
   return { login, isLoading };
 };
 
+export const useLogout = () => {
+  const setUserState = useSetRecoilState(userState);
+
+  // const { mutate: logout } = useMutation(
+  //   (refreshToken: string | null) =>
+  //     api.post(`/users/logout`, undefined, {
+  //       headers: {
+  //         refreshToken: refreshToken || false,
+  //       },
+  //     }),
+  //   {
+  //     onSuccess: () => {
+  //       localStorage.clear();
+  //       delete api.defaults.headers.common['Authorization'];
+  //       setUserState(null);
+  //     },
+  //   },
+  // );
+
+  const logout = (refreshToken: string | null) => {
+    localStorage.clear();
+    delete api.defaults.headers.common['Authorization'];
+    setUserState(null);
+  };
+
+  return { logout };
+};
+
 export const useReissueToken = () => {
   const setUserState = useSetRecoilState(userState);
 

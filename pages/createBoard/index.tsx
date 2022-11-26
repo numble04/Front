@@ -139,25 +139,42 @@ const Page: NextPage = () => {
     setImage([...image, nowSelectImageList[0]]);
   };
 
-  const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let formData = new FormData();
 
-    if (image.length === 0) {
-      alert('이미지를 등록해 주세요');
-    }
+    // formData.append('files', new Blob([image]));
 
     image.forEach((image, index) => {
       formData.append(`files`, image);
     });
-    formData.append('title  ', content);
-    formData.append('content ', content);
-    formData.append('type  ', category.type);
+
+    formData.append(
+      'postRequest',
+      new Blob(
+        [
+          JSON.stringify({
+            title: content,
+            content,
+            type: category.type,
+          }),
+        ],
+        { type: 'application/json' },
+      ),
+    );
 
     // 아래 게시글등록 로직 수정 필요
     try {
-      await api.post('/posts', formData);
+      const response = await api.post(
+        '/posts',
+        formData,
+        'multipart/form-data',
+      );
+      if (response.status === 200 || 201) {
+        alert('상품등록 성공');
+        console.log('상품등록 성공');
+      }
     } catch (e) {
       console.error(e);
     }

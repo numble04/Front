@@ -9,10 +9,10 @@ import {
 import Image from 'next/image';
 
 import useGeolocation from 'hooks/local';
-import { Typography } from 'components/ui/Typography/Typography';
-import { Input } from 'components/ui/Input/Input';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Input } from 'components/UI/Input/Input';
 import { useLocalInfos, useSearchAddress } from 'hooks/local';
-import { Flex } from 'components/ui/Flex/Flex';
+import { Flex } from 'components/UI/Flex/Flex';
 import { SingupParamsType } from 'types/uesr';
 import { SearchAddressType } from 'types/local';
 

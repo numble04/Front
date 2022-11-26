@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import React, { Dispatch, SetStateAction } from 'react';
 
-import { Flex } from 'components/ui/Flex/Flex';
-import { Typography } from 'components/ui/Typography/Typography';
+import { Flex } from 'components/UI/Flex/Flex';
+import { Typography } from 'components/UI/Typography/Typography';
 
 const CurrentAreaStep = ({
   region,

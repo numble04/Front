@@ -1,5 +1,5 @@
-import { BackIcon } from 'components/ui/atoms/Icon';
-import Map from 'components/ui/atoms/Map';
+import { BackIcon } from 'components/UI/atoms/Icon';
+import Map from 'components/UI/atoms/Map';
 import { meetings } from 'constant/meeting';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';

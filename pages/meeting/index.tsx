@@ -1,5 +1,5 @@
-import { ExpandMoreIcon } from 'components/ui/atoms/Icon';
-import Map from 'components/ui/atoms/Map';
+import { ExpandMoreIcon } from 'components/UI/atoms/Icon';
+import Map from 'components/UI/atoms/Map';
 import useList from 'hooks/useList';
 import type { NextPage } from 'next';
 import styled from 'styled-components';

@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import { Button } from 'components/ui/Button/Button';
-import { Flex } from 'components/ui/Flex/Flex';
-import { Typography } from 'components/ui/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
+import { Flex } from 'components/UI/Flex/Flex';
+import { Typography } from 'components/UI/Typography/Typography';
 import { useRecoilValue } from 'recoil';
 import { isLoggedInState } from 'recoil/user';
 import { useLogout } from 'hooks/user';

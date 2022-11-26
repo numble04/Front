@@ -1,6 +1,6 @@
-import { Button } from 'components/ui/Button/Button';
-import { Flex } from 'components/ui/Flex/Flex';
-import { Typography } from 'components/ui/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
+import { Flex } from 'components/UI/Flex/Flex';
+import { Typography } from 'components/UI/Typography/Typography';
 import { useUserDetail } from 'hooks/user';
 import React from 'react';
 import styled from 'styled-components';

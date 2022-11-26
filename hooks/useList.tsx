@@ -2,8 +2,8 @@
 import { meetings } from 'constant/meeting';
 import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { ExpandMoreSmallIcon } from 'components/ui/atoms/Icon';
-import { MeetingCard } from 'components/ui/molecules/MeetingCard';
+import { ExpandMoreSmallIcon } from 'components/UI/atoms/Icon';
+import { MeetingCard } from 'components/UI/molecules/MeetingCard';
 
 const HEADER = 110;
 const INNER_HEADER = 60;

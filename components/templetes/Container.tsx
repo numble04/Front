@@ -1,5 +1,5 @@
-import { Flex } from 'components/ui/Flex/Flex';
-import { Typography } from 'components/ui/Typography/Typography';
+import { Flex } from 'components/UI/Flex/Flex';
+import { Typography } from 'components/UI/Typography/Typography';
 import { useReissueToken } from 'hooks/user';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -8,7 +8,7 @@ import { useRecoilValue } from 'recoil';
 import { isLoggedInState } from 'recoil/user';
 import styled from 'styled-components';
 import { theme } from 'styles/theme';
-import { Navbar } from '../ui/organisms/Navbar';
+import { Navbar } from '../UI/organisms/Navbar';
 
 type Props = {
   children: JSX.Element;

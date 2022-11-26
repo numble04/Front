@@ -2,8 +2,8 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 
-import { FormItem } from 'components/ui/FormItem/FormItem';
-import { Input } from 'components/ui/Input/Input';
+import { FormItem } from 'components/UI/FormItem/FormItem';
+import { Input } from 'components/UI/Input/Input';
 import { SingupParamsType } from 'types/uesr';
 import {
   passwordPattern,

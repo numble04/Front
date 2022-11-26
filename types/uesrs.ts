@@ -16,7 +16,7 @@ export interface CreateMeetingParamsType {
   file: string;
   day: string;
   cafeId: string;
-  capacity: string;
+  capacity: number;
   cost: string;
   time: string;
   kakaoUrl: string;

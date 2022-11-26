@@ -5,7 +5,7 @@ export const titleInfos = [
   },
   {
     title: '모임을 소개해볼까요?',
-    description: '로그인 시 사용할 이메일을 입력해주세요.',
+    description: '',
   },
   {
     title: '언제 만날까요?',

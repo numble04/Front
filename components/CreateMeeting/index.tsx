@@ -10,6 +10,13 @@ import Modal from 'components/ui/Modal';
 import { titleInfos } from 'constant/createMeeting';
 import { CreateMeetingParamsType } from 'types/uesrs';
 import { useSignup } from 'hooks/users';
+import TitleStep from './TitleStep';
+import ContentStep from './ContentStep';
+import DateStep from './DateStep';
+import AreaStep from './AreaStep';
+import CapacityStep from './CapacityStep';
+import CostStep from './CostStep';
+import UrlStep from './UrlStep';
 
 const Container = styled.div`
   margin-top: 30px;
@@ -53,7 +60,7 @@ const CreateMeeting = () => {
       file: '',
       day: '',
       cafeId: '',
-      capacity: '',
+      capacity: 3,
       cost: '',
       time: '',
       kakaoUrl: '',
@@ -88,25 +95,61 @@ const CreateMeeting = () => {
       return true;
     }
 
-    return true;
+    return false;
   }, [createMeetingStep, createMeetingParams]);
 
   const renderCreateMeetingStep = () => {
     switch (createMeetingStep) {
       case 1:
-        return null;
+        return (
+          <TitleStep
+            title={createMeetingParams.title}
+            onChangeCreateMeetingParams={setCreateMeetingParams}
+          />
+        );
       case 2:
-        return null;
+        return (
+          <ContentStep
+            content={createMeetingParams.content}
+            onChangeCreateMeetingParams={setCreateMeetingParams}
+          />
+        );
       case 3:
-        return null;
+        return (
+          <DateStep
+            date={createMeetingParams.day}
+            onChangeCreateMeetingParams={setCreateMeetingParams}
+          />
+        );
       case 4:
-        return null;
+        return (
+          <AreaStep
+            cafeId={createMeetingParams.cafeId}
+            onChangeCreateMeetingParams={setCreateMeetingParams}
+          />
+        );
       case 5:
-        return null;
+        return (
+          <CapacityStep
+            capacity={createMeetingParams.capacity}
+            onChangeCreateMeetingParams={setCreateMeetingParams}
+          />
+        );
       case 6:
-        return null;
+        return (
+          <CostStep
+            cost={createMeetingParams.cost}
+            time={createMeetingParams.time}
+            onChangeCreateMeetingParams={setCreateMeetingParams}
+          />
+        );
       case 7:
-        return null;
+        return (
+          <UrlStep
+            kakaoUrl={createMeetingParams.kakaoUrl}
+            onChangeCreateMeetingParams={setCreateMeetingParams}
+          />
+        );
       default:
         return null;
     }

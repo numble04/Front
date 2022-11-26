@@ -1,7 +1,9 @@
 export interface SingupParamsType {
   email: string;
+  emailDuplicate: boolean;
   name: string;
   nickname: string;
+  nicknameDuplicate: boolean;
   phone: string;
   password: string;
   passwordConfirm: string;

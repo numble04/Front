@@ -54,8 +54,10 @@ const Signup = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [signupParams, setSignupParams] = useState<SingupParamsType>({
     email: '',
+    emailDuplicate: false,
     name: '',
     nickname: '',
+    nicknameDuplicate: false,
     phone: '',
     password: '',
     passwordConfirm: '',
@@ -70,7 +72,11 @@ const Signup = () => {
     if (signupStep === 1 && signupParams.region) {
       return true;
     }
-    if (signupStep === 2 && emailPattern.test(signupParams.email)) {
+    if (
+      signupStep === 2 &&
+      emailPattern.test(signupParams.email) &&
+      !signupParams.emailDuplicate
+    ) {
       return true;
     }
     if (
@@ -84,6 +90,7 @@ const Signup = () => {
       signupStep === 4 &&
       signupParams.phone &&
       signupParams.nickname &&
+      !signupParams.nicknameDuplicate &&
       signupParams.name
     ) {
       return true;

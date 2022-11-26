@@ -10,6 +10,7 @@ import {
   NOT_VALID_FORMAT,
   REQUIRED_FIELD,
 } from 'constant/validate';
+import { useCheckEmailDuplicate } from 'hooks/user';
 
 const Container = styled.div`
   margin-top: 28px;
@@ -24,27 +25,19 @@ const EmailStep = ({
 }) => {
   const {
     register,
-    watch,
     setValue,
     formState: { errors },
   } = useForm<SingupParamsType>({
     mode: 'onChange',
   });
 
+  const { checkEmailDuplicate } = useCheckEmailDuplicate();
+
   useEffect(() => {
     if (email) {
       setValue('email', email);
     }
   }, [setValue, email]);
-
-  const emailWatch = watch('email');
-
-  useEffect(() => {
-    onChangeSignupParams((signupParams) => ({
-      ...signupParams,
-      email: emailWatch,
-    }));
-  }, [emailWatch, onChangeSignupParams]);
 
   return (
     <Container>
@@ -53,7 +46,32 @@ const EmailStep = ({
           formName="email"
           {...register('email', {
             required: REQUIRED_FIELD,
-            validate: (email) => emailPattern.test(email) || NOT_VALID_FORMAT,
+            validate: async (email) => {
+              if (emailPattern.test(email)) {
+                try {
+                  const res = await checkEmailDuplicate(email);
+
+                  if (res.status === 200) {
+                    onChangeSignupParams((signupParams) => ({
+                      ...signupParams,
+                      email,
+                      emailDuplicate: false,
+                    }));
+                    return true;
+                  }
+                } catch (e) {
+                  console.log(e);
+                  onChangeSignupParams((signupParams) => ({
+                    ...signupParams,
+                    email,
+                    emailDuplicate: true,
+                  }));
+                  return '중복된 이메일입니다.';
+                }
+              }
+
+              return NOT_VALID_FORMAT;
+            },
           })}
           error={errors['email']}
         >

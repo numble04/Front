@@ -7,7 +7,12 @@ import { userState } from 'recoil/user';
 
 export const useSignup = () => {
   const { mutate: signup, isLoading } = useMutation(
-    ({ passwordConfirm, ...rest }: SingupParamsType) =>
+    ({
+      passwordConfirm,
+      emailDuplicate,
+      nicknameDuplicate,
+      ...rest
+    }: SingupParamsType) =>
       api.post(`/auth/signup`, {
         ...rest,
         region: rest.region.replace('서울특별시', '서울'),
@@ -16,6 +21,31 @@ export const useSignup = () => {
   );
 
   return { signup, isLoading };
+};
+
+export const useCheckEmailDuplicate = () => {
+  const { mutateAsync: checkEmailDuplicate } = useMutation((email: string) =>
+    api.get<boolean>(`/auth/email`, {
+      params: {
+        email,
+      },
+    }),
+  );
+
+  return { checkEmailDuplicate };
+};
+
+export const useCheckNicknameDuplicate = () => {
+  const { mutateAsync: checkNicknameDuplicate } = useMutation(
+    (nickname: string) =>
+      api.get<boolean>(`/auth/nickname`, {
+        params: {
+          nickname,
+        },
+      }),
+  );
+
+  return { checkNicknameDuplicate };
 };
 
 export const useLogin = () => {
@@ -40,6 +70,7 @@ export const useLogin = () => {
 export const useLogout = () => {
   const setUserState = useSetRecoilState(userState);
 
+  // TODO: 로그아웃시 token 오류남
   // const { mutate: logout } = useMutation(
   //   (refreshToken: string | null) =>
   //     api.post(`/users/logout`, undefined, {

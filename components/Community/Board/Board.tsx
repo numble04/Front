@@ -19,11 +19,12 @@ interface BoardType {
     userImg: any; // TODO: 타입 수정하기
     viewCount: number;
   };
+  onClick: (id: number) => void;
 }
 
-const Board = ({ data }: BoardType) => {
+const Board = ({ data, onClick }: BoardType) => {
   return (
-    <StyledBoard>
+    <StyledBoard onClick={() => onClick(data.id)}>
       <BoardHeader>
         <HeaderMain>
           <div>

@@ -4,12 +4,13 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { useUserDetail } from 'hooks/user';
 import React from 'react';
 import styled from 'styled-components';
+import { theme } from 'styles/theme';
 
 const Container = styled.div``;
 
 const TitleSection = styled.section`
   padding: 39px 20px 21px;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid ${theme.colors.SLATEGRAY20};
 `;
 
 const ProfileSection = styled.section`
@@ -43,7 +44,7 @@ const My = () => {
             flex: 1,
             textAlign: 'center',
             padding: 8,
-            borderBottom: '1px solid #d9d9d9',
+            borderBottom: `1px solid ${theme.colors.SLATEGRAY20}`,
           }}
         >
           게시물
@@ -53,7 +54,7 @@ const My = () => {
             flex: 1,
             textAlign: 'center',
             padding: 8,
-            borderBottom: '1px solid #d9d9d9',
+            borderBottom: `1px solid ${theme.colors.SLATEGRAY20}`,
           }}
         >
           참여 모임

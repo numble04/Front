@@ -48,24 +48,44 @@ const Main = () => {
   return (
     <Container>
       <TitleWrapper>
-        <Typography.Text type="h3" color="WHITE">
+        <Typography.Text type="h4" color="WHITE">
           Boardker
         </Typography.Text>
-        <Typography.Text color="WHITE" type="h4" medium gutter={{ top: 20 }}>
+        <Typography.Text
+          color="WHITE"
+          type="h4"
+          medium
+          gutter={{ top: 20 }}
+          style={{ fontSize: 32 }}
+        >
           함께하는
           <br />
           보드게임의
           <br />
           색다로운 즐거움
         </Typography.Text>
+        <Typography.Text
+          color="WHITE"
+          type="h4"
+          medium
+          gutter={{ top: 20 }}
+          style={{ fontSize: 18 }}
+        >
+          보드게임 커뮤니티,{' '}
+          <Typography.Text color="WHITE" type="h6" bold inline>
+            보드커
+          </Typography.Text>
+        </Typography.Text>
       </TitleWrapper>
-      <Link href="/signup" passHref>
-        <Button cssStyle={{ width: '100%' }} full>
-          시작하기
-        </Button>
-      </Link>
+      <Button
+        cssStyle={{ width: '100%' }}
+        full
+        onClick={() => router.push('/signup')}
+      >
+        시작하기
+      </Button>
       <Flex align="center" justify="center" gutter={{ top: 20 }}>
-        <Typography.Text type="b2" color="WHITE" inline regular>
+        <Typography.Text type="b2" color="SLATEGRAY20" inline regular>
           이미 계정이 있나요?
         </Typography.Text>
         <Link href="/login" passHref>

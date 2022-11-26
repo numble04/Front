@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { theme } from 'styles/theme';
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -14,7 +15,8 @@ export const HeaderStyled = styled.div<HeaderType>`
   width: 100%;
   height: 80px;
 
-  border-bottom: ${({ isBorder }) => (isBorder ? '1px solid #D9D9D9' : 'none')};
+  border-bottom: ${({ isBorder }) =>
+    isBorder ? `1px solid ${theme.colors.SLATEGRAY20}` : 'none'};
 `;
 
 const Header = ({ children, isBorder }: HeaderProps) => {

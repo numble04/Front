@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { theme } from 'styles/theme';
 
 interface TabProps {
   children: React.ReactNode;
@@ -23,7 +24,7 @@ export const TabStyled = styled.div<{ isActive: boolean }>`
           color: #3a3a3a;
         `
       : css`
-          border-bottom: 1px solid #d9d9d9;
+          border-bottom: 1px solid ${theme.colors.SLATEGRAY20};
           color: #aaaaaa;
         `}
 `;

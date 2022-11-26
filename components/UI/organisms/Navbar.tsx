@@ -13,7 +13,7 @@ export const Navbar = () => {
         </IconWrapper>
         <Text>홈</Text>
       </Wrapper>
-      <Wrapper>
+      <Wrapper onClick={() => router.push('/community')}>
         <IconWrapper>
           <HomeIcon />
         </IconWrapper>

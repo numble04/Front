@@ -33,7 +33,7 @@ const BodyWrapper = styled.div`
 `;
 
 const FooterWrapper = styled(Flex)`
-  border-top: 1px solid ${theme.colors.SLATEGRAY20};
+  border-top: 1px solid ${theme.colors.SLATEGRAY30};
 `;
 
 const YesButton = styled.div`
@@ -44,7 +44,7 @@ const YesButton = styled.div`
 const NoButton = styled.div`
   flex: 1;
   padding: 12px;
-  border-left: 1px solid ${theme.colors.SLATEGRAY20};
+  border-left: 1px solid ${theme.colors.SLATEGRAY30};
 `;
 
 interface IModalProps {

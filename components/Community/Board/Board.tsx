@@ -1,28 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
 import styled from 'styled-components';
+import { BoardDetailType } from 'types/community';
 
-interface BoardType {
-  data: {
-    commentCount: number;
-    content: string;
-    createDate: string;
-    id: number;
-    likeCount: number;
-    myLike: boolean;
-    myPost: boolean;
-    nickname: string;
-    thumbnail: any; // TODO: 타입 수정하기
-    title: string;
-    type: string;
-    updateDate: string;
-    userImg: any; // TODO: 타입 수정하기
-    viewCount: number;
-  };
-  onClick: (id: number) => void;
-}
-
-const Board = ({ data, onClick }: BoardType) => {
+const Board = ({ data, onClick }: BoardDetailType) => {
   return (
     <StyledBoard onClick={() => onClick(data.id)}>
       <BoardHeader>
@@ -51,11 +32,11 @@ const Board = ({ data, onClick }: BoardType) => {
       </BoardHeader>
       <BoardContent>{data.content}</BoardContent>
       <BoardBottom>
-        <span className="viewCount">{data.viewCount}</span>
+        <span className="viewCount">조회수 {data.viewCount}</span>
         <div className="boardIcons">
           <IconBox>
             <Image
-              src="/icons/heartFill.svg"
+              src={`/icons/${data.myLike ? 'heartFill' : 'heartEmpty'}.svg`}
               className="heart"
               width={20}
               height={20}
@@ -84,6 +65,7 @@ const StyledBoard = styled.div`
   flex-direction: column;
 
   padding: 24px 19px 30px;
+  cursor: pointer;
 `;
 
 const BoardHeader = styled.div`

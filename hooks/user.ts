@@ -33,6 +33,30 @@ export const useLogin = () => {
   return { login, isLoading };
 };
 
+export const useReissueToken = () => {
+  const setUserState = useSetRecoilState(userState);
+
+  const { mutate: reissueToken } = useMutation(
+    (refreshToken: string | null) =>
+      api.get<UserType>(`/auth/reissue`, {
+        headers: {
+          refreshToken: refreshToken || false,
+        },
+      }),
+    {
+      onSuccess: ({ data }) => {
+        const { accessToken, refreshToken, userResponse } = data.data;
+
+        api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        localStorage.setItem('refreshToken', refreshToken);
+        setUserState(userResponse);
+      },
+    },
+  );
+
+  return { reissueToken };
+};
+
 export const useUserDetail = () => {
   const { data } = useQuery(['tempKey'], () => api.get(`/users`));
 

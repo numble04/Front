@@ -31,7 +31,7 @@ export const Navbar = () => {
         </IconWrapper>
         <Text>게임정보</Text>
       </Wrapper>
-      <Wrapper>
+      <Wrapper onClick={() => router.push('/my')}>
         <IconWrapper>
           <MyPageIcon />
         </IconWrapper>

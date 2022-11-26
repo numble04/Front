@@ -1,14 +1,18 @@
 import { useMutation, useQuery } from 'react-query';
+import { useSetRecoilState } from 'recoil';
 
 import api from 'lib/api';
 import { LoginParamsType, SingupParamsType, UserType } from 'types/uesr';
-import { useSetRecoilState } from 'recoil';
 import { userState } from 'recoil/user';
 
 export const useSignup = () => {
   const { mutate: signup, isLoading } = useMutation(
     ({ passwordConfirm, ...rest }: SingupParamsType) =>
-      api.post(`/auth/signup`, rest),
+      api.post(`/auth/signup`, {
+        ...rest,
+        region: rest.region.replace('서울특별시', '서울'),
+        city: rest.city.replace('서울특별시', '서울'),
+      }),
   );
 
   return { signup, isLoading };
@@ -58,7 +62,13 @@ export const useReissueToken = () => {
 };
 
 export const useUserDetail = () => {
-  const { data } = useQuery(['tempKey'], () => api.get(`/users`));
+  const { data: userDetail } = useQuery(
+    ['users'],
+    () => api.get<any>(`/users`),
+    {
+      select: (res) => res.data.data,
+    },
+  );
 
-  return { data };
+  return { userDetail };
 };

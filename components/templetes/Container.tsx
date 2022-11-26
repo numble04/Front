@@ -11,7 +11,8 @@ type Props = {
 };
 
 export const Container = ({ children }: Props) => {
-  const { pathname } = useRouter();
+  const router = useRouter();
+  const pathname = router.pathname;
   const isLoggedIn = useRecoilValue(isLoggedInState);
   const [mounted, setMounted] = useState(false);
   const refreshToken =
@@ -41,7 +42,7 @@ export const Container = ({ children }: Props) => {
     (!isLoggedIn && pathname === '/') ||
     pathname === '/signup' ||
     pathname === '/login'
-  )
+  ) {
     return (
       <Wrapper>
         <D1>
@@ -49,6 +50,9 @@ export const Container = ({ children }: Props) => {
         </D1>
       </Wrapper>
     );
+  } else if (!isLoggedIn) {
+    router.replace('/');
+  }
 
   return (
     <Wrapper>

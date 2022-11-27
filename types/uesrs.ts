@@ -14,7 +14,7 @@ export interface CreateMeetingParamsType {
   title: string;
   content: string;
   file: string;
-  day: string;
+  day: Date | null;
   cafeId: string;
   capacity: number;
   cost: string;

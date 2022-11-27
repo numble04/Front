@@ -58,7 +58,7 @@ const CreateMeeting = () => {
       title: '',
       content: '',
       file: '',
-      day: '',
+      day: null,
       cafeId: '',
       capacity: 3,
       cost: '',
@@ -165,7 +165,9 @@ const CreateMeeting = () => {
   const handleClickNextButton = () => {
     if (createMeetingStep >= 1 && createMeetingStep < 7) {
       setCreateMeetingStep((createMeetingStep) => createMeetingStep + 1);
+      console.log(createMeetingParams);
     } else if (createMeetingStep === 7) {
+      console.log(createMeetingParams);
     }
   };
 

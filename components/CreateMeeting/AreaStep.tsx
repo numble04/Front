@@ -1,21 +1,20 @@
 import styled from 'styled-components';
 import Image from 'next/image';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 
 import { CreateMeetingParamsType } from 'types/uesrs';
 import { Flex } from 'components/UI/Flex/Flex';
 import { Typography } from 'components/UI/Typography/Typography';
+import api from 'lib/api';
 
 const Container = styled.div``;
 
 const AreaStep = ({
-  cafeId,
-  onChangeCreateMeetingParams,
+  cafeName,
+  onChangeIsAreaSearching,
 }: {
-  cafeId: string;
-  onChangeCreateMeetingParams: Dispatch<
-    SetStateAction<CreateMeetingParamsType>
-  >;
+  cafeName: string;
+  onChangeIsAreaSearching: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
     <Container>
@@ -28,10 +27,11 @@ const AreaStep = ({
         }}
         gap={12}
         align="center"
+        onClick={() => onChangeIsAreaSearching(true)}
       >
         <Image src="/icons/location.svg" alt="back" width={24} height={24} />
-        <Typography.Text regular color="ON_INACTIVE">
-          {cafeId || '장소를 입력해주세요.'}
+        <Typography.Text regular color="ON_PRIMARY">
+          {cafeName || '장소를 입력해주세요.'}
         </Typography.Text>
       </Flex>
     </Container>

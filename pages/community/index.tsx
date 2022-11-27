@@ -8,7 +8,6 @@ import Board from 'components/Community/Board/Board';
 import Header from 'components/UI/Header';
 import Tab from 'components/UI/Tab';
 import api from 'lib/api';
-import { communityDetailType } from 'types/community';
 
 type TabType = {
   name: string;
@@ -123,7 +122,7 @@ const Page: NextPage = () => {
         ))}
       </TabList>
       <BoardList>
-        {data?.map((item: communityDetailType, index: number) => (
+        {data?.map((item: any, index: number) => (
           <Board data={item} key={index} onClick={handleDetailPage} />
         ))}
       </BoardList>

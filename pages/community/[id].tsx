@@ -1,16 +1,26 @@
 import { GetServerSideProps } from 'next';
 import styled from 'styled-components';
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import Header from 'components/UI/Header';
 import { useRouter } from 'next/router';
 import api from 'lib/api';
-import { communityDetailType } from 'types/community';
-import { Console } from 'console';
+import { useQuery } from 'react-query';
 
 type PageProps = {
   id: number;
 };
+
+const StyledCommunityDetail = styled.div`
+  .backIcon {
+    cursor: pointer;
+  }
+`;
+
+const BoardContainer = styled.div`
+  max-height: calc(100vh - 192px);
+  overflow-y: auto;
+`;
 
 const BoardHeader = styled.div`
   display: flex;
@@ -89,20 +99,35 @@ const ImageList = styled.div`
 `;
 
 const Page = ({ id }: PageProps) => {
-  const [data, setData] = useState<communityDetailType>();
   const router = useRouter();
 
-  const getCommunityDetail = useCallback(async () => {
+  const { data, refetch } = useQuery(
+    ['community-detail'],
+    () => getCommunityDetail(),
+    {
+      onError: (error: Error) => {
+        alert(error.message);
+      },
+    },
+  );
+
+  const getCommunityDetail = async () => {
     try {
       const res = await api.get(`/posts/${id}`);
-      setData(res.data.data);
+
+      return res.data.data;
     } catch (error) {
       throw new Error('error');
     }
-  }, []);
+  };
 
-  useEffect(() => {
-    getCommunityDetail();
+  const handleLikeBoard = useCallback(async (id: number) => {
+    try {
+      await api.put(`/posts/${id}/like`);
+      refetch();
+    } catch (error) {
+      throw new Error('post like error');
+    }
   }, []);
 
   if (data === undefined) {
@@ -110,13 +135,12 @@ const Page = ({ id }: PageProps) => {
     return <Fragment>데이터 없음</Fragment>;
   }
 
-  console.log('11', data);
-
   return (
-    <Fragment>
+    <StyledCommunityDetail>
       <Header>
         <Image
           src="/icons/back.svg"
+          className="backIcon"
           alt="back"
           width={24}
           height={24}
@@ -147,38 +171,41 @@ const Page = ({ id }: PageProps) => {
           height={3.3}
         />
       </BoardHeader>
-      <ImageList>
-        {data.images?.map((item, index) => (
-          <img src={item} alt="detail-image" key={index} />
-        ))}
-      </ImageList>
-      <BoardContent>{data.content}</BoardContent>
-      <BoardBottom>
-        <span className="viewCount">조회수 {data.viewCount}</span>
-        <div className="boardIcons">
-          <IconBox>
-            <Image
-              src="/icons/heartFill.svg"
-              className="heart"
-              width={20}
-              height={20}
-              alt="heart"
-            />
-            <span>{data.likeCount}</span>
-          </IconBox>
-          <IconBox>
-            <Image
-              src="/icons/chat.svg"
-              className="chat"
-              width={20}
-              height={17.5}
-              alt="chat"
-            />
-            <span>{data.commentCount}</span>
-          </IconBox>
-        </div>
-      </BoardBottom>
-    </Fragment>
+      <BoardContainer>
+        <ImageList>
+          {data.images?.map((item: string, index: number) => (
+            <img src={item} alt="detail-image" key={index} />
+          ))}
+        </ImageList>
+        <BoardContent>{data.content}</BoardContent>
+        <BoardBottom>
+          <span className="viewCount">조회수 {data.viewCount}</span>
+          <div className="boardIcons">
+            <IconBox>
+              <Image
+                src={`/icons/${data.myLike ? 'heartFill' : 'heartEmpty'}.svg`}
+                className="heart"
+                width={20}
+                height={20}
+                alt="heart"
+                onClick={() => handleLikeBoard(data?.postId!)}
+              />
+              <span>{data.likeCount}</span>
+            </IconBox>
+            <IconBox>
+              <Image
+                src="/icons/chat.svg"
+                className="chat"
+                width={20}
+                height={17.5}
+                alt="chat"
+              />
+              <span>{data.commentCount}</span>
+            </IconBox>
+          </div>
+        </BoardBottom>
+      </BoardContainer>
+    </StyledCommunityDetail>
   );
 };
 

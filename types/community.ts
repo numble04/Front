@@ -3,6 +3,7 @@ export interface communityDetailType {
   content: string;
   createDate: string;
   id: number;
+  postId?: number;
   likeCount: number;
   myLike: boolean;
   myPost: boolean;

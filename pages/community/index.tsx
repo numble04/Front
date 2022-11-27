@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { useQuery } from 'react-query';
 import Image from 'next/image';
 import Board from 'components/Community/Board/Board';
 import Header from 'components/UI/Header';
 import Tab from 'components/UI/Tab';
 import api from 'lib/api';
+import { communityDetailType } from 'types/community';
 
 type TabType = {
   name: string;
@@ -44,8 +46,7 @@ const BoardList = styled.div`
 
 const Page: NextPage = () => {
   const router = useRouter();
-  const [data, setData] = useState([]);
-  const [menu, setMenu] = useState({ name: '자유게시판', type: 'FREE' });
+  const { query } = router;
   const communityList = [
     { name: '자유게시판', type: 'FREE' },
     { name: '정모 후기', type: 'MEET_REVIEW' },
@@ -53,27 +54,37 @@ const Page: NextPage = () => {
   ];
 
   const handleMenu = (item: TabType) => {
-    setMenu(item);
+    router.push(`community?type=${item.type}&page=0&size=10`);
   };
 
-  const getCommunityList = useCallback(async () => {
-    const res = await api.get(`/posts?type=${menu.type}&page=0&size=10`);
-
-    if (res.status === 200) {
-      setData(res.data.data.content);
-    } else {
-      alert('통신 에러');
-      return;
+  const getCommunityList = async () => {
+    try {
+      const res = await api.get(
+        `/posts?type=${query.type}&page=${query.page}&size=${query.size}`,
+      );
+      return res.data.data.content;
+    } catch (error) {
+      throw new Error('error');
     }
-  }, [menu]);
+  };
+
+  const { data, refetch } = useQuery(
+    ['community-list'],
+    () => getCommunityList(),
+    {
+      onError: (error: Error) => {
+        alert(error.message);
+      },
+    },
+  );
 
   const handleDetailPage = (id: number) => {
     router.push(`community/${id}`);
   };
 
   useEffect(() => {
-    getCommunityList();
-  }, [getCommunityList]);
+    refetch();
+  }, [router]);
 
   return (
     <CommunityStyled>
@@ -105,14 +116,14 @@ const Page: NextPage = () => {
           <Tab
             key={index}
             onClick={() => handleMenu(item)}
-            isActive={menu.name === item.name}
+            isActive={query.type === item.type}
           >
             {item.name}
           </Tab>
         ))}
       </TabList>
       <BoardList>
-        {data?.map((item, index) => (
+        {data?.map((item: communityDetailType, index: number) => (
           <Board data={item} key={index} onClick={handleDetailPage} />
         ))}
       </BoardList>

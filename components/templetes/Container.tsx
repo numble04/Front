@@ -55,7 +55,8 @@ export const Container = ({ children }: Props) => {
   if (
     (!isLoggedIn && pathname === '/') ||
     pathname === '/signup' ||
-    pathname === '/login'
+    pathname === '/login' ||
+    pathname === '/createMeeting'
   ) {
     return (
       <Wrapper>

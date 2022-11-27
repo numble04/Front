@@ -9,7 +9,7 @@ import { theme } from 'styles/theme';
 import Modal from 'components/UI/Modal';
 import { titleInfos } from 'constant/createMeeting';
 import { CreateMeetingParamsType } from 'types/uesrs';
-import { useSignup } from 'hooks/users';
+import { useSignup } from 'hooks/user';
 import TitleStep from './TitleStep';
 import ContentStep from './ContentStep';
 import DateStep from './DateStep';

@@ -45,16 +45,6 @@ const DropDownBox = styled.div<{ isMenu: boolean }>`
 const OptionList = styled.ul`
   position: absolute;
   top: 25px;
-<<<<<<< HEAD
-  border-radius: 10px;
-  border: 1px solid #d1d8dc;
-  transition: all 0.2s ease-out;
-  background: #ffffff;
-`;
-
-const Option = styled.li`
-  width: 130px;
-=======
   padding: 0;
   border-radius: 10px;
   border: 1px solid #d1d8dc;
@@ -64,19 +54,14 @@ const Option = styled.li`
 
 const Option = styled.li`
   width: 120px;
->>>>>>> 66fee3f106dc68d89e60d0d8c73c8615154e1854
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-<<<<<<< HEAD
-  p {
-=======
 
   p {
     color: #575757;
->>>>>>> 66fee3f106dc68d89e60d0d8c73c8615154e1854
     font-size: 14px;
     font-weight: 600;
   }
@@ -85,10 +70,6 @@ const Option = styled.li`
   }
 `;
 
-<<<<<<< HEAD
-const Dropdown = ({ selectOption, menuList, setCategory }: Props) => {
-  const [isMenu, setIsMenu] = useState<boolean>(false);
-=======
 const Dropdown = ({
   selectOption,
   menuList,
@@ -96,30 +77,10 @@ const Dropdown = ({
   isMenu,
   setIsMenu,
 }: Props) => {
->>>>>>> 66fee3f106dc68d89e60d0d8c73c8615154e1854
   const handleMenu = () => {
     setIsMenu(!isMenu);
   };
 
-<<<<<<< HEAD
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsMenu(false);
-    // setCategory(e.target.value);
-  };
-
-  return (
-    <DropDownContainer>
-      <DropDownBox onClick={handleMenu}>{selectOption}</DropDownBox>
-      <OptionList>
-        {isMenu &&
-          menuList.map((item, index) => (
-            <Option key={index}>
-              <p>{item}</p>
-              {/* <div onClick={(e) => handleClick(e)}>{item}</div> */}
-            </Option>
-          ))}
-      </OptionList>
-=======
   const handleClose = () => {
     setIsMenu(false);
   };
@@ -152,7 +113,6 @@ const Dropdown = ({
           ))}
         </OptionList>
       )}
->>>>>>> 66fee3f106dc68d89e60d0d8c73c8615154e1854
     </DropDownContainer>
   );
 };

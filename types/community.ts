@@ -1,4 +1,4 @@
-export interface SearchResponseType {
+export interface communityDetailType {
   commentCount: number;
   content: string;
   createDate: string;
@@ -7,7 +7,8 @@ export interface SearchResponseType {
   myLike: boolean;
   myPost: boolean;
   nickname: string;
-  thumbnail: any; // TODO: 타입 수정하기
+  thumbnail?: string;
+  images?: string[];
   title: string;
   type: string;
   updateDate: string;

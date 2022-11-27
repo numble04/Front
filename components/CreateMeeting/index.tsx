@@ -18,6 +18,7 @@ import CapacityStep from './CapacityStep';
 import CostStep from './CostStep';
 import UrlStep from './UrlStep';
 import AreaSearch from './AreaSearch';
+import api from 'lib/api';
 
 const Container = styled.div`
   margin-top: 30px;
@@ -167,10 +168,11 @@ const CreateMeeting = () => {
   const handleClickNextButton = () => {
     if (createMeetingStep >= 1 && createMeetingStep < 7) {
       setCreateMeetingStep((createMeetingStep) => createMeetingStep + 1);
-      console.log(createMeetingParams);
     } else if (createMeetingStep === 7) {
-      console.log(createMeetingParams);
-    }
+      api.post(`/meetings`, {
+        meetingRequest: createMeetingParams
+      });
+    } 
   };
 
   if (isAreaSearching) {

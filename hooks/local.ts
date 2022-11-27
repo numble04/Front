@@ -129,7 +129,6 @@ export const useCafeInfos = (searchValue : string) => {
       const res = await api.get(
         `/cafes?keyword=${searchValue}`,
       );
-      console.log(res.data.data.content);
       return res.data.data.content;
     } catch (error) {
       throw new Error('error');

@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import Board from 'components/Community/Board/Board';
 import Header from 'components/UI/Header';
-import { Input } from 'components/ui/Input/Input';
 import api from 'lib/api';
 import Image from 'next/image';
-import { SearchResponseType } from 'types/community';
+import { communityDetailType } from 'types/community';
+import { Input } from 'components/UI/Input/Input';
 
 const StyledSearch = styled.div`
   input {
@@ -21,7 +21,7 @@ const StyledSearch = styled.div`
 const Search = () => {
   const router = useRouter();
   const [keyword, setKeyword] = useState<string>('');
-  const [searchData, setSearchData] = useState<SearchResponseType[]>();
+  const [searchData, setSearchData] = useState<communityDetailType[]>();
 
   const handleSearch = async () => {
     if (keyword === '') {

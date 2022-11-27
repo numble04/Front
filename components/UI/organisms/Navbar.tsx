@@ -13,7 +13,9 @@ export const Navbar = () => {
         </IconWrapper>
         <Text>홈</Text>
       </Wrapper>
-      <Wrapper onClick={() => router.push('/community')}>
+      <Wrapper
+        onClick={() => router.push('/community?type=FREE&page=0&size=10')}
+      >
         <IconWrapper>
           <HomeIcon />
         </IconWrapper>

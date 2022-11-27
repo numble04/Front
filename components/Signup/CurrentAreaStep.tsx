@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 
 import { Flex } from 'components/UI/Flex/Flex';
 import { Typography } from 'components/UI/Typography/Typography';
+import { theme } from 'styles/theme';
 
 const CurrentAreaStep = ({
   region,
@@ -16,7 +17,7 @@ const CurrentAreaStep = ({
       style={{
         marginTop: 19,
         padding: '13px 4px',
-        borderBottom: '1px solid #d9d9d9',
+        borderBottom: `1px solid ${theme.colors.SLATEGRAY20}`,
         cursor: 'pointer',
       }}
       gap={12}

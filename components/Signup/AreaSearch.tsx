@@ -13,7 +13,7 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { Input } from 'components/UI/Input/Input';
 import { useLocalInfos, useSearchAddress } from 'hooks/local';
 import { Flex } from 'components/UI/Flex/Flex';
-import { SingupParamsType } from 'types/uesrs';
+import { SingupParamsType } from 'types/uesr';
 import { SearchAddressType } from 'types/local';
 
 const AreaSearchWrapper = styled(Flex)`
@@ -172,6 +172,8 @@ const AreaSearch = ({
                     onChangeSignupParams((signupParams) => ({
                       ...signupParams,
                       region: item.address_name,
+                      city: item.region_1depth_name,
+                      dong: item.region_3depth_name,
                     }));
                     onChangeIsAreaSearching(false);
                   }}

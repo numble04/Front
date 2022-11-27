@@ -8,8 +8,8 @@ import { FormItem } from 'components/UI/FormItem/FormItem';
 import { Input } from 'components/UI/Input/Input';
 import { Typography } from 'components/UI/Typography/Typography';
 import { theme } from 'styles/theme';
-import { useLogin } from 'hooks/users';
-import { LoginParamsType } from 'types/uesrs';
+import { useLogin } from 'hooks/user';
+import { LoginParamsType } from 'types/uesr';
 
 const Login = () => {
   const router = useRouter();
@@ -24,7 +24,11 @@ const Login = () => {
   const { login, isLoading } = useLogin();
 
   const submitHandler = (formValues: LoginParamsType) => {
-    login(formValues);
+    login(formValues, {
+      onSuccess: () => {
+        router.push('/');
+      },
+    });
   };
 
   const handleClickSignup = () => {

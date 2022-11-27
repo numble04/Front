@@ -7,15 +7,15 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { Button } from 'components/UI/Button/Button';
 import { theme } from 'styles/theme';
 import Modal from 'components/UI/Modal';
-import { titleInfos } from 'constant/users';
-import { SingupParamsType } from 'types/uesrs';
+import { titleInfos } from 'constant/user';
+import { SingupParamsType } from 'types/uesr';
 import CurrentAreaStep from './CurrentAreaStep';
 import AreaSearch from './AreaSearch';
 import EmailStep from './EmailStep';
 import PasswordStep from './PasswordStep';
 import PersonalInfoStep from './PersonalInfoStep';
 import { emailPattern, passwordPattern } from 'constant/validate';
-import { useSignup } from 'hooks/users';
+import { useSignup } from 'hooks/user';
 
 const Container = styled.div`
   margin-top: 30px;
@@ -54,8 +54,10 @@ const Signup = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [signupParams, setSignupParams] = useState<SingupParamsType>({
     email: '',
+    emailDuplicate: false,
     name: '',
     nickname: '',
+    nicknameDuplicate: false,
     phone: '',
     password: '',
     passwordConfirm: '',
@@ -70,7 +72,11 @@ const Signup = () => {
     if (signupStep === 1 && signupParams.region) {
       return true;
     }
-    if (signupStep === 2 && emailPattern.test(signupParams.email)) {
+    if (
+      signupStep === 2 &&
+      emailPattern.test(signupParams.email) &&
+      !signupParams.emailDuplicate
+    ) {
       return true;
     }
     if (
@@ -84,6 +90,7 @@ const Signup = () => {
       signupStep === 4 &&
       signupParams.phone &&
       signupParams.nickname &&
+      !signupParams.nicknameDuplicate &&
       signupParams.name
     ) {
       return true;

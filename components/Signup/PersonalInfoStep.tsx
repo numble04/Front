@@ -4,12 +4,13 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 
 import { FormItem } from 'components/UI/FormItem/FormItem';
 import { Input } from 'components/UI/Input/Input';
-import { SingupParamsType } from 'types/uesrs';
+import { SingupParamsType } from 'types/uesr';
 import {
   nicknamePattern,
   NICKNAME_FORMAT,
   REQUIRED_FIELD,
 } from 'constant/validate';
+import { useCheckNicknameDuplicate } from 'hooks/user';
 
 const Container = styled.div`
   margin-top: 28px;
@@ -35,6 +36,8 @@ const PersonalInfoStep = ({
     mode: 'onChange',
   });
 
+  const { checkNicknameDuplicate } = useCheckNicknameDuplicate();
+
   useEffect(() => {
     if (name && phone && nickname) {
       setValue('name', name);
@@ -45,16 +48,14 @@ const PersonalInfoStep = ({
 
   const nameWatch = watch('name');
   const phoneWatch = watch('phone');
-  const nicknameWatch = watch('nickname');
 
   useEffect(() => {
     onChangeSignupParams((signupParams) => ({
       ...signupParams,
       name: nameWatch,
       phone: phoneWatch,
-      nickname: nicknameWatch,
     }));
-  }, [nameWatch, phoneWatch, nicknameWatch, onChangeSignupParams]);
+  }, [nameWatch, phoneWatch, onChangeSignupParams]);
 
   return (
     <Container>
@@ -83,8 +84,32 @@ const PersonalInfoStep = ({
         label="닉네임"
         {...register('nickname', {
           required: REQUIRED_FIELD,
-          validate: (nickname) =>
-            nicknamePattern.test(nickname) || NICKNAME_FORMAT,
+          validate: async (nickname) => {
+            if (nicknamePattern.test(nickname)) {
+              try {
+                const res = await checkNicknameDuplicate(nickname);
+
+                if (res.status === 200) {
+                  onChangeSignupParams((signupParams) => ({
+                    ...signupParams,
+                    nickname,
+                    nicknameDuplicate: false,
+                  }));
+                  return true;
+                }
+              } catch (e) {
+                console.log(e);
+                onChangeSignupParams((signupParams) => ({
+                  ...signupParams,
+                  nickname,
+                  nicknameDuplicate: true,
+                }));
+                return '중복된 닉네임입니다.';
+              }
+            }
+
+            return NICKNAME_FORMAT;
+          },
         })}
         error={errors['nickname']}
       >

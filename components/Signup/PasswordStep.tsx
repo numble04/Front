@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 
 import { FormItem } from 'components/UI/FormItem/FormItem';
 import { Input } from 'components/UI/Input/Input';
-import { SingupParamsType } from 'types/uesrs';
+import { SingupParamsType } from 'types/uesr';
 import {
   passwordPattern,
   PASSWORD_FORMAT,

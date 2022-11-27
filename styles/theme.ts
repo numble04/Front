@@ -17,7 +17,8 @@ export const theme = {
 
     // design guide 없음. 임시 사용
     SLATEGRAY10: '#f4f5f7',
-    SLATEGRAY20: '#cfcfcf',
+    SLATEGRAY20: '#d9d9d9',
+    SLATEGRAY30: '#cfcfcf',
     SLATEGRAY40: '#b4b6bc',
     SLATEGRAY50: '#949da3',
     SLATEGRAY70: '#5f5f5f',
@@ -26,7 +27,6 @@ export const theme = {
     MAIN_A: '#5B0FD1',
     SUB_A: '#283BF1',
 
-    SLATEGRAY30: '#CBCFD3',
     SLATEGRAY60: '#646F7C',
     SLATEGRAY80: '#393E43',
     SLATEGRAY90: '#2B2E31',

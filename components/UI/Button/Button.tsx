@@ -10,6 +10,9 @@ interface StyledButtonProps {
   full?: boolean;
   active?: boolean;
   align?: React.CSSProperties['textAlign'];
+  height?: number;
+  padding?: number;
+  fontSize?: number;
 }
 
 const Container = styled.div`
@@ -37,12 +40,36 @@ const StyledButton = styled.button<StyledButtonProps>`
   cursor: pointer;
   border: none;
 
+<<<<<<< HEAD
+=======
+  ${({ height }) =>
+    height &&
+    css`
+      height: ${height}px;
+    `}
+
+  ${({ padding }) =>
+    padding &&
+    css`
+      padding: ${padding}px;
+    `}
+
+>>>>>>> 66fee3f106dc68d89e60d0d8c73c8615154e1854
   ${({ align }) =>
     align &&
     css`
       text-align: align;
     `}
 
+<<<<<<< HEAD
+=======
+    ${({ fontSize }) =>
+    fontSize &&
+    css`
+      font-size: ${fontSize}px;
+    `}
+
+>>>>>>> 66fee3f106dc68d89e60d0d8c73c8615154e1854
   ${({ active }) =>
     !active &&
     css`
@@ -52,6 +79,7 @@ const StyledButton = styled.button<StyledButtonProps>`
     `}
 `;
 
+<<<<<<< HEAD
 const LoadingIndicator = styled.div`
   display: inline-block;
   position: relative;
@@ -131,6 +159,8 @@ const LoadingIndicator = styled.div`
   }
 `;
 
+=======
+>>>>>>> 66fee3f106dc68d89e60d0d8c73c8615154e1854
 interface IButtonProps extends React.ComponentProps<typeof StyledButton> {
   className?: string;
   isActive?: boolean;
@@ -172,6 +202,7 @@ export const Button = ({
         onClick={!loading ? handleClick : undefined}
       >
         <ChildrenContainer justify="center" gap={4}>
+<<<<<<< HEAD
           {loading && (
             <LoadingIndicator>
               {Array(12)
@@ -181,6 +212,12 @@ export const Button = ({
                 ))}
             </LoadingIndicator>
           )}
+=======
+          {/* TODO: loading indicator */}
+          {/* {loading && (
+            
+          )} */}
+>>>>>>> 66fee3f106dc68d89e60d0d8c73c8615154e1854
           {!loading && icon}
           {children}
         </ChildrenContainer>

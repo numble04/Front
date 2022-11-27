@@ -39,7 +39,7 @@ const ProgressBar = styled.div<{ signupStep: number }>`
 `;
 
 const Footer = styled.div`
-  position: relative;
+  position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -172,9 +172,8 @@ const Signup = () => {
         isOpen={modalVisible}
         onClose={() => setModalVisible(false)}
         onOK={() => router.push('/')}
-      >
-        <div>회원가입을 종료하시겠습니까?</div>
-      </Modal>
+        type={'back'}
+      />
       <ProgressBarBackground>
         <ProgressBar signupStep={signupStep} />
       </ProgressBarBackground>

@@ -208,10 +208,7 @@ const useList = () => {
           <HeaderCenter>
             <Bar />
           </HeaderCenter>
-          <HeaderRight>
-            <div>신규순</div>
-            <ExpandMoreSmallIcon />
-          </HeaderRight>
+          <HeaderRight />
         </Header>
         <Content>
           <CardWrapper ref={$cardWrapper}>
@@ -248,6 +245,7 @@ const Header = styled.div`
   justify-content: space-between;
   background-color: #ffffff;
   border-radius: 10px 10px 0 0;
+  cursor: pointer;
 `;
 
 const HeaderLeft = styled.div`

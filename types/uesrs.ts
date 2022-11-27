@@ -10,6 +10,18 @@ export interface SingupParamsType {
   dong: string;
 }
 
+export interface CreateMeetingParamsType {
+  title: string;
+  content: string;
+  file: string;
+  day: Date | null;
+  cafeId: string;
+  capacity: number;
+  cost: string;
+  time: string;
+  kakaoUrl: string;
+}
+
 export interface LoginParamsType {
   email: string;
   password: string;

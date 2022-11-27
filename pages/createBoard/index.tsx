@@ -190,7 +190,7 @@ const Page: NextPage = () => {
             alt="back"
             width={21}
             height={20}
-            onClick={() => router.push('/community')}
+            onClick={() => router.back()}
           />
 
           <HeaderTitle>게시글 수정</HeaderTitle>

@@ -3,8 +3,8 @@ import Image from 'next/image';
 import { Dispatch, SetStateAction } from 'react';
 
 import { CreateMeetingParamsType } from 'types/uesrs';
-import { Flex } from 'components/ui/Flex/Flex';
-import { Typography } from 'components/ui/Typography/Typography';
+import { Flex } from 'components/UI/Flex/Flex';
+import { Typography } from 'components/UI/Typography/Typography';
 
 const Container = styled.div``;
 

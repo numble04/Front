@@ -3,10 +3,10 @@ import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { Typography } from 'components/ui/Typography/Typography';
-import { Button } from 'components/ui/Button/Button';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
 import { theme } from 'styles/theme';
-import Modal from 'components/ui/Modal';
+import Modal from 'components/UI/Modal';
 import { titleInfos } from 'constant/createMeeting';
 import { CreateMeetingParamsType } from 'types/uesrs';
 import { useSignup } from 'hooks/users';

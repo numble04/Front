@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
-import { Navbar } from '../ui/organisms/Navbar';
+import { Navbar } from '../UI/organisms/Navbar';
 
 type Props = {
   children: JSX.Element;

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { DateIcon, LocationIcon, MeetingIcon } from 'components/ui/atoms/Icon';
+import { DateIcon, LocationIcon, MeetingIcon } from 'components/UI/atoms/Icon';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { MeetingCardProps } from 'types';

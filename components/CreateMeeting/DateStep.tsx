@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { CreateMeetingParamsType } from 'types/uesrs';
-import { Typography } from 'components/ui/Typography/Typography';
-import { InfoIcon, MeetingDateIcon, TimeIcon } from 'components/ui/atoms/Icon';
+import { Typography } from 'components/UI/Typography/Typography';
+import { InfoIcon, MeetingDateIcon, TimeIcon } from 'components/UI/atoms/Icon';
 import { theme } from 'styles/theme';
 
 import Calendar from 'react-calendar';

@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { css } from 'styled-components';
 
-import { Button } from 'components/ui/Button/Button';
-import { FormItem } from 'components/ui/FormItem/FormItem';
-import { Input } from 'components/ui/Input/Input';
-import { Typography } from 'components/ui/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
+import { FormItem } from 'components/UI/FormItem/FormItem';
+import { Input } from 'components/UI/Input/Input';
+import { Typography } from 'components/UI/Typography/Typography';
 import { theme } from 'styles/theme';
 import { useLogin } from 'hooks/users';
 import { LoginParamsType } from 'types/uesrs';

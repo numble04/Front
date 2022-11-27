@@ -3,9 +3,9 @@ import Image from 'next/image';
 import { Dispatch, SetStateAction } from 'react';
 
 import { CreateMeetingParamsType } from 'types/uesrs';
-import { Flex } from 'components/ui/Flex/Flex';
-import { Typography } from 'components/ui/Typography/Typography';
-import { AddIcon, InfoIcon, SubIcon } from 'components/ui/atoms/Icon';
+import { Flex } from 'components/UI/Flex/Flex';
+import { Typography } from 'components/UI/Typography/Typography';
+import { AddIcon, InfoIcon, SubIcon } from 'components/UI/atoms/Icon';
 import { theme } from 'styles/theme';
 
 const CapacityStep = ({

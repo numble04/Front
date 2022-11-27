@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import { Button } from 'components/ui/Button/Button';
-import { Flex } from 'components/ui/Flex/Flex';
-import { Typography } from 'components/ui/Typography/Typography';
+import { Button } from 'components/UI/Button/Button';
+import { Flex } from 'components/UI/Flex/Flex';
+import { Typography } from 'components/UI/Typography/Typography';
 
 const Container = styled.div`
   padding: 60px 20px 97px;

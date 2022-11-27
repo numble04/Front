@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-import Header from 'components/ui/Header';
+import Header from 'components/UI/Header';
 import Button from 'components/Button';
-import Label from 'components/ui/Label';
-import Textarea from 'components/ui/Textarea';
-import Dropdown from 'components/ui/Dropdown';
+import Label from 'components/UI/Label';
+import Textarea from 'components/UI/Textarea';
+import Dropdown from 'components/UI/Dropdown';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 

@@ -1,5 +1,5 @@
-import { CreateIcon, ExpandMoreIcon, SortIcon } from 'components/ui/atoms/Icon';
-import Map from 'components/ui/atoms/Map';
+import { CreateIcon, ExpandMoreIcon, SortIcon } from 'components/UI/atoms/Icon';
+import Map from 'components/UI/atoms/Map';
 import useList from 'hooks/useList';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';

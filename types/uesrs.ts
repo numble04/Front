@@ -15,10 +15,11 @@ export interface CreateMeetingParamsType {
   content: string;
   file: string;
   day: Date | null;
-  cafeId: string;
+  cafeId: number | null;
+  cafeName: string;
   capacity: number;
-  cost: string;
-  time: string;
+  cost: number;
+  time: number;
   kakaoUrl: string;
 }
 

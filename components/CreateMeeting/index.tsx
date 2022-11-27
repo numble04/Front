@@ -17,6 +17,7 @@ import AreaStep from './AreaStep';
 import CapacityStep from './CapacityStep';
 import CostStep from './CostStep';
 import UrlStep from './UrlStep';
+import AreaSearch from './AreaSearch';
 
 const Container = styled.div`
   margin-top: 30px;
@@ -59,10 +60,11 @@ const CreateMeeting = () => {
       content: '',
       file: '',
       day: null,
-      cafeId: '',
+      cafeId: null,
+      cafeName: '',
       capacity: 3,
-      cost: '',
-      time: '',
+      cost: 4000,
+      time: 1,
       kakaoUrl: '',
     });
 
@@ -86,7 +88,7 @@ const CreateMeeting = () => {
     }
     if (
       createMeetingStep === 6 &&
-      createMeetingParams.cost &&
+      createMeetingParams.cost >= 4000 &&
       createMeetingParams.time
     ) {
       return true;
@@ -124,8 +126,8 @@ const CreateMeeting = () => {
       case 4:
         return (
           <AreaStep
-            cafeId={createMeetingParams.cafeId}
-            onChangeCreateMeetingParams={setCreateMeetingParams}
+            cafeName={createMeetingParams.cafeName}
+            onChangeIsAreaSearching={setIsAreaSearching}
           />
         );
       case 5:
@@ -172,7 +174,12 @@ const CreateMeeting = () => {
   };
 
   if (isAreaSearching) {
-    return <div>areaSearching</div>;
+    return (
+      <AreaSearch
+        onChangeIsAreaSearching={setIsAreaSearching}
+        onChangeCreateMeetingParams={setCreateMeetingParams}
+      />
+    );
   }
 
   return (
@@ -208,7 +215,7 @@ const CreateMeeting = () => {
             loading={signupLoading}
             onClick={handleClickNextButton}
           >
-            {createMeetingStep === 7 ? '생성하기' : '다음'}
+            {createMeetingStep === 7 ? '완료' : '다음'}
           </Button>
         </Footer>
       </Container>

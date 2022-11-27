@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { useState, useEffect } from 'react';
 
 import { LocalInfoItemType, SearchAddressType } from 'types/local';
+import api from 'lib/api';
 
 export interface KakaoAPIResponse<TData> {
   documents: TData;
@@ -119,4 +120,31 @@ export const useSearchAddress = (query: string) => {
   );
 
   return { searchedLocalInfos: filteredLocalInfos, isLoading };
+};
+
+// 현재 위치 기반 주변 동네 정보 가져오기
+export const useCafeInfos = (searchValue : string) => {
+  const getCafeId = async () => {
+    try {
+      const res = await api.get(
+        `/cafes?keyword=${searchValue}`,
+      );
+      console.log(res.data.data.content);
+      return res.data.data.content;
+    } catch (error) {
+      throw new Error('error');
+    }
+  };
+
+  const { data, refetch } = useQuery(
+    ['useCafeInfos', searchValue],
+    () => getCafeId(),
+    {
+      onError: (error: Error) => {
+        alert(error.message);
+      },
+    },
+  );
+
+  return { searchedCafeInfos: data };
 };

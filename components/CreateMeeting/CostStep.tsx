@@ -9,8 +9,8 @@ const CostStep = ({
   time,
   onChangeCreateMeetingParams,
 }: {
-  cost: string;
-  time: string;
+  cost: number;
+  time: number;
   onChangeCreateMeetingParams: Dispatch<
     SetStateAction<CreateMeetingParamsType>
   >;
@@ -18,14 +18,14 @@ const CostStep = ({
   const onChangeCost = (e: ChangeEvent<HTMLInputElement>) => {
     onChangeCreateMeetingParams((param) => ({
       ...param,
-      cost: e.target.value,
+      cost: parseInt(e.target.value),
     }));
   };
 
   const onChangeTime = (e: ChangeEvent<HTMLInputElement>) => {
     onChangeCreateMeetingParams((param) => ({
       ...param,
-      time: e.target.value,
+      time: parseInt(e.target.value),
     }));
   };
 

@@ -5,23 +5,8 @@ import Image from 'next/image';
 import Header from 'components/UI/Header';
 import { useRouter } from 'next/router';
 import api from 'lib/api';
-
-type communityDetailType = {
-  commentCount: number;
-  comments: any; // 타입 모름
-  content: string;
-  createDate: string;
-  images: any; // 타입 모름
-  likeCount: number;
-  myLike: boolean;
-  myPost: boolean;
-  nickname: string;
-  postId: number;
-  title: string;
-  updateDate: string;
-  userImg: boolean;
-  viewCount: number;
-};
+import { communityDetailType } from 'types/community';
+import { Console } from 'console';
 
 type PageProps = {
   id: number;
@@ -96,6 +81,13 @@ const IconBox = styled.div`
   }
 `;
 
+const ImageList = styled.div`
+  img {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+`;
+
 const Page = ({ id }: PageProps) => {
   const [data, setData] = useState<communityDetailType>();
   const router = useRouter();
@@ -117,6 +109,8 @@ const Page = ({ id }: PageProps) => {
     // 임시 코드
     return <Fragment>데이터 없음</Fragment>;
   }
+
+  console.log('11', data);
 
   return (
     <Fragment>
@@ -153,6 +147,11 @@ const Page = ({ id }: PageProps) => {
           height={3.3}
         />
       </BoardHeader>
+      <ImageList>
+        {data.images?.map((item, index) => (
+          <img src={item} alt="detail-image" key={index} />
+        ))}
+      </ImageList>
       <BoardContent>{data.content}</BoardContent>
       <BoardBottom>
         <span className="viewCount">조회수 {data.viewCount}</span>

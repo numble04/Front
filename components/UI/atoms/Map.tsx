@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import { useEffect } from 'react';
+import { MeetingProps } from 'types/meeting';
 
 interface MapProps {
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
+  meetings: MeetingProps[]
 }
 
-function Map({ latitude, longitude }: MapProps) {
+function Map({ latitude, longitude, meetings }: MapProps) {
   useEffect(() => {
     const mapScript = document.createElement('script');
 
@@ -26,16 +28,29 @@ function Map({ latitude, longitude }: MapProps) {
           latitude,
           longitude,
         );
-        const marker = new window.kakao.maps.Marker({
+        const nowMarker = new window.kakao.maps.Marker({
           position: markerPosition,
         });
-        marker.setMap(map);
+        nowMarker.setMap(map);
+      
+        if(meetings === undefined) return;
+        const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+        meetings.forEach((meeting) => {
+          const imageSize = new window.kakao.maps.Size(24, 35); 
+          const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize); 
+          const marker = new window.kakao.maps.Marker({
+              map: map,
+              position: new window.kakao.maps.LatLng(meeting.latitude, meeting.longitude),
+              title : meeting.title,
+              image : markerImage
+          });
+        });
       });
     };
     mapScript.addEventListener('load', onLoadKakaoMap);
 
     return () => mapScript.removeEventListener('load', onLoadKakaoMap);
-  }, [latitude, longitude]);
+  }, [latitude, longitude, meetings]);
 
   return <MapContainer id="map" />;
 }

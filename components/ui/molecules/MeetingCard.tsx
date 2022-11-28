@@ -2,7 +2,7 @@
 import { DateIcon, LocationIcon, MeetingIcon } from 'components/UI/atoms/Icon';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import { MeetingCardProps } from 'types';
+import { MeetingCardProps } from 'types/meeting';
 
 export const MeetingCard = (props: MeetingCardProps) => {
   const { meeting } = props;
@@ -10,7 +10,7 @@ export const MeetingCard = (props: MeetingCardProps) => {
   return (
     <Container onClick={() => router.push(`/meeting/${meeting.id}`)}>
       <ImgWrapper>
-        <Img src={meeting.image[0]} alt={meeting.id} />
+        <Img src={'/image.png'} alt={String(meeting.id)} />
       </ImgWrapper>
       <ContentWrapper>
         <Title>
@@ -18,17 +18,17 @@ export const MeetingCard = (props: MeetingCardProps) => {
         </Title>
         <Text>
           <LocationIcon />
-          <span>{meeting.location.detail}</span>
+          <span>{meeting.cafeName}</span>
         </Text>
         <TextWrapper>
           <Text style={{ marginRight: `40px` }}>
             <DateIcon />
-            <span>{meeting.date}</span>
+            <span>{meeting.day}</span>
           </Text>
           <Text>
             <MeetingIcon />
             <span>
-              {meeting.numberOfParticipants}/{meeting.maximumNumber}
+              {meeting.nowPersonnel}/{meeting.maxPersonnel}
             </span>
           </Text>
         </TextWrapper>

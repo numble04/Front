@@ -1,13 +1,18 @@
 import { CreateIcon, ExpandMoreIcon, SortIcon } from 'components/UI/atoms/Icon';
 import Map from 'components/UI/atoms/Map';
+import useGeolocation from 'hooks/local';
+import { useMeetingInfos } from 'hooks/meeting';
 import useList from 'hooks/useList';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 const Page: NextPage = () => {
+  const { meetings } = useMeetingInfos();
   const { List, openList, closeList } = useList();
   const router = useRouter();
+  const location = useGeolocation();
+  console.log(location, meetings);
   return (
     <Container>
       <Header>
@@ -31,7 +36,12 @@ const Page: NextPage = () => {
         </TitleContent>
       </Header>
       <MapWrapper onClick={closeList}>
-        <Map latitude={37.502166} longitude={127.026608} />
+        {/* <Map latitude={location.coordinates?.lat} longitude={location.coordinates?.lng} /> */}
+        <Map
+          latitude={37.5076514}
+          longitude={127.0272817}
+          meetings={meetings}
+        />
       </MapWrapper>
       <ListButton onClick={openList}>목록보기</ListButton>
       <List />

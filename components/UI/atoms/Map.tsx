@@ -5,7 +5,7 @@ import { MeetingProps } from 'types/meeting';
 interface MapProps {
   latitude?: number;
   longitude?: number;
-  meetings: MeetingProps[]
+  meetings?: MeetingProps[]
 }
 
 function Map({ latitude, longitude, meetings }: MapProps) {

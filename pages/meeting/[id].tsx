@@ -1,63 +1,65 @@
 import { BackIcon } from 'components/UI/atoms/Icon';
 import Map from 'components/UI/atoms/Map';
-import { meetings } from 'constant/meeting';
+import api from 'lib/api';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { Fragment } from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { MeetingProps } from 'types';
 
 const Page: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [meeting, setMeeting] = useState<MeetingProps>({
-    id: '',
-    title: '',
-    content: '',
-    location: {
-      name: '',
-      detail: '',
-      lat: 0,
-      lng: 0,
+  const { data, refetch } = useQuery(
+    ['community-detail'],
+    () => getCommunityDetail(),
+    {
+      onError: (error: Error) => {
+        alert(error.message);
+      },
     },
-    date: '',
-    price: 0,
-    numberOfParticipants: 0,
-    maximumNumber: 0,
-    image: [],
-  });
-  useEffect(() => {
-    if (!router.isReady) return;
-    setMeeting(meetings.filter((meeting) => meeting.id === id)[0]);
-  }, [router.isReady]);
+  );
+
+  const getCommunityDetail = async () => {
+    try {
+      const res = await api.get(`/meetings/${id}`);
+      return res.data.data;
+    } catch (error) {
+      throw new Error('error');
+    }
+  };
+  if (data === undefined) {
+    // 임시 코드
+    return <Fragment>데이터 없음</Fragment>;
+  }
   return (
     <Container>
       <BackWrapper onClick={() => router.back()}>
         <BackIcon />
       </BackWrapper>
       <ImgWrapper>
-        <Img src={meeting.image[0]} alt={meeting.id} />
+        <Img src={'/image.png'} alt={data.id} />
       </ImgWrapper>
       <MainWrapper>
         <TitleWrapper>
-          <Title>{meeting.title}</Title>
-          <Content>{meeting.content}</Content>
+          <Title>{data.title}</Title>
+          <Content>{data.content}</Content>
         </TitleWrapper>
         <GuideWrapper>
           <Title>안내사항</Title>
           <GridWrapper>
-            <div>날짜</div>
-            <div>Play시간</div>
-            <div>{meeting.price}원</div>
-            <div>{meeting.maximumNumber}명</div>
+            <div>{data.day}</div>
+            <div>총 {data.time}시간</div>
+            <div>{data.cost}원</div>
+            <div>{data.maxPersonnel}명</div>
           </GridWrapper>
         </GuideWrapper>
         <TapWrapper>
           <Title>위치</Title>
           <div>
             <Map
-              latitude={meeting.location.lat}
-              longitude={meeting.location.lng}
+              latitude={data.latitude}
+              longitude={data.longitude}
             />
           </div>
         </TapWrapper>

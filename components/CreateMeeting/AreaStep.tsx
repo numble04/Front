@@ -13,7 +13,7 @@ const AreaStep = ({
   cafeName,
   onChangeIsAreaSearching,
 }: {
-  cafeName: string;
+  cafeName?: string;
   onChangeIsAreaSearching: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (

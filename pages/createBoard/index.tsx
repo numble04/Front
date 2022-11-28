@@ -109,7 +109,7 @@ const Page: NextPage = () => {
     type: 'FREE',
   });
   const [previews, setPreviews] = useState<string[]>([]);
-  const [image, setImage] = useState<object[]>([]);
+  const [image, setImage] = useState<(string | Blob)[]>([]);
   const [content, setContent] = useState<string>('');
 
   const [isMenu, setIsMenu] = useState<boolean>(false);
@@ -169,7 +169,6 @@ const Page: NextPage = () => {
       const response = await api.post(
         '/posts',
         formData,
-        'multipart/form-data',
       );
       if (response.status === 200 || 201) {
         alert('상품등록 성공');

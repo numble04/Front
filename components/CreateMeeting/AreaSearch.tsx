@@ -2,12 +2,7 @@ import styled from 'styled-components';
 import {
   ChangeEvent,
   Dispatch,
-  JSXElementConstructor,
   Key,
-  KeyboardEvent,
-  ReactElement,
-  ReactFragment,
-  ReactPortal,
   SetStateAction,
   useState,
 } from 'react';
@@ -16,12 +11,9 @@ import Image from 'next/image';
 import useGeolocation, { useCafeInfos } from 'hooks/local';
 import { Typography } from 'components/UI/Typography/Typography';
 import { Input } from 'components/UI/Input/Input';
-import { useLocalInfos, useSearchAddress } from 'hooks/local';
+import { useLocalInfos } from 'hooks/local';
 import { Flex } from 'components/UI/Flex/Flex';
-import { SingupParamsType } from 'types/uesr';
-import { SearchAddressType } from 'types/local';
 import { CreateMeetingParamsType } from 'types/uesrs';
-import { ReactI18NextChild } from 'react-i18next';
 
 const AreaSearchWrapper = styled(Flex)`
   padding: 16px 20px;

@@ -59,7 +59,6 @@ const CreateMeeting = () => {
     useState<CreateMeetingParamsType>({
       title: '',
       content: '',
-      file: '',
       day: null,
       cafeId: null,
       cafeName: '',
@@ -169,9 +168,21 @@ const CreateMeeting = () => {
     if (createMeetingStep >= 1 && createMeetingStep < 7) {
       setCreateMeetingStep((createMeetingStep) => createMeetingStep + 1);
     } else if (createMeetingStep === 7) {
-      api.post(`/meetings`, {
-        meetingRequest: createMeetingParams
-      });
+      let formData = new FormData();
+
+      formData.append(
+        'meetingRequest',
+        new Blob(
+          [
+            JSON.stringify(createMeetingParams),
+          ],
+          { type: 'application/json' },
+        ),
+      );
+      api.post(
+        `/meetings`,
+        formData, 
+      );
     } 
   };
 

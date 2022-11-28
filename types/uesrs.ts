@@ -13,10 +13,9 @@ export interface SingupParamsType {
 export interface CreateMeetingParamsType {
   title: string;
   content: string;
-  file: string;
   day: Date | null;
   cafeId: number | null;
-  cafeName: string;
+  cafeName?: string;
   capacity: number;
   cost: number;
   time: number;

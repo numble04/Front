@@ -122,7 +122,7 @@ export const useSearchAddress = (query: string) => {
   return { searchedLocalInfos: filteredLocalInfos, isLoading };
 };
 
-// 현재 위치 기반 주변 동네 정보 가져오기
+// 검색을 통한 카페 정보 가져오기
 export const useCafeInfos = (searchValue : string) => {
   const getCafeId = async () => {
     try {

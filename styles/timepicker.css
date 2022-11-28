@@ -1,0 +1,12 @@
+.ant-btn-primary {
+  background-color: #7b2ef0;
+  box-shadow: none;
+}
+
+.ant-picker-time-panel-column > li.ant-picker-time-panel-cell-selected {
+  background-color: #ebdeff;
+}
+
+.ant-picker-dropdown .ant-picker-time-panel-column >li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner {
+  background-color: #ebdeff;
+}

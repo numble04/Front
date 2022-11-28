@@ -31,23 +31,27 @@ const NoButton = styled.div`
   padding: 12px;
   border-left: 1px solid ${theme.colors.SLATEGRAY20};
   cursor: pointer;
+  color: #ED4954;
 `;
 
 interface IBackProps {
   onClose?: () => void;
   onOK?: () => void;
   cssStyle?: CSSProperties;
+  question?: string;
+  left?: string;
+  right?: string;
 }
 
-const Back = ({ onClose, onOK, cssStyle }: IBackProps) => {
+const Back = ({ onClose, onOK, cssStyle, question, left, right }: IBackProps) => {
   return (
     <StyledModal style={cssStyle}>
       <BodyWrapper>
-        <div>회원가입을 종료하시겠습니까?</div>
+        <div>{question}</div>
       </BodyWrapper>
       <FooterWrapper>
-        <YesButton onClick={onOK}>예</YesButton>
-        <NoButton onClick={onClose}>아니오</NoButton>
+        <YesButton onClick={onOK}>{left}</YesButton>
+        <NoButton onClick={onClose}>{right}</NoButton>
       </FooterWrapper>
     </StyledModal>
   );

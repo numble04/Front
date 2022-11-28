@@ -25,9 +25,12 @@ interface IModalProps {
   onOK: () => void;
   type: 'back';
   cssStyle?: CSSProperties;
+  question?: string;
+  left?: string;
+  right?: string;
 }
 
-const Modal = ({ id, isOpen, onClose, onOK, type, cssStyle }: IModalProps) => {
+const Modal = ({ id, isOpen, onClose, onOK, type, cssStyle, question, left, right }: IModalProps) => {
   const [isBrowser, setIsBrowser] = useState(false);
   const el = useRef<HTMLDivElement>(null);
 
@@ -59,7 +62,7 @@ const Modal = ({ id, isOpen, onClose, onOK, type, cssStyle }: IModalProps) => {
 
   const modalContent = isOpen ? (
     <ModalOverlay id={id} ref={el} onClick={(e) => onClick(e)}>
-      {type === 'back' && <Back onClose={onClose} onOK={onOK} />}
+      {type === 'back' && <Back onClose={onClose} onOK={onOK} question={question} left={left} right={right}/>}
     </ModalOverlay>
   ) : null;
 

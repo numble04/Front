@@ -202,6 +202,9 @@ const CreateMeeting = () => {
         onClose={() => setModalVisible(false)}
         onOK={() => router.push('/meeting')}
         type={'back'}
+        question='모임 모집을 종료하시겠습니까?'
+        left='예'
+        right='아니오'
       />
       <ProgressBarBackground>
         <ProgressBar createMeetingStep={createMeetingStep} />

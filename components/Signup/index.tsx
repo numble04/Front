@@ -180,6 +180,9 @@ const Signup = () => {
         onClose={() => setModalVisible(false)}
         onOK={() => router.push('/')}
         type={'back'}
+        question='회원가입을 종료하시겠습니까?'
+        left='예'
+        right='아니오'
       />
       <ProgressBarBackground>
         <ProgressBar signupStep={signupStep} />

@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
 import styled from 'styled-components';
-import { BoardDetailType } from 'types/community';
+import { communityDetailType } from 'types/community';
 
-const Board = ({ data, onClick }: BoardDetailType) => {
+const Board = ({ data, onClick }: {data: communityDetailType, onClick: (id: number) => void;}) => {
   return (
     <StyledBoard onClick={() => onClick(data.id)}>
       <BoardHeader>

@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { meetings } from 'constant/meeting';
 import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { ExpandMoreSmallIcon } from 'components/UI/atoms/Icon';
 import { MeetingCard } from 'components/UI/molecules/MeetingCard';
+import { MeetingProps } from 'types/meeting';
+import { useMeetingInfos } from './meeting';
 
 const HEADER = 110;
 const INNER_HEADER = 60;
@@ -14,6 +14,7 @@ const PERCENTAGE = 0.7;
 const useList = () => {
   const $list = useRef<HTMLDivElement>(null);
   const $cardWrapper = useRef<HTMLDivElement>(null);
+  const { meetings } = useMeetingInfos();
 
   useLayoutEffect(() => {
     if (!$list.current || !$cardWrapper.current) return;
@@ -159,7 +160,7 @@ const useList = () => {
       $list.current?.removeEventListener('touchend', onTouchEnd);
       $list.current?.removeEventListener('mousedown', onMouseStart);
     };
-  }, [$list.current, $list.current]);
+  }, [$list.current, $list.current, meetings]);
 
   const closeList = () => {
     if (!$list.current || !$cardWrapper.current) return;
@@ -212,14 +213,16 @@ const useList = () => {
         </Header>
         <Content>
           <CardWrapper ref={$cardWrapper}>
-            {meetings.map((item) => (
-              <MeetingCard key={item.id} meeting={item} />
+            {meetings !== undefined && meetings.map((meeting: MeetingProps) => (
+              <div key={meeting.id}>
+                <MeetingCard meeting={meeting} />
+              </div>
             ))}
           </CardWrapper>
         </Content>
       </Container>
     );
-  }, []);
+  }, [meetings]);
   return { List, openList, closeList };
 };
 

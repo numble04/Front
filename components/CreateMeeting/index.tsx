@@ -214,9 +214,9 @@ const CreateMeeting = () => {
     <>
       <Modal
         isOpen={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onOK={() => router.push('/meeting')}
-        type={'back'}
+        onClickRight={() => setModalVisible(false)}
+        onClickLeft={() => router.push('/meeting')}
+        type={'question'}
         question='모임 모집을 종료하시겠습니까?'
         left='예'
         right='아니오'

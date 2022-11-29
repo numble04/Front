@@ -35,26 +35,26 @@ const NoButton = styled.div`
 `;
 
 interface IBackProps {
-  onClose?: () => void;
-  onOK?: () => void;
+  onClickRight?: () => void;
+  onClickLeft?: () => void;
   cssStyle?: CSSProperties;
   question?: string;
   left?: string;
   right?: string;
 }
 
-const Back = ({ onClose, onOK, cssStyle, question, left, right }: IBackProps) => {
+const Question = ({ onClickRight, onClickLeft, cssStyle, question, left, right }: IBackProps) => {
   return (
     <StyledModal style={cssStyle}>
       <BodyWrapper>
         <div>{question}</div>
       </BodyWrapper>
       <FooterWrapper>
-        <YesButton onClick={onOK}>{left}</YesButton>
-        <NoButton onClick={onClose}>{right}</NoButton>
+        <YesButton onClick={onClickLeft}>{left}</YesButton>
+        <NoButton onClick={onClickRight}>{right}</NoButton>
       </FooterWrapper>
     </StyledModal>
   );
 };
 
-export default Back;
+export default Question;

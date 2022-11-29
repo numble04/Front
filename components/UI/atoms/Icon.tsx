@@ -43,7 +43,7 @@ export const NavbarIcon = (props: { type: string; isRoute: boolean }) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g clip-path="url(#clip0_812_3487)">
+        <g clipPath="url(#clip0_812_3487)">
           <rect
             x="3.75"
             y="2.75"
@@ -51,7 +51,7 @@ export const NavbarIcon = (props: { type: string; isRoute: boolean }) => {
             height="17.5"
             rx="3.25"
             stroke="#AAAAAA"
-            stroke-width="1.5"
+            strokeWidth="1.5"
           />
           <rect x="3" y="14" width="18" height="1.5" fill="#AAAAAA" />
         </g>
@@ -71,7 +71,7 @@ export const NavbarIcon = (props: { type: string; isRoute: boolean }) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g clip-path="url(#clip0_812_2208)">
+        <g clipPath="url(#clip0_812_2208)">
           <rect x="3" y="2" width="18" height="19" rx="4" fill="#7B2EF0" />
           <rect x="3" y="14" width="18" height="1.5" fill="white" />
         </g>
@@ -129,7 +129,7 @@ export const NavbarIcon = (props: { type: string; isRoute: boolean }) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g clip-path="url(#clip0_812_3487)">
+        <g clipPath="url(#clip0_812_3487)">
           <rect
             x="3.75"
             y="2.75"
@@ -137,7 +137,7 @@ export const NavbarIcon = (props: { type: string; isRoute: boolean }) => {
             height="17.5"
             rx="3.25"
             stroke="#AAAAAA"
-            stroke-width="1.5"
+            strokeWidth="1.5"
           />
           <rect x="3" y="14" width="18" height="1.5" fill="#AAAAAA" />
         </g>
@@ -157,7 +157,7 @@ export const NavbarIcon = (props: { type: string; isRoute: boolean }) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g clip-path="url(#clip0_812_5552)">
+        <g clipPath="url(#clip0_812_5552)">
           <rect x="3" y="3" width="18" height="18" rx="4" fill="#7B2EF0" />
           <circle cx="8" cy="8" r="1.5" fill="white" />
           <circle cx="12" cy="12" r="1.5" fill="white" />
@@ -209,7 +209,7 @@ export const NavbarIcon = (props: { type: string; isRoute: boolean }) => {
         />
       </svg>
     );
-    
+
   return null;
 };
 

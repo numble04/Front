@@ -12,7 +12,7 @@ export interface MeetingProps {
 }
 
 export type MeetingCardProps = {
-  meeting: MeetingProps;
+  meeting : MeetingProps;
 };
 
 export interface MeetingDetailProps {
@@ -49,5 +49,7 @@ export interface MeetingUser {
 }
 
 export type ProfileProps = {
-  user: MeetingUser;
+  user : MeetingUser;
+  isLeader : boolean;
+  refetch : any;
 };

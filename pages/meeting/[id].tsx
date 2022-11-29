@@ -94,10 +94,10 @@ const Page: NextPage = () => {
               <div>
                 <Title>멤버소개</Title>
                 <div>
-                  {data.users.map((user: any) => {
+                  {data.users.map((user: MeetingUser) => {
                       if(user.isApproved){
                         return (
-                          <Profile key={user.id} user={user}/>
+                          <Profile key={user.id} user={user} isLeader={data.isLeader} refetch={refetch}/>
                         )
                       }
                     } 

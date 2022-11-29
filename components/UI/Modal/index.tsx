@@ -1,7 +1,7 @@
 import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { createPortal } from 'react-dom';
-import Back from './Back';
+import Question from './Question';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -21,16 +21,16 @@ const ModalOverlay = styled.div`
 interface IModalProps {
   id?: string;
   isOpen: boolean;
-  onClose: () => void;
-  onOK: () => void;
-  type: 'back';
+  onClickRight: () => void;
+  onClickLeft: () => void;
+  type: string;
   cssStyle?: CSSProperties;
   question?: string;
   left?: string;
   right?: string;
 }
 
-const Modal = ({ id, isOpen, onClose, onOK, type, cssStyle, question, left, right }: IModalProps) => {
+const Modal = ({ id, isOpen, onClickRight, onClickLeft, type, cssStyle, question, left, right }: IModalProps) => {
   const [isBrowser, setIsBrowser] = useState(false);
   const el = useRef<HTMLDivElement>(null);
 
@@ -57,12 +57,12 @@ const Modal = ({ id, isOpen, onClose, onOK, type, cssStyle, question, left, righ
   }, []);
 
   const onClick = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
-    if (e.target == el.current) onClose();
+    if (e.target == el.current) onClickRight();
   };
 
   const modalContent = isOpen ? (
     <ModalOverlay id={id} ref={el} onClick={(e) => onClick(e)}>
-      {type === 'back' && <Back onClose={onClose} onOK={onOK} question={question} left={left} right={right}/>}
+      {type === 'question' && <Question onClickRight={onClickRight} onClickLeft={onClickLeft} question={question} left={left} right={right}/>}
     </ModalOverlay>
   ) : null;
 

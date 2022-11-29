@@ -14,15 +14,15 @@ interface Props {
 
 const DropDownContainer = styled.div`
   position: relative;
-  width: 120px;
+  width: 130px;
 `;
 
 const DropDownBox = styled.div<{ isMenu: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
-  width: 120px;
+  padding: 0 10px 0 16px;
+  width: 130px;
   height: 40px;
   border: 1px solid #d1d8dc;
   background-color: #f3f3f3;
@@ -53,7 +53,7 @@ const OptionList = styled.ul`
 `;
 
 const Option = styled.li`
-  width: 120px;
+  width: 130px;
   height: 40px;
   display: flex;
   justify-content: center;

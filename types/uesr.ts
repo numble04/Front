@@ -39,14 +39,16 @@ export interface UserResponseType {
 }
 
 export interface UserDetail {
-  id: number;
-  email: string;
-  name: string;
-  nickname: string;
-  phone: string;
-  img: string | null;
-  region: string;
-  city: string;
-  dong: string;
-  introduction: null;
+  data: {
+    id: number;
+    email: string;
+    name: string;
+    nickname: string;
+    phone: string;
+    img: string | null;
+    region: string;
+    city: string;
+    dong: string;
+    introduction: string | null;
+  };
 }

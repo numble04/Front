@@ -25,6 +25,37 @@ const AreaSearchResultWrapper = styled.div`
   padding: 16px 20px;
 `;
 
+const getDistance = ({
+  lat1,
+  lng1,
+  lat2,
+  lng2,
+}: {
+  lat1: number;
+  lng1: number;
+  lat2: number;
+  lng2: number;
+}) => {
+  if (lat1 == lat2 && lng1 == lng2) return 0;
+
+  var radLat1 = (Math.PI * lat1) / 180;
+  var radLat2 = (Math.PI * lat2) / 180;
+  var theta = lng1 - lng2;
+  var radTheta = (Math.PI * theta) / 180;
+  var dist =
+    Math.sin(radLat1) * Math.sin(radLat2) +
+    Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
+  if (dist > 1) dist = 1;
+
+  dist = Math.acos(dist);
+  dist = (dist * 180) / Math.PI;
+  dist = dist * 60 * 1.1515 * 1.609344 * 1000;
+  if (dist < 100) dist = Math.round(dist / 10) * 10;
+  else dist = Math.round(dist / 100) * 100;
+
+  return dist;
+};
+
 const AreaSearch = ({
   onChangeIsAreaSearching,
   onChangeSignupParams,
@@ -78,6 +109,26 @@ const AreaSearch = ({
     return splitAddressName[splitAddressName.length - 1];
   };
 
+  const check5kmInner = (x: string, y: string) => {
+    const [targetLng, targetLat] = [Number(x), Number(y)];
+
+    if (lat && lng) {
+      const distance = getDistance({
+        lat1: lat,
+        lng1: lng,
+        lat2: targetLat,
+        lng2: targetLng,
+      });
+
+      if (distance > 5000) {
+        return false;
+      }
+
+      return true;
+    }
+    return false;
+  };
+
   return (
     <>
       <AreaSearchWrapper gap={4} align="center">
@@ -110,6 +161,10 @@ const AreaSearch = ({
                   }}
                   key={item.address_name}
                   onClick={() => {
+                    const is5kmInner = check5kmInner(item.x, item.y);
+                    if (!is5kmInner) {
+                      return alert('5km 이내 지역을 선택해주세요.');
+                    }
                     onChangeSignupParams((signupParams) => ({
                       ...signupParams,
                       region: item.address_name,

@@ -2,6 +2,7 @@ import { Button } from 'components/UI/Button/Button';
 import { Flex } from 'components/UI/Flex/Flex';
 import { Typography } from 'components/UI/Typography/Typography';
 import { useUserDetail } from 'hooks/user';
+import Image from 'next/image';
 import React from 'react';
 import styled from 'styled-components';
 import { theme } from 'styles/theme';
@@ -15,6 +16,14 @@ const TitleSection = styled.section`
 
 const ProfileSection = styled.section`
   padding: 24px 20px;
+`;
+
+const ProfileImageWrapper = styled.div`
+  width: 88px;
+  height: 88px;
+  img {
+    border-radius: 50%;
+  }
 `;
 
 const CommunityTab = styled(Flex)``;
@@ -34,7 +43,29 @@ const My = () => {
         <Typography.Text type="h4">프로필</Typography.Text>
       </TitleSection>
       <ProfileSection>
-        <Button full height={36} padding={10} fontSize={12}>
+        <Flex gap={3}>
+          <ProfileImageWrapper>
+            <Image
+              src="/images/background.png"
+              alt="profile"
+              width={88}
+              height={88}
+            ></Image>
+          </ProfileImageWrapper>
+          <Typography.Text>{userDetail?.nickname || ''}</Typography.Text>
+        </Flex>
+        <Typography.Text gutter={{ top: 20 }}>
+          {userDetail?.introduction || ''}
+        </Typography.Text>
+        <Button
+          full
+          height={36}
+          padding={10}
+          fontSize={12}
+          cssStyle={{
+            marginTop: 24,
+          }}
+        >
           내 활동
         </Button>
       </ProfileSection>

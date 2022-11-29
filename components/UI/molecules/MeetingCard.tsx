@@ -10,7 +10,7 @@ export const MeetingCard = (props: MeetingCardProps) => {
   return (
     <Container onClick={() => router.push(`/meeting/${meeting.id}`)}>
       <ImgWrapper>
-        <Img src={'/image.png'} alt={String(meeting.id)} />
+        <Img src={`${meeting.img === null ? `/image.png` : meeting.img}`} alt={String(meeting.id)} />
       </ImgWrapper>
       <ContentWrapper>
         <Title>

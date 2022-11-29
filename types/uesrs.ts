@@ -20,6 +20,7 @@ export interface CreateMeetingParamsType {
   cost: number;
   time: number;
   kakaoUrl: string;
+  file: File | null;
 }
 
 export interface LoginParamsType {

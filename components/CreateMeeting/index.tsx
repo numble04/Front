@@ -66,6 +66,7 @@ const CreateMeeting = () => {
       cost: 4000,
       time: 1,
       kakaoUrl: '',
+      file: null,
     });
 
   const { signup, isLoading: signupLoading } = useSignup();
@@ -113,6 +114,7 @@ const CreateMeeting = () => {
         return (
           <ContentStep
             content={createMeetingParams.content}
+            file={createMeetingParams.file}
             onChangeCreateMeetingParams={setCreateMeetingParams}
           />
         );
@@ -169,7 +171,9 @@ const CreateMeeting = () => {
       setCreateMeetingStep((createMeetingStep) => createMeetingStep + 1);
     } else if (createMeetingStep === 7) {
       let formData = new FormData();
-
+      if(createMeetingParams.file !== null) {
+        formData.append(`file`, createMeetingParams.file);
+      }
       formData.append(
         'meetingRequest',
         new Blob(
@@ -179,6 +183,7 @@ const CreateMeeting = () => {
           { type: 'application/json' },
         ),
       );
+
       api.post(
         `/meetings`,
         formData, 

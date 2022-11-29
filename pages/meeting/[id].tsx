@@ -38,7 +38,7 @@ const Page: NextPage = () => {
         <BackIcon />
       </BackWrapper>
       <ImgWrapper>
-        <Img src={'/image.png'} alt={data.id} />
+        <Img src={`${data.img === null ? `/image.png` : data.img}`} alt={data.id} />
       </ImgWrapper>
       <MainWrapper>
         <TitleWrapper>

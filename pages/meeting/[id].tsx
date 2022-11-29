@@ -1,13 +1,17 @@
-import { BackIcon } from 'components/UI/atoms/Icon';
-import Map from 'components/UI/atoms/Map';
+import { BackIcon, CalendarIcon, CostIcon, InfoIcon, InquiryIcon, MemberIcon, TimeIcon } from 'components/UI/atoms/Icon';
+import SmallMap from 'components/Meeting/SmallMap';
 import api from 'lib/api';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
+import { theme } from 'styles/theme';
+import Profile from 'components/Meeting/Profile';
+import { MeetingUser } from 'types/meeting';
 
 const Page: NextPage = () => {
+  const [ tap, setTap ] = useState<string>('area');
   const router = useRouter();
   const { id } = router.query;
   const { data, refetch } = useQuery(
@@ -23,6 +27,7 @@ const Page: NextPage = () => {
   const getCommunityDetail = async () => {
     try {
       const res = await api.get(`/meetings/${id}`);
+      console.log(res.data.data);
       return res.data.data;
     } catch (error) {
       throw new Error('error');
@@ -48,20 +53,86 @@ const Page: NextPage = () => {
         <GuideWrapper>
           <Title>안내사항</Title>
           <GridWrapper>
-            <div>{data.day}</div>
-            <div>총 {data.time}시간</div>
-            <div>{data.cost}원</div>
-            <div>{data.maxPersonnel}명</div>
+            <div>
+              <CalendarIcon />
+              <div>{data.day}</div>
+            </div>
+            <div>
+              <TimeIcon />
+              <div>총 {data.time}시간</div>
+            </div>
+            <div>
+              <CostIcon />
+              <div>{data.cost}원</div>
+            </div>
+            <div>
+              <MemberIcon />
+              <div>{data.maxPersonnel}명</div>
+            </div>
           </GridWrapper>
         </GuideWrapper>
         <TapWrapper>
-          <Title>위치</Title>
-          <div>
-            <Map
-              latitude={data.latitude}
-              longitude={data.longitude}
-            />
-          </div>
+          <TapTitle>
+            <TapButton onClick={() => setTap('area')} tap='area' currentTap={tap}>위치</TapButton>
+            <TapButton onClick={() => setTap('member')} tap='member' currentTap={tap}>멤버</TapButton>
+            <TapButton onClick={() => setTap('inquiry')} tap='inquiry' currentTap={tap}>문의</TapButton>
+          </TapTitle>
+          {tap === 'area' ? 
+            <TapContent>
+              <Title>위치</Title>
+              <SmallMap
+                latitude={data.latitude}
+                longitude={data.longitude}
+                cafeImg={data.img}
+                cafeName={data.cafeName}
+                cafeAddress={data.cafeAddress}
+              />
+            </TapContent>
+            :
+            tap === 'member' ?
+            <TapContent>
+              <div>
+                <Title>멤버소개</Title>
+                <div>
+                  {data.users.map((user: any) => {
+                      if(user.isApproved){
+                        return (
+                          <Profile key={user.id} user={user}/>
+                        )
+                      }
+                    } 
+                  )}
+                </div>
+              </div>
+              <div>
+                <Title>승인 대기 멤버</Title>
+                <WaitingMemberWrapper>
+                  {data.users.map((user: MeetingUser) => {
+                    if(!user.isApproved) {
+                      return (
+                        <ProfileWrapper key={user.id}>
+                          <ProfileImg src={`${user.img === null ? `/images/default_profile.png` : user.img}`} alt={user.nickname}/>
+                          <Nickname>{user.nickname}</Nickname>
+                        </ProfileWrapper>
+                      )
+                    }
+                  })}
+                </WaitingMemberWrapper>
+              </div>
+            </TapContent>
+            :
+            <TapContent>
+              <Title>문의</Title>
+              <InquiryButton onClick={() => router.push(data.kakaoUrl)}>
+                <InquiryIcon />
+                <div>오픈 채팅 접속하기</div>
+              </InquiryButton>
+              <Infomation>
+                <InfoIcon />
+                <div>위의 오픈채팅을 통해 궁금한 것을 물어보세요.</div>
+              </Infomation>
+            </TapContent>
+          }
         </TapWrapper>
       </MainWrapper>
     </Container>
@@ -130,12 +201,100 @@ const GridWrapper = styled.div`
   column-gap: 1rem;
   & > div {
     border: 1px solid #e5e5e5;
-    text-align: center;
-    line-height: 100px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    & > svg {
+      margin-bottom: 6px;
+    }
   }
 `;
 
 const TapWrapper = styled.div`
   background-color: #ffffff;
-  padding: 2rem 1rem 4rem 1rem;
+  padding: 2rem 0 4rem 0;
+`;
+
+const TapTitle = styled.div`
+  display: flex;
+  border-bottom: 3px solid #F4F4F4;
+`;
+
+type TapButtonProps = {
+  tap: string;
+  currentTap: string;
+}
+
+const TapButton = styled.button<TapButtonProps>`
+  width: 48px;
+  height: 30px;
+  border: none;
+  outline: none;
+  background-color: #ffffff;
+  cursor: pointer;
+  color: ${({tap, currentTap}) => tap === currentTap ? '#3A3A3A' : '#AAAAAA'};
+  border-bottom: ${({tap, currentTap}) => tap === currentTap ? '3px solid #5B0FD1' : 'none'};
+`;
+
+const TapContent = styled.div`
+  margin-top: 30px;
+  padding: 0 10px;
+  border-bottom: 3px solid #F4F4F4;
+`;
+
+const WaitingMemberWrapper = styled.div`
+  display: flex;
+`;
+
+const ProfileWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justfiy-content: center;
+  align-items: center;
+  margin-right: 12px;
+`;
+
+const ProfileImg = styled.img`
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 50%;
+`;
+
+const Nickname = styled.div`
+  font-size: 12px;
+`;
+
+const InquiryButton = styled.button` 
+  width: 100%;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: ${theme.colors.PRIMARY};
+  background-color: #EBDEFF;
+  border: solid 1px ${theme.colors.PRIMARY};
+  border-radius: 8px;
+  cursor: pointer;
+  & > div {
+    margin-bottom: 4px;
+  }
+`;
+
+const Infomation = styled.div`
+  height: 48px;
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+  padding: 0 12px;
+  background-color: #f2f2f2;
+  color: #848283;
+  font-size: 12px;
+  border-radius: 8px;
+  & > div {
+    margin-left: 4px;
+  }
 `;

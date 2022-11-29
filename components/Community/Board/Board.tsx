@@ -17,7 +17,7 @@ const Board = ({
         <HeaderMain>
           <div>
             <Image
-              src="/image.png"
+              src={`${data.userImg ?? '/images/default_profile.png'}`}
               alt="profileImage"
               className="boardImage"
               width={48}

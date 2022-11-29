@@ -6,6 +6,7 @@ import Header from 'components/UI/Header';
 import { useRouter } from 'next/router';
 import api from 'lib/api';
 import { useQuery } from 'react-query';
+import { timeForToday } from 'hooks/useTimeToday';
 
 type PageProps = {
   id: number;
@@ -151,7 +152,7 @@ const Page = ({ id }: PageProps) => {
         <HeaderMain>
           <div>
             <Image
-              src="/image.png"
+              src={`${data.userImg ?? '/images/default_profile.png'}`}
               alt="profileImage"
               className="boardImage"
               width={48}
@@ -160,7 +161,7 @@ const Page = ({ id }: PageProps) => {
           </div>
           <HeaderTitle>
             <span className="name">{data.nickname}</span>
-            <span className="time">6시간 전</span>
+            <span className="time">{timeForToday(data.createDate)}</span>
           </HeaderTitle>
         </HeaderMain>
         <Image

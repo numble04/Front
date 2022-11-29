@@ -1,9 +1,16 @@
+import { timeForToday } from 'hooks/useTimeToday';
 import Image from 'next/image';
 import React from 'react';
 import styled from 'styled-components';
 import { communityDetailType } from 'types/community';
 
-const Board = ({ data, onClick }: {data: communityDetailType, onClick: (id: number) => void;}) => {
+const Board = ({
+  data,
+  onClick,
+}: {
+  data: communityDetailType;
+  onClick: (id: number) => void;
+}) => {
   return (
     <StyledBoard onClick={() => onClick(data.id)}>
       <BoardHeader>
@@ -19,7 +26,7 @@ const Board = ({ data, onClick }: {data: communityDetailType, onClick: (id: numb
           </div>
           <HeaderTitle>
             <span className="name">{data.nickname}</span>
-            <span className="time">6시간 전</span>
+            <span className="time">{timeForToday(data.createDate)}</span>
           </HeaderTitle>
         </HeaderMain>
         <Image
@@ -30,7 +37,9 @@ const Board = ({ data, onClick }: {data: communityDetailType, onClick: (id: numb
           height={3.3}
         />
       </BoardHeader>
-      {data.thumbnail !== null && <img src={data.thumbnail} alt="thumbnail" />}
+      {data.thumbnail !== null && (
+        <ThumnailImage src={data.thumbnail} alt="thumbnail" />
+      )}
       <BoardContent>{data.content}</BoardContent>
       <BoardBottom>
         <span className="viewCount">조회수 {data.viewCount}</span>
@@ -121,6 +130,10 @@ const BoardBottom = styled.div`
   .boardIcons {
     display: flex;
   }
+`;
+
+const ThumnailImage = styled.img`
+  margin-bottom: 10px;
 `;
 
 const IconBox = styled.div`

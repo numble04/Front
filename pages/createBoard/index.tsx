@@ -86,14 +86,43 @@ const FileTextarea = styled(Textarea)`
   width: 100%;
   height: 220px;
   padding: 10px 20px;
-  margin-top: 26px;
   border: 1px solid #d9d9d9;
   border-radius: 8px;
+  :focus {
+    outline: 1px solid #e5e0e0;
+  }
 `;
 
 const InfoText = styled.p`
   font-size: 12px;
   color: #aaaaaa;
+`;
+
+const TitleInput = styled.input`
+  width: 100%;
+  height: 50px;
+  border-radius: 8px;
+  padding: 0px 20px;
+  border: 1px solid #d9d9d9;
+  margin-bottom: 38px;
+
+  :focus {
+    outline: 1px solid #e5e0e0;
+  }
+`;
+
+const TitleText = styled.div`
+  font-size: 12px;
+  font-weight: 500;
+  color: #3a3a3a;
+  margin: 16px 0 8px;
+`;
+
+const ContentText = styled.div`
+  font-size: 12px;
+  font-weight: 500;
+  color: #3a3a3a;
+  margin-bottom: 8px;
 `;
 
 export type menuType = { name: string; type: string };
@@ -110,15 +139,22 @@ const Page: NextPage = () => {
   });
   const [previews, setPreviews] = useState<string[]>([]);
   const [image, setImage] = useState<(string | Blob)[]>([]);
+  const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
 
   const [isMenu, setIsMenu] = useState<boolean>(false);
 
   const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = e.target;
-    setContent(value);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
+    const { name, value } = e.target;
+    if (name === 'title') {
+      setTitle(value);
+    } else {
+      setContent(value);
+    }
   };
 
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,7 +191,7 @@ const Page: NextPage = () => {
       new Blob(
         [
           JSON.stringify({
-            title: content,
+            title: title,
             content,
             type: category.type,
           }),
@@ -166,10 +202,7 @@ const Page: NextPage = () => {
 
     // 아래 게시글등록 로직 수정 필요
     try {
-      const response = await api.post(
-        '/posts',
-        formData,
-      );
+      const response = await api.post('/posts', formData);
       if (response.status === 200 || 201) {
         alert('상품등록 성공');
         console.log('상품등록 성공');
@@ -222,8 +255,15 @@ const Page: NextPage = () => {
           isMenu={isMenu}
           setIsMenu={setIsMenu}
         />
-
+        <TitleText>제목</TitleText>
+        <TitleInput
+          name="title"
+          placeholder="지역명이 들어간 제목을 입력해주세요."
+          onChange={handleChange}
+        />
+        <ContentText>내용</ContentText>
         <FileTextarea
+          name="content"
           placeholder="오늘 어떤 것을 보고, 느끼고, 생각하셨나요?"
           onChange={handleChange}
         />

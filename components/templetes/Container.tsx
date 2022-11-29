@@ -8,7 +8,7 @@ import { useRecoilValue } from 'recoil';
 import { isLoggedInState } from 'recoil/user';
 import styled from 'styled-components';
 import { theme } from 'styles/theme';
-import { Navbar } from '../UI/organisms/Navbar';
+import { Navbar } from '../UI/Navbar';
 
 type Props = {
   children: JSX.Element;

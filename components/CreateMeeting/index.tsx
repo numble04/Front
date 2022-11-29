@@ -166,7 +166,7 @@ const CreateMeeting = () => {
     setCreateMeetingStep((createMeetingStep) => createMeetingStep - 1);
   };
 
-  const handleClickNextButton = () => {
+  const handleClickNextButton = async () => {
     if (createMeetingStep >= 1 && createMeetingStep < 7) {
       setCreateMeetingStep((createMeetingStep) => createMeetingStep + 1);
     } else if (createMeetingStep === 7) {
@@ -183,11 +183,21 @@ const CreateMeeting = () => {
           { type: 'application/json' },
         ),
       );
-
-      api.post(
-        `/meetings`,
-        formData, 
-      );
+      try {
+        const res = await api.post(
+          `/meetings`,
+          formData, 
+        );
+        if(res.status === 201){
+          alert('모임 열기를 성공하였습니다!');
+          router.push('/meeting');
+          return;
+        } 
+        alert('모임 열기를 실패하였습니다.');
+      } catch (error) {
+        throw new Error('post like error');
+      }
+      
     } 
   };
 

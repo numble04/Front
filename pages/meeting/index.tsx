@@ -1,5 +1,5 @@
 import { CreateIcon, ExpandMoreIcon, SortIcon } from 'components/UI/atoms/Icon';
-import Map from 'components/UI/atoms/Map';
+import Map from 'components/Meeting/Map';
 import useGeolocation from 'hooks/local';
 import { useMeetingInfos } from 'hooks/meeting';
 import useList from 'hooks/useList';

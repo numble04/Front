@@ -2,7 +2,12 @@ import { useMutation, useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 
 import api from 'lib/api';
-import { LoginParamsType, SingupParamsType, UserType } from 'types/uesr';
+import {
+  LoginParamsType,
+  SingupParamsType,
+  UserDetail,
+  UserType,
+} from 'types/uesr';
 import { userState } from 'recoil/user';
 
 export const useSignup = () => {
@@ -129,11 +134,25 @@ export const useReissueToken = () => {
 export const useUserDetail = () => {
   const { data: userDetail } = useQuery(
     ['users'],
-    () => api.get<any>(`/users`),
+    () => api.get<UserDetail>(`/users`),
     {
       select: (res) => res.data.data,
     },
   );
 
   return { userDetail };
+};
+
+export const useUpdateUserInfo = () => {
+  const { mutate } = useMutation((params) => api.put(`/users`, params));
+
+  return;
+};
+
+export const useWithdrawlUser = () => {
+  const { mutate } = useMutation(() => api.delete(`/users`));
+};
+
+export const useUpdateUserProfile = () => {
+  const { mutate } = useMutation(() => api.put(`/users/profile`));
 };

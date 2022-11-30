@@ -10,10 +10,11 @@ import { theme } from 'styles/theme';
 import Profile from 'components/Meeting/Profile';
 import { MeetingUser } from 'types/meeting';
 import Modal from 'components/UI/Modal';
+import Tab from 'components/Meeting/Tab';
 
 const Page: NextPage = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [ tap, setTap ] = useState<string>('area');
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [leaveModalVisible, setLeaveModalVisible] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const { data, refetch } = useQuery(
@@ -45,13 +46,35 @@ const Page: NextPage = () => {
     router.push('/meeting');
   }
 
+  const leaveMeeting = async () => {
+    await api.delete(`/meetings/${id}/leave`);
+    setLeaveModalVisible(false);
+    refetch();
+  }
+
+  const onClick = async () => {
+    if(data.isLeader) {
+      return;
+    }
+    if(data.isFull) {
+      alert('인원이 가득찬 모임입니다.');
+      return;
+    }
+    if(data.isRegistered) {
+      setLeaveModalVisible(true);
+      return;
+    }
+    await api.post(`/meetings/${id}/register`);
+    refetch();
+  }
+
   return (
     <Container>
       <Header>
         <IconWrapper onClick={() => router.back()}>
           <BackIcon />
         </IconWrapper>
-        <IconWrapper onClick={() => setModalVisible(true)}>
+        <IconWrapper onClick={() => setDeleteModalVisible(true)}>
           <ModifyIcon />
         </IconWrapper>
       </Header>
@@ -84,82 +107,34 @@ const Page: NextPage = () => {
             </div>
           </GridWrapper>
         </GuideWrapper>
-        <TapWrapper>
-          <TapTitle>
-            <TapButton onClick={() => setTap('area')} tap='area' currentTap={tap}>위치</TapButton>
-            <TapButton onClick={() => setTap('member')} tap='member' currentTap={tap}>멤버</TapButton>
-            <TapButton onClick={() => setTap('inquiry')} tap='inquiry' currentTap={tap}>문의</TapButton>
-          </TapTitle>
-          {tap === 'area' ? 
-            <TapContent>
-              <Title>위치</Title>
-              <SmallMap
-                latitude={data.latitude}
-                longitude={data.longitude}
-                cafeImg={data.img}
-                cafeName={data.cafeName}
-                cafeAddress={data.cafeAddress}
-              />
-            </TapContent>
-            :
-            tap === 'member' ?
-            <TapContent>
-              <div>
-                <Title>멤버소개</Title>
-                <div>
-                  {data.users.map((user: MeetingUser) => {
-                      if(user.isApproved){
-                        return (
-                          <Profile key={user.id} user={user} isLeader={data.isLeader} refetch={refetch}/>
-                        )
-                      }
-                    } 
-                  )}
-                </div>
-              </div>
-              <div>
-                <Title>승인 대기 멤버</Title>
-                <WaitingMemberWrapper>
-                  {data.users.map((user: MeetingUser) => {
-                    if(!user.isApproved) {
-                      return (
-                        <ProfileWrapper key={user.id}>
-                          <ProfileImg src={`${user.img === null ? `/images/default_profile.png` : user.img}`} alt={user.nickname}/>
-                          <Nickname>{user.nickname}</Nickname>
-                        </ProfileWrapper>
-                      )
-                    }
-                  })}
-                </WaitingMemberWrapper>
-              </div>
-            </TapContent>
-            :
-            <TapContent>
-              <Title>문의</Title>
-              <InquiryButton onClick={() => router.push(data.kakaoUrl)}>
-                <InquiryIcon />
-                <div>오픈 채팅 접속하기</div>
-              </InquiryButton>
-              <Infomation>
-                <InfoIcon />
-                <div>위의 오픈채팅을 통해 궁금한 것을 물어보세요.</div>
-              </Infomation>
-            </TapContent>
-          }
-        </TapWrapper>
+        <Tab data={data} refetch={refetch}/>
       </MainWrapper>
       <Footer>
-        <HeartButton><HeartIcon /></HeartButton>
-        <Button onClick={() => router.push('/createMeeting')}>{data.isLeader ? '수정하기' : '참여하기'}</Button>
+        <HeartButton>
+          <HeartIcon />
+        </HeartButton>
+        <Button onClick={onClick} isLeader={data.isLeader} isRegistered={data.isRegistered}>
+          {data.isLeader ? '수정하기' : (!data.isRegistered ? '참여하기' : (!data.isAttended ? '참여 등록 취소하기' : '참여 취소하기'))}
+        </Button>
       </Footer>
       <Modal
-        isOpen={modalVisible}
+        isOpen={deleteModalVisible}
         onClickUp={deleteMeeting}
-        onClickDown={() => setModalVisible(false)}
-        onClickOutside={() => setModalVisible(false)}
+        onClickDown={() => setDeleteModalVisible(false)}
+        onClickOutside={() => setDeleteModalVisible(false)}
         type={'twoButton'}
         up='모임 삭제하기'
         down='취소하기'
+      />
+      <Modal
+        isOpen={leaveModalVisible}
+        onClickLeft={() => setLeaveModalVisible(false)}
+        onClickRight={leaveMeeting}
+        onClickOutside={() => setLeaveModalVisible(false)}
+        type={'question'}
+        question={data.isAttended ? '모임을 취소하시겠어요?' : '모임 등록을 취소하시겠어요?'}
+        left='유지'
+        right='취소하기'
       />
     </Container>
   ); 
@@ -182,6 +157,8 @@ const IconWrapper = styled.div`
   background-color: #ffffff;
   padding: 1rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
 const ImgWrapper = styled.div`
@@ -244,93 +221,6 @@ const GridWrapper = styled.div`
   }
 `;
 
-const TapWrapper = styled.div`
-  background-color: #ffffff;
-  padding: 2rem 0 4rem 0;
-`;
-
-const TapTitle = styled.div`
-  display: flex;
-  border-bottom: 3px solid #F4F4F4;
-`;
-
-type TapButtonProps = {
-  tap: string;
-  currentTap: string;
-}
-
-const TapButton = styled.button<TapButtonProps>`
-  width: 48px;
-  height: 30px;
-  border: none;
-  outline: none;
-  background-color: #ffffff;
-  cursor: pointer;
-  color: ${({tap, currentTap}) => tap === currentTap ? '#3A3A3A' : '#AAAAAA'};
-  border-bottom: ${({tap, currentTap}) => tap === currentTap ? '3px solid #5B0FD1' : 'none'};
-`;
-
-const TapContent = styled.div`
-  margin-top: 30px;
-  padding: 0 10px;
-  border-bottom: 3px solid #F4F4F4;
-`;
-
-const WaitingMemberWrapper = styled.div`
-  display: flex;
-`;
-
-const ProfileWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justfiy-content: center;
-  align-items: center;
-  margin-right: 12px;
-`;
-
-const ProfileImg = styled.img`
-  width: 36px;
-  height: 36px;
-  object-fit: cover;
-  border-radius: 50%;
-`;
-
-const Nickname = styled.div`
-  font-size: 12px;
-`;
-
-const InquiryButton = styled.button` 
-  width: 100%;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: ${theme.colors.PRIMARY};
-  background-color: #EBDEFF;
-  border: solid 1px ${theme.colors.PRIMARY};
-  border-radius: 8px;
-  cursor: pointer;
-  & > div {
-    margin-bottom: 4px;
-  }
-`;
-
-const Infomation = styled.div`
-  height: 48px;
-  display: flex;
-  align-items: center;
-  margin-top: 24px;
-  padding: 0 12px;
-  background-color: #f2f2f2;
-  color: #848283;
-  font-size: 12px;
-  border-radius: 8px;
-  & > div {
-    margin-left: 4px;
-  }
-`;
-
 const Footer = styled.div`
   position: absolute;
   display: flex;
@@ -351,15 +241,15 @@ const HeartButton = styled.button`
   cursor: pointer;
 `;
 
-const Button = styled.button`
-  background-color: #EBDEFF;
+const Button = styled.button<{isLeader: string; isRegistered: string;}>`
   outline: none;
   border: none;
   width: 100%;
   height: 3rem;
   border-radius: 52px;
   cursor: pointer;
-  color: ${theme.colors.PRIMARY};
+  color: ${({isLeader, isRegistered}) => isLeader || isRegistered ? theme.colors.PRIMARY : '#FFFFFF'};
+  background-color: ${({isLeader, isRegistered}) => isLeader || isRegistered ? '#EBDEFF' : theme.colors.PRIMARY};
   font-weight: 500;
   font-size: 16px;
 `;

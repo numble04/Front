@@ -1,32 +1,104 @@
 import { CreateIcon, ExpandMoreIcon, SortIcon } from 'components/UI/atoms/Icon';
 import Map from 'components/Meeting/Map';
-import useGeolocation from 'hooks/local';
+import useGeolocation, { useLocalInfos } from 'hooks/local';
 import { useMeetingInfos } from 'hooks/meeting';
 import useList from 'hooks/useList';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import SortMeeting from 'components/Meeting/SortMeeting';
+import { useEffect, useState } from 'react';
+import AreaFilter from 'components/Meeting/AreaFilter';
+import { Area } from 'types/meeting';
+import { useLocalArea } from 'lib/zustand/store';
 
 const Page: NextPage = () => {
-  const { meetings } = useMeetingInfos();
-  const { List, openList, closeList } = useList();
-  const router = useRouter();
+  const { localArea, setLocalArea } = useLocalArea();
+  const [sortVisible, setSortVisible] = useState<boolean>(false);
+  const [areaFilterVisible, setAreaFilterVisible] = useState<boolean>(false);
+  const [sort, setSort] = useState<string>('createdAt');
   const location = useGeolocation();
-  console.log(location, meetings);
+  const { lat, lng } = location.coordinates || {};
+  const { localInfos, isLoading } = useLocalInfos({
+    enabled: location.loaded && location.coordinates !== undefined,
+    lng,
+    lat,
+  });
+  const [area, setArea] = useState<Area>(localArea);
+
+  const { meetings, refetch } = useMeetingInfos(
+    sort,
+    area.y,
+    area.x,
+    area,
+  );
+  const { List, openList, closeList } = useList(
+    sort,
+    area.y,
+    area.x,
+    area,
+  );
+  const router = useRouter();
+
+  useEffect(() => {
+    if(area.dong !== '') {
+    refetch();
+  }
+  }, [sort, area.dong]);
+
+  useEffect(() => {
+    if (localInfos.length > 0) {
+      setArea({
+        city:
+          localInfos[0].region_1depth_name === '서울'
+            ? '서울특별시'
+            : localInfos[0].region_2depth_name,
+        dong: localInfos[0].region_3depth_name,
+        x: localInfos[0].x,
+        y: localInfos[0].y
+      });
+      setLocalArea({
+        city:
+          localInfos[0].region_1depth_name === '서울'
+            ? '서울특별시'
+            : localInfos[0].region_2depth_name,
+        dong: localInfos[0].region_3depth_name,
+        x: localInfos[0].x,
+        y: localInfos[0].y
+      });
+    }
+  }, [localInfos]);
+
   return (
     <Container>
+      <SortMeeting
+        isOpen={sortVisible}
+        setIsOpen={setSortVisible}
+        sort={sort}
+        setSort={setSort}
+      />
+      <AreaFilter
+        isOpen={areaFilterVisible}
+        setIsOpen={setAreaFilterVisible}
+        setArea={setArea}
+      />
       <Header>
         <Title>
-          <div>삼성동</div>
-          <ExpandMoreIcon />
+          <div>{area.dong}</div>
+          <div
+            onClick={() => setAreaFilterVisible(true)}
+            style={{ cursor: 'pointer' }}
+          >
+            <ExpandMoreIcon />
+          </div>
         </Title>
         <TitleContent>
           <FilterWrapper>
-            <Filter>지역</Filter>
+            <Filter onClick={() => setAreaFilterVisible(true)}>지역</Filter>
             <Filter>날짜</Filter>
           </FilterWrapper>
           <IconWrapper>
-            <div>
+            <div onClick={() => setSortVisible(true)}>
               <SortIcon />
             </div>
             <div onClick={() => router.push('/createMeeting')}>
@@ -36,10 +108,9 @@ const Page: NextPage = () => {
         </TitleContent>
       </Header>
       <MapWrapper onClick={closeList}>
-        {/* <Map latitude={location.coordinates?.lat} longitude={location.coordinates?.lng} /> */}
         <Map
-          latitude={37.5076514}
-          longitude={127.0272817}
+          longitude={area.x}
+          latitude={area.y}
           meetings={meetings}
         />
       </MapWrapper>
@@ -99,6 +170,7 @@ const Filter = styled.button`
   border-radius: 20px;
   border: none;
   margin-right: 8px;
+  cursor: pointer;
 `;
 
 const IconWrapper = styled.div`

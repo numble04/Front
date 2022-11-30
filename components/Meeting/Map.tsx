@@ -9,6 +9,7 @@ interface MapProps {
 }
 
 function Map({ latitude, longitude, meetings }: MapProps) {
+  console.log(12341234, latitude, longitude, meetings);
   useEffect(() => {
     const mapScript = document.createElement('script');
 

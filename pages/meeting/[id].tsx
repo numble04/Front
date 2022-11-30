@@ -13,8 +13,8 @@ import Modal from 'components/UI/Modal';
 import Tab from 'components/Meeting/Tab';
 
 const Page: NextPage = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [leaveModalVisible, setLeaveModalVisible] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const { data, refetch } = useQuery(
@@ -46,13 +46,35 @@ const Page: NextPage = () => {
     router.push('/meeting');
   }
 
+  const leaveMeeting = async () => {
+    await api.delete(`/meetings/${id}/leave`);
+    setLeaveModalVisible(false);
+    refetch();
+  }
+
+  const onClick = async () => {
+    if(data.isLeader) {
+      return;
+    }
+    if(data.isFull) {
+      alert('인원이 가득찬 모임입니다.');
+      return;
+    }
+    if(data.isRegistered) {
+      setLeaveModalVisible(true);
+      return;
+    }
+    await api.post(`/meetings/${id}/register`);
+    refetch();
+  }
+
   return (
     <Container>
       <Header>
         <IconWrapper onClick={() => router.back()}>
           <BackIcon />
         </IconWrapper>
-        <IconWrapper onClick={() => setModalVisible(true)}>
+        <IconWrapper onClick={() => setDeleteModalVisible(true)}>
           <ModifyIcon />
         </IconWrapper>
       </Header>
@@ -88,17 +110,31 @@ const Page: NextPage = () => {
         <Tab data={data} refetch={refetch}/>
       </MainWrapper>
       <Footer>
-        <HeartButton><HeartIcon /></HeartButton>
-        <Button onClick={() => router.push('/createMeeting')}>{data.isLeader ? '수정하기' : '참여하기'}</Button>
+        <HeartButton>
+          <HeartIcon />
+        </HeartButton>
+        <Button onClick={onClick} isLeader={data.isLeader} isRegistered={data.isRegistered}>
+          {data.isLeader ? '수정하기' : (!data.isRegistered ? '참여하기' : (!data.isAttended ? '참여 등록 취소하기' : '참여 취소하기'))}
+        </Button>
       </Footer>
       <Modal
-        isOpen={modalVisible}
+        isOpen={deleteModalVisible}
         onClickUp={deleteMeeting}
-        onClickDown={() => setModalVisible(false)}
-        onClickOutside={() => setModalVisible(false)}
+        onClickDown={() => setDeleteModalVisible(false)}
+        onClickOutside={() => setDeleteModalVisible(false)}
         type={'twoButton'}
         up='모임 삭제하기'
         down='취소하기'
+      />
+      <Modal
+        isOpen={leaveModalVisible}
+        onClickLeft={() => setLeaveModalVisible(false)}
+        onClickRight={leaveMeeting}
+        onClickOutside={() => setLeaveModalVisible(false)}
+        type={'question'}
+        question={data.isAttended ? '모임을 취소하시겠어요?' : '모임 등록을 취소하시겠어요?'}
+        left='유지'
+        right='취소하기'
       />
     </Container>
   ); 
@@ -203,15 +239,15 @@ const HeartButton = styled.button`
   cursor: pointer;
 `;
 
-const Button = styled.button`
-  background-color: #EBDEFF;
+const Button = styled.button<{isLeader: string; isRegistered: string;}>`
   outline: none;
   border: none;
   width: 100%;
   height: 3rem;
   border-radius: 52px;
   cursor: pointer;
-  color: ${theme.colors.PRIMARY};
+  color: ${({isLeader, isRegistered}) => isLeader || isRegistered ? theme.colors.PRIMARY : '#FFFFFF'};
+  background-color: ${({isLeader, isRegistered}) => isLeader || isRegistered ? '#EBDEFF' : theme.colors.PRIMARY};
   font-weight: 500;
   font-size: 16px;
 `;

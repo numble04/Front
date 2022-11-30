@@ -43,21 +43,23 @@ function Tab ({data, refetch}: TabProps) {
               )}
             </div>
           </div>
-          <div>
-            <Title>승인 대기 멤버</Title>
-            <WaitingMemberWrapper>
-              {data.users.map((user: MeetingUser) => {
-                if(!user.isApproved) {
-                  return (
-                    <ProfileWrapper key={user.id}>
-                      <ProfileImg src={`${user.img === null ? `/images/default_profile.png` : user.img}`} alt={user.nickname}/>
-                      <Nickname>{user.nickname}</Nickname>
-                    </ProfileWrapper>
-                  )
-                }
-              })}
-            </WaitingMemberWrapper>
-          </div>
+          {data.isLeader &&
+            <div>
+              <Title>승인 대기 멤버</Title>
+              <WaitingMemberWrapper>
+                {data.users.map((user: MeetingUser) => {
+                  if(!user.isApproved) {
+                    return (
+                      <ProfileWrapper key={user.id}>
+                        <ProfileImg src={`${user.img === null ? `/images/default_profile.png` : user.img}`} alt={user.nickname}/>
+                        <Nickname>{user.nickname}</Nickname>
+                      </ProfileWrapper>
+                    )
+                  }
+                })}
+              </WaitingMemberWrapper>
+            </div>
+        }
         </TabContent>
         :
         <TabContent>

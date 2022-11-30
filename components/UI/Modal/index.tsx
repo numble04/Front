@@ -1,7 +1,8 @@
 import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { createPortal } from 'react-dom';
-import Back from './Back';
+import Question from './Question';
+import TwoButton from './TwoButton';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -11,9 +12,6 @@ const ModalOverlay = styled.div`
   width: 100vw;
   height: 100vh;
   max-width: 32rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 100;
 `;
@@ -21,16 +19,20 @@ const ModalOverlay = styled.div`
 interface IModalProps {
   id?: string;
   isOpen: boolean;
-  onClose: () => void;
-  onOK: () => void;
-  type: 'back';
-  cssStyle?: CSSProperties;
+  onClickRight?: () => void;
+  onClickLeft?: () => void;
+  onClickUp?: () => void;
+  onClickDown?: () => void;
+  onClickOutside: () => void;
+  type: 'question' | 'twoButton';
   question?: string;
   left?: string;
   right?: string;
+  up?: string;
+  down?: string;
 }
 
-const Modal = ({ id, isOpen, onClose, onOK, type, cssStyle, question, left, right }: IModalProps) => {
+const Modal = ({ id, isOpen, onClickRight, onClickLeft, onClickUp, onClickDown, onClickOutside, type, question, left, right, up, down }: IModalProps) => {
   const [isBrowser, setIsBrowser] = useState(false);
   const el = useRef<HTMLDivElement>(null);
 
@@ -57,12 +59,13 @@ const Modal = ({ id, isOpen, onClose, onOK, type, cssStyle, question, left, righ
   }, []);
 
   const onClick = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
-    if (e.target == el.current) onClose();
+    if (e.target == el.current) onClickOutside();
   };
 
   const modalContent = isOpen ? (
     <ModalOverlay id={id} ref={el} onClick={(e) => onClick(e)}>
-      {type === 'back' && <Back onClose={onClose} onOK={onOK} question={question} left={left} right={right}/>}
+      {type === 'question' && <Question onClickRight={onClickRight} onClickLeft={onClickLeft} question={question} left={left} right={right}/>}
+      {type === 'twoButton' && <TwoButton onClickUp={onClickUp} onClickDown={onClickDown} up={up} down={down}/>}
     </ModalOverlay>
   ) : null;
 

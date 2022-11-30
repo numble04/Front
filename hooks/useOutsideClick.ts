@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-const useOutsideClick = (onClose: () => void) => {
+const useOutsideClick = (onClickRight: () => void) => {
   const ref = useRef(null);
 
   const clickListener = useCallback(
     (e: MouseEvent) => {
       if (ref.current === null) return;
       if (!(ref.current! as any).contains(e.target)) {
-        onClose?.();
+        onClickRight?.();
       }
     },
-    [onClose],
+    [onClickRight],
   );
   useEffect(() => {
     document.addEventListener('mousedown', clickListener);

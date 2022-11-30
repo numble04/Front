@@ -1,14 +1,15 @@
-import { CSSProperties } from 'react';
 import styled from 'styled-components';
 import { theme } from 'styles/theme';
 import { Flex } from '../Flex/Flex';
 
 const StyledModal = styled.div`
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: ${theme.colors.WHITE};
   border-radius: 7px;
-  width: 100%;
-  margin: 0 22px;
+  width: 84%;
   text-align: center;
 `;
 
@@ -35,26 +36,25 @@ const NoButton = styled.div`
 `;
 
 interface IBackProps {
-  onClose?: () => void;
-  onOK?: () => void;
-  cssStyle?: CSSProperties;
+  onClickRight?: () => void;
+  onClickLeft?: () => void;
   question?: string;
   left?: string;
   right?: string;
 }
 
-const Back = ({ onClose, onOK, cssStyle, question, left, right }: IBackProps) => {
+const Question = ({ onClickRight, onClickLeft, question, left, right }: IBackProps) => {
   return (
-    <StyledModal style={cssStyle}>
+    <StyledModal>
       <BodyWrapper>
         <div>{question}</div>
       </BodyWrapper>
       <FooterWrapper>
-        <YesButton onClick={onOK}>{left}</YesButton>
-        <NoButton onClick={onClose}>{right}</NoButton>
+        <YesButton onClick={onClickLeft}>{left}</YesButton>
+        <NoButton onClick={onClickRight}>{right}</NoButton>
       </FooterWrapper>
     </StyledModal>
   );
 };
 
-export default Back;
+export default Question;

@@ -8,7 +8,7 @@ import { useRecoilValue } from 'recoil';
 import { isLoggedInState } from 'recoil/user';
 import styled from 'styled-components';
 import { theme } from 'styles/theme';
-import { Navbar } from '../UI/organisms/Navbar';
+import { Navbar } from '../UI/Navbar';
 
 type Props = {
   children: JSX.Element;
@@ -51,12 +51,12 @@ export const Container = ({ children }: Props) => {
     );
   }
 
-  // TODO: 공통 레이아웃이 적용되어 있어 임시적으로 제외해두었습니다. 추후 수정 필요
   if (
     (!isLoggedIn && pathname === '/') ||
     pathname === '/signup' ||
     pathname === '/login' ||
-    pathname === '/createMeeting'
+    pathname === '/createMeeting' ||
+    pathname === '/meeting/[id]'
   ) {
     return (
       <Wrapper>

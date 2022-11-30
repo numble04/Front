@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { RefetchOptions, RefetchQueryFilters, QueryObserverResult } from "react-query";
 
 export interface MeetingProps {
@@ -43,7 +44,7 @@ export interface MeetingDetailProps {
 
 export type TabProps = {
   data : MeetingDetailProps,
-  refetch : <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, Error>>
+  refetch : <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, Error>>;
 };
 
 export interface MeetingUser {
@@ -58,5 +59,12 @@ export interface MeetingUser {
 export type ProfileProps = {
   user : MeetingUser;
   isLeader : boolean;
-  refetch : <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, Error>>
+  refetch : <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, Error>>;
+};
+
+export type WaitingMemberProps = {
+  isWaitingMember : boolean;
+  onChangeIsWaitingMember : Dispatch<SetStateAction<boolean>>;
+  data : MeetingDetailProps;
+  refetch : <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, Error>>;
 };

@@ -157,6 +157,8 @@ const IconWrapper = styled.div`
   background-color: #ffffff;
   padding: 1rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
 const ImgWrapper = styled.div`

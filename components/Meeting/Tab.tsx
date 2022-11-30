@@ -1,4 +1,4 @@
-import { InquiryIcon, InfoIcon } from 'components/UI/atoms/Icon';
+import { InquiryIcon, InfoIcon, MoreSeeIcon } from 'components/UI/atoms/Icon';
 import router from 'next/router';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -6,14 +6,25 @@ import { theme } from 'styles/theme';
 import { MeetingUser, TabProps } from 'types/meeting';
 import Profile from './Profile';
 import SmallMap from './SmallMap';
+import WaitingMembers from './WaitingMember';
 
 function Tab ({data, refetch}: TabProps) {
-  const [ tab, setTab ] = useState<string>('area');
+  const [ tab, setTab ] = useState<string>('member');
+  const [isWaitingMember, setIsWaitingMember] = useState(false);
+  const onClickMoreSee = () => {
+    setIsWaitingMember(true);
+  }
   return (
     <TabWrapper>
+      <WaitingMembers
+        onChangeIsWaitingMember={setIsWaitingMember}
+        isWaitingMember={isWaitingMember}
+        data={data}
+        refetch={refetch}
+      />
       <TabTitle>
-        <TabButton onClick={() => setTab('area')} tab='area' currentTab={tab}>위치</TabButton>
         <TabButton onClick={() => setTab('member')} tab='member' currentTab={tab}>멤버</TabButton>
+        <TabButton onClick={() => setTab('area')} tab='area' currentTab={tab}>위치</TabButton>
         <TabButton onClick={() => setTab('inquiry')} tab='inquiry' currentTab={tab}>문의</TabButton>
       </TabTitle>
       {tab === 'area' ? 
@@ -30,7 +41,7 @@ function Tab ({data, refetch}: TabProps) {
         :
         tab === 'member' ?
         <TabContent>
-          <div>
+          <MemberContainer>
             <Title>멤버소개</Title>
             <div>
               {data.users.map((user: MeetingUser) => {
@@ -42,23 +53,29 @@ function Tab ({data, refetch}: TabProps) {
                 } 
               )}
             </div>
-          </div>
+          </MemberContainer>
           {data.isLeader &&
-            <div>
-              <Title>승인 대기 멤버</Title>
+            <MemberContainer>
+              <WaitingMemberTitleWrapper>
+                <Title>승인 대기 멤버</Title>
+                <MoreSeeWrapper onClick={onClickMoreSee}>
+                  <div>더보기</div>
+                  <MoreSeeIcon />
+                </MoreSeeWrapper>
+              </WaitingMemberTitleWrapper>
               <WaitingMemberWrapper>
                 {data.users.map((user: MeetingUser) => {
                   if(!user.isApproved) {
                     return (
                       <ProfileWrapper key={user.id}>
                         <ProfileImg src={`${user.img === null ? `/images/default_profile.png` : user.img}`} alt={user.nickname}/>
-                        <Nickname>{user.nickname}</Nickname>
+                        <Nickname><span>{user.nickname}</span></Nickname>
                       </ProfileWrapper>
                     )
                   }
                 })}
               </WaitingMemberWrapper>
-            </div>
+            </MemberContainer>
         }
         </TabContent>
         :
@@ -113,12 +130,35 @@ const TabButton = styled.button<TabButtonProps>`
 
 const TabContent = styled.div`
   margin-top: 30px;
-  padding: 0 10px;
+`;
+
+const MemberContainer = styled.div`
+  padding: 0px 10px 20px 10px;
   border-bottom: 3px solid #F4F4F4;
+`;
+
+const WaitingMemberTitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > div {
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    & > div {
+      margin-right: 4px;
+    }
+  }
+`;
+
+const MoreSeeWrapper = styled.div`
+  cursor: pointer;
 `;
 
 const WaitingMemberWrapper = styled.div`
   display: flex;
+  height: 60px;
+  overflow: hidden;
 `;
 
 const ProfileWrapper = styled.div`
@@ -134,10 +174,21 @@ const ProfileImg = styled.img`
   height: 36px;
   object-fit: cover;
   border-radius: 50%;
+  margin-bottom: 4px;
 `;
 
 const Nickname = styled.div`
+  width: 60px;
   font-size: 12px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  & > span {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 const InquiryButton = styled.button` 

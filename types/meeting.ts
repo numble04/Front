@@ -1,3 +1,5 @@
+import { RefetchOptions, RefetchQueryFilters, QueryObserverResult } from "react-query";
+
 export interface MeetingProps {
   cafeName : string,
   day : string,
@@ -39,6 +41,11 @@ export interface MeetingDetailProps {
   users: MeetingUser[],
 }
 
+export type TabProps = {
+  data : MeetingDetailProps,
+  refetch : <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, Error>>
+};
+
 export interface MeetingUser {
   id : number,
   img : string | null,
@@ -51,5 +58,5 @@ export interface MeetingUser {
 export type ProfileProps = {
   user : MeetingUser;
   isLeader : boolean;
-  refetch : any;
+  refetch : <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, Error>>
 };

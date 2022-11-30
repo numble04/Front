@@ -11,10 +11,10 @@ const NAVBAR = 60;
 const HEIGHT_MARGIN = INNER_HEADER + NAVBAR;
 const PERCENTAGE = 0.7;
 
-const useList = () => {
+const useList = (sort: string, lat: number | undefined, lng: number | undefined) => {
   const $list = useRef<HTMLDivElement>(null);
   const $cardWrapper = useRef<HTMLDivElement>(null);
-  const { meetings } = useMeetingInfos();
+  const { meetings } = useMeetingInfos(sort, lat, lng);
 
   useLayoutEffect(() => {
     if (!$list.current || !$cardWrapper.current) return;
@@ -25,10 +25,13 @@ const useList = () => {
   }, []);
 
   useEffect(() => {
-    if (!$list.current) return;
+    if (!$list.current || !$cardWrapper.current) return;
     const MARGIN = window.innerHeight * (1 - PERCENTAGE);
     $list.current.classList.add('open');
     $list.current.style.top = `${MARGIN}px`;
+    $cardWrapper.current.style.height = `${
+      window.innerHeight * PERCENTAGE - HEIGHT_MARGIN
+    }px`;
 
     let touchStartTime: Date, touchEndTime: Date;
     let touchStartPoint = 0,

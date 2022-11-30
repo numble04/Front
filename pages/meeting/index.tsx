@@ -14,7 +14,7 @@ const Page: NextPage = () => {
   const [sort, setSort] = useState<string>('createdAt');
   const location = useGeolocation();
   const { meetings, refetch } = useMeetingInfos(sort, location.coordinates?.lat, location.coordinates?.lng);
-  const { List, openList, closeList } = useList();
+  const { List, openList, closeList } = useList(sort, location.coordinates?.lat, location.coordinates?.lng);
   const router = useRouter();
 
   useEffect(() => {

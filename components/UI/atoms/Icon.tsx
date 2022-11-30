@@ -115,8 +115,8 @@ export const NavbarIcon = (props: { type: string; isRoute: boolean }) => {
           d="M9.5 5L4 8.5V19L9.5 15.5L15 19L20 15.5V5L15 9L9.5 5Z"
           fill="#7B2EF0"
         />
-        <path d="M9 4V18" stroke="white" stroke-linecap="round" />
-        <path d="M15 7V21" stroke="white" stroke-linecap="round" />
+        <path d="M9 4V18" stroke="white" strokeLinecap="round" />
+        <path d="M15 7V21" stroke="white" strokeLinecap="round" />
       </svg>
     );
 
@@ -570,6 +570,43 @@ export const MoreSeeIcon = () => {
       <path
         d="M3.56782 3.99984L0.737458 1.09084C0.641158 0.991884 0.643325 0.833607 0.742291 0.737324C0.841258 0.641037 0.999525 0.643207 1.09579 0.742164L4.09579 3.8255C4.19022 3.92254 4.19022 4.07714 4.09579 4.17417L1.09579 7.2575C0.999525 7.35647 0.841258 7.35864 0.742291 7.26234C0.643325 7.16607 0.641158 7.0078 0.737458 6.90884L3.56782 3.99984Z"
         fill="#575757"
+      />
+    </svg>
+  );
+};
+
+export const DeleteIcon = () => {
+  return (
+    <svg
+      width="15"
+      height="16"
+      viewBox="0 0 15 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1.25 14.5L13.75 1.5"
+        stroke="#222222"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M1.25 14.5L13.75 1.5"
+        stroke="#222222"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M14 14.25L0.999999 1.75"
+        stroke="#222222"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M14 14.25L0.999999 1.75"
+        stroke="#222222"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
     </svg>
   );

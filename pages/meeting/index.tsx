@@ -6,15 +6,30 @@ import useList from 'hooks/useList';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import SortMeeting from 'components/Meeting/SortMeeting';
+import { useEffect, useState } from 'react';
 
 const Page: NextPage = () => {
-  const { meetings } = useMeetingInfos();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [sort, setSort] = useState<string>('createdAt');
+  const location = useGeolocation();
+  const { meetings, refetch } = useMeetingInfos(sort, location.coordinates?.lat, location.coordinates?.lng);
   const { List, openList, closeList } = useList();
   const router = useRouter();
-  const location = useGeolocation();
+
+  useEffect(() => {
+    refetch();
+  }, [sort]);
   console.log(location, meetings);
+
   return (
     <Container>
+      <SortMeeting 
+        isOpen={modalVisible}
+        setIsOpen={setModalVisible}
+        sort={sort}
+        setSort={setSort}
+      />
       <Header>
         <Title>
           <div>삼성동</div>
@@ -26,7 +41,7 @@ const Page: NextPage = () => {
             <Filter>날짜</Filter>
           </FilterWrapper>
           <IconWrapper>
-            <div>
+            <div onClick={() => setModalVisible(true)}>
               <SortIcon />
             </div>
             <div onClick={() => router.push('/createMeeting')}>

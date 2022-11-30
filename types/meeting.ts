@@ -68,3 +68,10 @@ export type WaitingMemberProps = {
   data : MeetingDetailProps;
   refetch : <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, Error>>;
 };
+
+export type SortMeetingProps = {
+  isOpen : boolean;
+  setIsOpen : Dispatch<SetStateAction<boolean>>;
+  sort : string;
+  setSort : Dispatch<SetStateAction<string>>;
+};

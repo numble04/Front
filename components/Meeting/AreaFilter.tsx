@@ -1,37 +1,33 @@
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import {
-  ChangeEvent,
-  Dispatch,
-  KeyboardEvent,
-  SetStateAction,
-  useState,
-} from 'react';
+import { createPortal } from 'react-dom';
+import { AreaFilterProps } from 'types/meeting';
+import { BackIcon } from 'components/UI/atoms/Icon';
+import { Input } from 'components/UI/Input/Input';
+import { Typography } from 'components/UI/Typography/Typography';
+import { Flex } from 'components/UI/Flex/Flex';
 import Image from 'next/image';
 
 import useGeolocation from 'hooks/local';
-import { Typography } from 'components/UI/Typography/Typography';
-import { Input } from 'components/UI/Input/Input';
 import { useLocalInfos, useSearchAddress } from 'hooks/local';
-import { Flex } from 'components/UI/Flex/Flex';
-import { SingupParamsType } from 'types/uesr';
-import { getCityName, getDistance, getDongName } from 'lib/local';
+import { getCityName, getDongName } from 'lib/local';
 
-const AreaSearchWrapper = styled(Flex)`
-  padding: 16px 20px;
-  border-bottom: 1px solid #e4e4e4;
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100vh;
+  max-width: 32rem;
+  background-color: #FFFFFF;
+  z-index: 1000;
 `;
 
-const AreaSearchResultWrapper = styled.div`
-  padding: 16px 20px;
-`;
+const AreaFilter = ({ isOpen, setIsOpen, setArea }: AreaFilterProps) => {
+  const [isBrowser, setIsBrowser] = useState(false);
+  const el = useRef<HTMLDivElement>(null);
 
-const AreaSearch = ({
-  onChangeIsAreaSearching,
-  onChangeSignupParams,
-}: {
-  onChangeIsAreaSearching: Dispatch<SetStateAction<boolean>>;
-  onChangeSignupParams: Dispatch<SetStateAction<SingupParamsType>>;
-}) => {
   const [searchValue, setSearchValue] = useState('');
   const [searchedValue, setSearchedValue] = useState('');
   const location = useGeolocation();
@@ -42,7 +38,6 @@ const AreaSearch = ({
     lng,
     lat,
   });
-
   const { searchedLocalInfos } = useSearchAddress(searchedValue);
 
   const handleSearch = (e: KeyboardEvent) => {
@@ -51,35 +46,37 @@ const AreaSearch = ({
     }
   };
 
-  const check5kmInner = (x: string, y: string) => {
-    const [targetLng, targetLat] = [Number(x), Number(y)];
+  // HINT: 모달 오버레이에서 스크롤 방지
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.cssText = `
+        position: fixed; 
+        // top: -${window.scrollY}px;
+        // overflow-y: scroll;
+        width: 100%;
+      `;
 
-    if (lat && lng) {
-      const distance = getDistance({
-        lat1: lat,
-        lng1: lng,
-        lat2: targetLat,
-        lng2: targetLng,
-      });
-
-      if (distance > 5000) {
-        return false;
-      }
-
-      return true;
+      return () => {
+        const scrollY = document.body.style.top;
+        document.body.style.cssText = '';
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      };
     }
-    return false;
-  };
+  }, [isOpen]);
 
-  return (
-    <>
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
+
+  const modalContent = isOpen ? (
+    <ModalOverlay ref={el}>
       <AreaSearchWrapper gap={4} align="center">
         <Image
           src="/icons/back.svg"
           alt="back"
           width={24}
           height={24}
-          onClick={() => onChangeIsAreaSearching(false)}
+          onClick={() => setIsOpen(false)}
         />
         <Input
           placeholder="동 이름 또는 지하철역명 입력"
@@ -103,17 +100,13 @@ const AreaSearch = ({
                   }}
                   key={item.address_name}
                   onClick={() => {
-                    const is5kmInner = check5kmInner(item.x, item.y);
-                    if (!is5kmInner) {
-                      return alert('5km 이내 지역을 선택해주세요.');
-                    }
-                    onChangeSignupParams((signupParams) => ({
-                      ...signupParams,
-                      region: item.address_name,
-                      city: getCityName(item),
+                    setArea(() => ({
+                      city: getCityName(item) === '서울' ? '서울특별시' : getCityName(item),
                       dong: getDongName(item),
+                      x: parseFloat(item.x),
+                      y: parseFloat(item.y),
                     }));
-                    onChangeIsAreaSearching(false);
+                    setIsOpen(false);
                   }}
                 >
                   <Typography.Text type="b2" regular>
@@ -166,13 +159,14 @@ const AreaSearch = ({
                   }}
                   key={item.code}
                   onClick={() => {
-                    onChangeSignupParams((signupParams) => ({
-                      ...signupParams,
-                      region: item.address_name,
-                      city: item.region_1depth_name,
+                    console.log(item);
+                    setArea(() => ({
+                      city: item.region_1depth_name === '서울' ? '서울특별시' : item.region_2depth_name,
                       dong: item.region_3depth_name,
+                      x: item.x,
+                      y: item.y,
                     }));
-                    onChangeIsAreaSearching(false);
+                    setIsOpen(false);
                   }}
                 >
                   <Typography.Text type="b2" regular>
@@ -183,8 +177,26 @@ const AreaSearch = ({
           </>
         )}
       </AreaSearchResultWrapper>
-    </>
-  );
+    </ModalOverlay>
+  ) : null;
+
+  if (isBrowser) {
+    const modalRootElement = document.getElementById('modal-root');
+    if (modalRootElement) {
+      return createPortal(modalContent, modalRootElement);
+    }
+  }
+
+  return null;
 };
 
-export default AreaSearch;
+const AreaSearchWrapper = styled(Flex)`
+  padding: 16px 20px;
+  border-bottom: 1px solid #e4e4e4;
+`;
+
+const AreaSearchResultWrapper = styled.div`
+  padding: 16px 20px;
+`;
+
+export default AreaFilter;

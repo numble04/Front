@@ -179,6 +179,7 @@ const Signup = () => {
         isOpen={modalVisible}
         onClickRight={() => setModalVisible(false)}
         onClickLeft={() => router.push('/')}
+        onClickOutside={() => setModalVisible(false)}
         type={'question'}
         question='회원가입을 종료하시겠습니까?'
         left='예'

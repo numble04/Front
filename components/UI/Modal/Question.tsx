@@ -1,14 +1,15 @@
-import { CSSProperties } from 'react';
 import styled from 'styled-components';
 import { theme } from 'styles/theme';
 import { Flex } from '../Flex/Flex';
 
 const StyledModal = styled.div`
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: ${theme.colors.WHITE};
   border-radius: 7px;
-  width: 100%;
-  margin: 0 22px;
+  width: 84%;
   text-align: center;
 `;
 
@@ -37,15 +38,14 @@ const NoButton = styled.div`
 interface IBackProps {
   onClickRight?: () => void;
   onClickLeft?: () => void;
-  cssStyle?: CSSProperties;
   question?: string;
   left?: string;
   right?: string;
 }
 
-const Question = ({ onClickRight, onClickLeft, cssStyle, question, left, right }: IBackProps) => {
+const Question = ({ onClickRight, onClickLeft, question, left, right }: IBackProps) => {
   return (
-    <StyledModal style={cssStyle}>
+    <StyledModal>
       <BodyWrapper>
         <div>{question}</div>
       </BodyWrapper>

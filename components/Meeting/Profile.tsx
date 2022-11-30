@@ -26,6 +26,7 @@ function Profile({user, isLeader, refetch}: ProfileProps) {
         isOpen={modalVisible}
         onClickRight={ejectedUser}
         onClickLeft={() => setModalVisible(false)}
+        onClickOutside={() => setModalVisible(false)}
         type={'question'}
         question='멤버를 내보시겠어요?'
         left='취소'

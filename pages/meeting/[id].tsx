@@ -1,4 +1,4 @@
-import { BackIcon, CalendarIcon, CostIcon, InfoIcon, InquiryIcon, MemberIcon, TimeIcon } from 'components/UI/atoms/Icon';
+import { BackIcon, CalendarIcon, CostIcon, HeartIcon, InfoIcon, InquiryIcon, MemberIcon, ModifyIcon, TimeIcon } from 'components/UI/atoms/Icon';
 import SmallMap from 'components/Meeting/SmallMap';
 import api from 'lib/api';
 import type { NextPage } from 'next';
@@ -9,8 +9,10 @@ import styled from 'styled-components';
 import { theme } from 'styles/theme';
 import Profile from 'components/Meeting/Profile';
 import { MeetingUser } from 'types/meeting';
+import Modal from 'components/UI/Modal';
 
 const Page: NextPage = () => {
+  const [modalVisible, setModalVisible] = useState(false);
   const [ tap, setTap ] = useState<string>('area');
   const router = useRouter();
   const { id } = router.query;
@@ -37,11 +39,22 @@ const Page: NextPage = () => {
     // 임시 코드
     return <Fragment>데이터 없음</Fragment>;
   }
+
+  const deleteMeeting = async () => {
+    await api.delete(`/meetings/${id}`);
+    router.push('/meeting');
+  }
+
   return (
     <Container>
-      <BackWrapper onClick={() => router.back()}>
-        <BackIcon />
-      </BackWrapper>
+      <Header>
+        <IconWrapper onClick={() => router.back()}>
+          <BackIcon />
+        </IconWrapper>
+        <IconWrapper onClick={() => setModalVisible(true)}>
+          <ModifyIcon />
+        </IconWrapper>
+      </Header>
       <ImgWrapper>
         <Img src={`${data.img === null ? `/image.png` : data.img}`} alt={data.id} />
       </ImgWrapper>
@@ -135,8 +148,21 @@ const Page: NextPage = () => {
           }
         </TapWrapper>
       </MainWrapper>
+      <Footer>
+        <HeartButton><HeartIcon /></HeartButton>
+        <Button onClick={() => router.push('/createMeeting')}>{data.isLeader ? '수정하기' : '참여하기'}</Button>
+      </Footer>
+      <Modal
+        isOpen={modalVisible}
+        onClickUp={deleteMeeting}
+        onClickDown={() => setModalVisible(false)}
+        onClickOutside={() => setModalVisible(false)}
+        type={'twoButton'}
+        up='모임 삭제하기'
+        down='취소하기'
+      />
     </Container>
-  );
+  ); 
 };
 
 export default Page;
@@ -147,9 +173,15 @@ const Container = styled.div`
   overflow-y: scroll;
 `;
 
-const BackWrapper = styled.div`
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const IconWrapper = styled.div`
   background-color: #ffffff;
   padding: 1rem;
+  cursor: pointer;
 `;
 
 const ImgWrapper = styled.div`
@@ -297,4 +329,37 @@ const Infomation = styled.div`
   & > div {
     margin-left: 4px;
   }
+`;
+
+const Footer = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4rem;
+  padding: 0 16px;
+  border-top: 1px solid #e2e4e8;
+`;
+
+const HeartButton = styled.button`
+  background-color: #ffffff;
+  outline: none;
+  border: none;
+  margin-right: 12px;
+  cursor: pointer;
+`;
+
+const Button = styled.button`
+  background-color: #EBDEFF;
+  outline: none;
+  border: none;
+  width: 100%;
+  height: 3rem;
+  border-radius: 52px;
+  cursor: pointer;
+  color: ${theme.colors.PRIMARY};
+  font-weight: 500;
+  font-size: 16px;
 `;

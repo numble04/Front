@@ -38,6 +38,10 @@ const BoardHeader = styled.div`
 `;
 const HeaderMain = styled.div`
   display: flex;
+  img {
+    width: 48px;
+    height: 48px;
+  }
 `;
 
 const HeaderTitle = styled.div`
@@ -151,12 +155,10 @@ const Page = ({ id }: PageProps) => {
       <BoardHeader>
         <HeaderMain>
           <div>
-            <Image
+            <img
               src={`${data.userImg ?? '/images/default_profile.png'}`}
               alt="profileImage"
               className="boardImage"
-              width={48}
-              height={48}
             />
           </div>
           <HeaderTitle>

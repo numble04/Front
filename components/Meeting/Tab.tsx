@@ -44,7 +44,7 @@ function Tab ({data, refetch}: TabProps) {
           <MemberContainer>
             <Title>멤버소개</Title>
             <div>
-              {data.users.map((user: MeetingUser) => {
+              {data.users !== undefined && data.users.length > 0 && data.users.map((user: MeetingUser) => {
                   if(user.isApproved){
                     return (
                       <Profile key={user.id} user={user} isLeader={data.isLeader} refetch={refetch}/>
@@ -64,7 +64,7 @@ function Tab ({data, refetch}: TabProps) {
                 </MoreSeeWrapper>
               </WaitingMemberTitleWrapper>
               <WaitingMemberWrapper>
-                {data.users.map((user: MeetingUser) => {
+                {data.users !== undefined && data.users.length > 0 && data.users.map((user: MeetingUser) => {
                   if(!user.isApproved) {
                     return (
                       <ProfileWrapper key={user.id}>

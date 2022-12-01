@@ -239,9 +239,7 @@ const Container = styled.div`
   position: fixed;
   z-index: 4;
   border-radius: 10px 10px 0 0;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  box-shadow: 0px -8px 8px rgba(0, 0, 0, 0.15);
 `;
 
 const Header = styled.div`

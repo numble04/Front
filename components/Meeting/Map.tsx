@@ -1,15 +1,16 @@
 import styled from 'styled-components';
-import { useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { MeetingProps } from 'types/meeting';
 
 interface MapProps {
   latitude?: number;
   longitude?: number;
   meetings?: MeetingProps[]
+  setMeetingVisible: Dispatch<SetStateAction<boolean>>;
+  setMapMeeting: Dispatch<SetStateAction<MeetingProps>>;
 }
 
-function Map({ latitude, longitude, meetings }: MapProps) {
-  console.log(12341234, latitude, longitude, meetings);
+function Map({ latitude, longitude, meetings, setMeetingVisible, setMapMeeting }: MapProps) {
   useEffect(() => {
     const mapScript = document.createElement('script');
 
@@ -33,7 +34,7 @@ function Map({ latitude, longitude, meetings }: MapProps) {
           position: markerPosition,
         });
         nowMarker.setMap(map);
-      
+        
         if(meetings === undefined) return;
         const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
         meetings.forEach((meeting) => {
@@ -44,6 +45,38 @@ function Map({ latitude, longitude, meetings }: MapProps) {
               position: new window.kakao.maps.LatLng(meeting.latitude, meeting.longitude),
               title : meeting.title,
               image : markerImage
+          });
+          const onClick = () => {
+            setMeetingVisible(true);
+            setMapMeeting(meeting);
+          }
+          
+          const content = document.createElement("div")
+          content.className = 'map-content-wrapper';
+
+          const imgWrapper = document.createElement("div")
+          imgWrapper.className = 'map-img-wrapper';
+          
+          const img = document.createElement("img");
+          img.className = 'map-img';
+          img.src = meeting.img === null ? `/image.png` : meeting.img;
+          img.onclick = onClick;
+          
+          content.append(
+            imgWrapper
+          );
+          imgWrapper.append(
+            img
+          );
+
+          const overlay = new window.kakao.maps.CustomOverlay({
+            content: content,
+            map: map,
+            position: new window.kakao.maps.LatLng(meeting.latitude, meeting.longitude),       
+          });
+
+          window.kakao.maps.event.addListener(map, 'click', function() {   
+            setMeetingVisible(false);
           });
         });
       });

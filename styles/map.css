@@ -1,0 +1,21 @@
+.map-content-wrapper {
+  cursor: pointer;
+}
+
+.map-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.map-img-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: solid 4px #7b2ef0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+}

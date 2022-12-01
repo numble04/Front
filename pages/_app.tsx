@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import 'styles/timepicker.css';
+import 'styles/map.css';
 import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';

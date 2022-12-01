@@ -9,13 +9,27 @@ import styled from 'styled-components';
 import SortMeeting from 'components/Meeting/SortMeeting';
 import { useEffect, useState } from 'react';
 import AreaFilter from 'components/Meeting/AreaFilter';
-import { Area } from 'types/meeting';
+import { Area, MeetingProps } from 'types/meeting';
 import { useLocalArea } from 'lib/zustand/store';
+import { MeetingCard } from 'components/UI/molecules/MeetingCard';
 
 const Page: NextPage = () => {
   const { localArea, setLocalArea } = useLocalArea();
   const [sortVisible, setSortVisible] = useState<boolean>(false);
   const [areaFilterVisible, setAreaFilterVisible] = useState<boolean>(false);
+  const [meetingVisible, setMeetingVisible] = useState<boolean>(false);
+  const [mapMeeting, setMapMeeting] = useState<MeetingProps>({
+      cafeName : '',
+      day : '',
+      id : 0,
+      img : null,
+      isFull : false,
+      latitude : 0,
+      longitude : 0,
+      maxPersonnel :  0,
+      nowPersonnel : 0,
+      title : '',
+  });
   const [sort, setSort] = useState<string>('createdAt');
   const location = useGeolocation();
   const { lat, lng } = location.coordinates || {};
@@ -112,9 +126,16 @@ const Page: NextPage = () => {
           longitude={area.x}
           latitude={area.y}
           meetings={meetings}
+          setMeetingVisible={setMeetingVisible}
+          setMapMeeting={setMapMeeting}
         />
       </MapWrapper>
-      <ListButton onClick={openList}>목록보기</ListButton>
+      <ListButton onClick={openList} meetingVisible={meetingVisible}>목록보기</ListButton>
+      {meetingVisible &&
+        <MapMeetingCardWrapper>
+          <MeetingCard meeting={mapMeeting}/>
+        </MapMeetingCardWrapper>
+      }
       <List />
     </Container>
   );
@@ -183,11 +204,11 @@ const IconWrapper = styled.div`
   }
 `;
 
-const ListButton = styled.button`
+const ListButton = styled.button<{meetingVisible: boolean}>`
   width: 84px;
   height: 40px;
   position: fixed;
-  bottom: 100px;
+  bottom: ${({meetingVisible}) => meetingVisible ? '200px' : '100px'};
   left: 50%;
   transform: translateX(-50%);
   font-size: 12px;
@@ -197,7 +218,19 @@ const ListButton = styled.button`
   margin-right: 8px;
   z-index: 3;
   cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+`;
+
+const MapMeetingCardWrapper = styled.div`
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  background-color: #ffffff;
+  padding: 6px;
+  width: 90%;
+  max-width: 30rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
 `;

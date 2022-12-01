@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 
 import api from 'lib/api';
@@ -81,23 +81,6 @@ export const useLogin = () => {
 export const useLogout = () => {
   const setUserState = useSetRecoilState(userState);
 
-  // TODO: 로그아웃시 token 오류남
-  // const { mutate: logout } = useMutation(
-  //   (refreshToken: string | null) =>
-  //     api.post(`/users/logout`, undefined, {
-  //       headers: {
-  //         refreshToken: refreshToken || false,
-  //       },
-  //     }),
-  //   {
-  //     onSuccess: () => {
-  //       localStorage.clear();
-  //       delete api.defaults.headers.common['Authorization'];
-  //       setUserState(null);
-  //     },
-  //   },
-  // );
-
   const logout = (refreshToken: string | null) => {
     localStorage.clear();
     delete api.defaults.headers.common['Authorization'];
@@ -144,15 +127,131 @@ export const useUserDetail = () => {
 };
 
 export const useUpdateUserInfo = () => {
-  const { mutate } = useMutation((params) => api.put(`/users`, params));
+  const { mutate: updateUserInfo } = useMutation((params: any) =>
+    api.put(`/users`, params),
+  );
 
-  return;
+  return { updateUserInfo };
 };
 
 export const useWithdrawlUser = () => {
-  const { mutate } = useMutation(() => api.delete(`/users`));
+  const { mutate: withdrawlUser } = useMutation((refreshToken: string | null) =>
+    api.delete(`/users`, {
+      headers: {
+        refreshToken: refreshToken || false,
+      },
+    }),
+  );
+
+  return { withdrawlUser };
 };
 
 export const useUpdateUserProfile = () => {
-  const { mutate } = useMutation(() => api.put(`/users/profile`));
+  const { mutate: updateUserProfile } = useMutation(() =>
+    api.put(`/users/profile`),
+  );
+
+  return { updateUserProfile };
+};
+
+export const useMyPosts = ({ tab }: { tab: 'community' | 'meeting' }) => {
+  const { data: myPosts } = useQuery(
+    ['/posts/my', tab],
+    () =>
+      api.get(`/posts/my`, {
+        params: {
+          size: 10,
+        },
+      }),
+    {
+      select: (res) => res.data.data.content,
+      enabled: tab === 'community',
+    },
+  );
+
+  return { myPosts };
+};
+
+export const useMyMeetings = ({ tab }: { tab: 'community' | 'meeting' }) => {
+  const { data: myMeetings } = useQuery(
+    ['/meetings/my', tab],
+    () =>
+      api.get(`/meetings/my`, {
+        params: {
+          size: 10,
+        },
+      }),
+    {
+      select: (res) => res.data.data.content,
+      enabled: tab === 'meeting',
+    },
+  );
+
+  return { myMeetings };
+};
+
+export const useMyMeetingsLike = ({
+  tab,
+}: {
+  tab: 'meeting' | 'comment' | 'post';
+}) => {
+  const { data: myMeetingsLike } = useQuery(
+    ['/meetings/like', tab],
+    () =>
+      api.get(`/meetings/like`, {
+        params: {
+          size: 10,
+        },
+      }),
+    {
+      select: (res) => res.data.data.content,
+      enabled: tab === 'meeting',
+    },
+  );
+
+  return { myMeetingsLike };
+};
+
+export const useMyComments = ({
+  tab,
+}: {
+  tab: 'meeting' | 'comment' | 'post';
+}) => {
+  const { data: myComments } = useQuery(
+    ['/comments/my', tab],
+    () =>
+      api.get(`/comments/my`, {
+        params: {
+          size: 10,
+        },
+      }),
+    {
+      select: (res) => res.data.data,
+      enabled: tab === 'comment',
+    },
+  );
+
+  return { myComments };
+};
+
+export const useMyPostsLike = ({
+  tab,
+}: {
+  tab: 'meeting' | 'comment' | 'post';
+}) => {
+  const { data: myPostsLike } = useQuery(
+    ['/posts/like', tab],
+    () =>
+      api.get(`/posts/like`, {
+        params: {
+          size: 10,
+        },
+      }),
+    {
+      select: (res) => res.data.data.content,
+      enabled: tab === 'post',
+    },
+  );
+
+  return { myPostsLike };
 };

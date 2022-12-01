@@ -98,7 +98,6 @@ const PersonalInfoStep = ({
                   return true;
                 }
               } catch (e) {
-                console.log(e);
                 onChangeSignupParams((signupParams) => ({
                   ...signupParams,
                   nickname,

@@ -10,7 +10,7 @@ const ContentStep = ({
   onChangeCreateMeetingParams,
 }: {
   content: string;
-  file: File | null;
+  file: File | null | string;
   onChangeCreateMeetingParams: Dispatch<
     SetStateAction<CreateMeetingParamsType>
   >;
@@ -26,7 +26,7 @@ const ContentStep = ({
 
     onChangeCreateMeetingParams((param) => ({
       ...param,
-      file: files,
+      img: files,
     }));
   };
 
@@ -47,7 +47,7 @@ const ContentStep = ({
           </InputLabel>
           :
           <InputLabel onClick={() => inputRef.current && inputRef.current.click()}>
-            <Img src={URL.createObjectURL(file)} alt={file.name}/>
+            <Img src={typeof(file) === 'string' ? file : URL.createObjectURL(file)} alt={'file'}/>
           </InputLabel>
         }
         <Input

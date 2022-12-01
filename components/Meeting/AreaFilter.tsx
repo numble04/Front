@@ -159,7 +159,6 @@ const AreaFilter = ({ isOpen, setIsOpen, setArea }: AreaFilterProps) => {
                   }}
                   key={item.code}
                   onClick={() => {
-                    console.log(item);
                     setArea(() => ({
                       city: item.region_1depth_name === '서울' ? '서울특별시' : item.region_2depth_name,
                       dong: item.region_3depth_name,

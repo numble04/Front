@@ -57,9 +57,8 @@ const Container = styled.div``;
 const CapacityWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin: 32px 0;
-  padding: 0 160px;
 `;
 
 const buttonCss = css`
@@ -88,6 +87,8 @@ const AddButton = styled.button`
 
 const Capacity = styled.div`
   font-size: 24px;
+  width: 100px;
+  text-align: center;
 `;
 
 const Infomation = styled.div`

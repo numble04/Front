@@ -86,9 +86,6 @@ const My = () => {
   const { myPosts } = useMyPosts({ tab });
   const { myMeetings } = useMyMeetings({ tab });
 
-  console.log('userDetail: ', userDetail);
-  console.log('myMeetings: ', myMeetings);
-
   return (
     <Container>
       <TitleSection>

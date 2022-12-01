@@ -24,7 +24,6 @@ const SortMeeting = ({ isOpen, setIsOpen, sort, setSort }: SortMeetingProps) => 
   const el = useRef<HTMLDivElement>(null);
 
   const onChange = (e: RadioChangeEvent) => {
-    console.log('radio checked', e.target.value);
     setValue(e.target.value);
   };
 

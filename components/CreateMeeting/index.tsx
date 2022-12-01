@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { useMemo, useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { Typography } from 'components/UI/Typography/Typography';
@@ -9,7 +8,6 @@ import { theme } from 'styles/theme';
 import Modal from 'components/UI/Modal';
 import { titleInfos } from 'constant/createMeeting';
 import { CreateMeetingParamsType } from 'types/uesrs';
-import { useSignup } from 'hooks/user';
 import TitleStep from './TitleStep';
 import ContentStep from './ContentStep';
 import DateStep from './DateStep';
@@ -19,6 +17,7 @@ import CostStep from './CostStep';
 import UrlStep from './UrlStep';
 import AreaSearch from './AreaSearch';
 import api from 'lib/api';
+import { BackIcon } from 'components/UI/atoms/Icon';
 
 const Container = styled.div`
   margin-top: 30px;
@@ -50,8 +49,22 @@ const Footer = styled.div`
   border-top: 1px solid #e2e4e8;
 `;
 
+const convertURLtoFile = async (url: string) => {
+  const headers = new Headers({
+    'Content-Type': 'text/xml',
+  });
+  const response = await fetch(url, { headers });
+  const data = await response.blob();
+  const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+  const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+  const metadata = { type: `image/${ext}` };
+  return new File([data], filename!, metadata);
+};
+
 const CreateMeeting = () => {
   const router = useRouter();
+  const { id } = router.query;
+
   const [isAreaSearching, setIsAreaSearching] = useState(false);
   const [createMeetingStep, setCreateMeetingStep] = useState<number>(1);
   const [modalVisible, setModalVisible] = useState(false);
@@ -66,10 +79,22 @@ const CreateMeeting = () => {
       cost: 4000,
       time: 1,
       kakaoUrl: '',
-      file: null,
+      img: null,
     });
-
-  const { signup, isLoading: signupLoading } = useSignup();
+    
+  useEffect(() => {
+    if(!router.isReady) return;
+    if(id === undefined) return;
+    api.get(`/meetings/${id}`).then((data) => {
+      let meeting = data.data.data;
+      meeting = {...meeting, day: new Date(meeting.day), capacity: meeting.maxPersonnel};
+      if(!meeting.isLeader){
+        router.push('/meeting');
+        return;
+      }
+      setCreateMeetingParams(meeting);
+    });
+  }, [router.isReady])
 
   const isNextButtonActive = useMemo(() => {
     if (createMeetingStep === 1 && createMeetingParams.title) {
@@ -114,7 +139,7 @@ const CreateMeeting = () => {
         return (
           <ContentStep
             content={createMeetingParams.content}
-            file={createMeetingParams.file}
+            file={createMeetingParams.img}
             onChangeCreateMeetingParams={setCreateMeetingParams}
           />
         );
@@ -170,9 +195,42 @@ const CreateMeeting = () => {
     if (createMeetingStep >= 1 && createMeetingStep < 7) {
       setCreateMeetingStep((createMeetingStep) => createMeetingStep + 1);
     } else if (createMeetingStep === 7) {
+      if(id === undefined) {
+        let formData = new FormData();
+        if(createMeetingParams.img !== null) {
+          formData.append(`file`, createMeetingParams.img);
+        }
+        formData.append(
+          'meetingRequest',
+          new Blob(
+            [
+              JSON.stringify(createMeetingParams),
+            ],
+            { type: 'application/json' },
+          ),
+        );
+        try {
+          const res = await api.post(
+            `/meetings`,
+            formData, 
+          );
+          if(res.status === 201){
+            alert('모임 열기를 성공하였습니다!');
+            router.push('/meeting');
+            return;
+          } 
+        } catch (error) {
+          alert('모임 열기를 실패하였습니다.');
+          throw new Error('meeting create error');
+        }
+        return;
+      }
       let formData = new FormData();
-      if(createMeetingParams.file !== null) {
-        formData.append(`file`, createMeetingParams.file);
+      if(typeof(createMeetingParams.img) === 'string') {
+        const img = await convertURLtoFile(createMeetingParams.img);
+        formData.append(`file`, img);
+      } else if(createMeetingParams.img !== null) {
+        formData.append(`file`, createMeetingParams.img);
       }
       formData.append(
         'meetingRequest',
@@ -184,20 +242,19 @@ const CreateMeeting = () => {
         ),
       );
       try {
-        const res = await api.post(
-          `/meetings`,
+        const res = await api.put(
+          `/meetings/${id}`,
           formData, 
         );
-        if(res.status === 201){
-          alert('모임 열기를 성공하였습니다!');
-          router.push('/meeting');
+        if(res.status === 204){
+          alert('모임 수정을 성공하였습니다!');
+          router.push(`/meeting/${id}`);
           return;
         } 
-        alert('모임 열기를 실패하였습니다.');
       } catch (error) {
-        throw new Error('post like error');
+        alert('모임 수정을 실패하였습니다.');
+        throw new Error('meeting modify error');
       }
-      
     } 
   };
 
@@ -226,13 +283,9 @@ const CreateMeeting = () => {
         <ProgressBar createMeetingStep={createMeetingStep} />
       </ProgressBarBackground>
       <Container>
-        <Image
-          src="/icons/back.svg"
-          alt="back"
-          width={24}
-          height={24}
-          onClick={handleClickBackIcon}
-        />
+        <div onClick={handleClickBackIcon}>
+          <BackIcon />
+        </div>
         <Typography.Text type="h6" gutter={{ top: 36 }}>
           {titleInfos[createMeetingStep - 1].title}
         </Typography.Text>
@@ -244,7 +297,6 @@ const CreateMeeting = () => {
           <Button
             full
             isActive={isNextButtonActive}
-            loading={signupLoading}
             onClick={handleClickNextButton}
           >
             {createMeetingStep === 7 ? '완료' : '다음'}

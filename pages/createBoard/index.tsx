@@ -205,7 +205,6 @@ const Page: NextPage = () => {
       const response = await api.post('/posts', formData);
       if (response.status === 200 || 201) {
         alert('상품등록 성공');
-        console.log('상품등록 성공');
       }
     } catch (e) {
       console.error(e);

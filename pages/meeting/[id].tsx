@@ -30,7 +30,6 @@ const Page: NextPage = () => {
   const getCommunityDetail = async () => {
     try {
       const res = await api.get(`/meetings/${id}`);
-      console.log(res.data.data);
       return res.data.data;
     } catch (error) {
       throw new Error('error');
@@ -54,6 +53,7 @@ const Page: NextPage = () => {
 
   const onClick = async () => {
     if(data.isLeader) {
+      router.push(`/createMeeting/${data.id}`)
       return;
     }
     if(data.isFull) {

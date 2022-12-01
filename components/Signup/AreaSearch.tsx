@@ -15,6 +15,7 @@ import { useLocalInfos, useSearchAddress } from 'hooks/local';
 import { Flex } from 'components/UI/Flex/Flex';
 import { SingupParamsType } from 'types/uesr';
 import { getCityName, getDistance, getDongName } from 'lib/local';
+import { message } from 'antd';
 
 const AreaSearchWrapper = styled(Flex)`
   padding: 16px 20px;
@@ -105,7 +106,7 @@ const AreaSearch = ({
                   onClick={() => {
                     const is5kmInner = check5kmInner(item.x, item.y);
                     if (!is5kmInner) {
-                      return alert('5km 이내 지역을 선택해주세요.');
+                      return message.warning('5km 이내 지역을 선택해주세요.');
                     }
                     onChangeSignupParams((signupParams) => ({
                       ...signupParams,

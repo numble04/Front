@@ -16,6 +16,7 @@ import PasswordStep from './PasswordStep';
 import PersonalInfoStep from './PersonalInfoStep';
 import { emailPattern, passwordPattern } from 'constant/validate';
 import { useSignup } from 'hooks/user';
+import { message } from 'antd';
 
 const Container = styled.div`
   margin-top: 30px;
@@ -157,7 +158,7 @@ const Signup = () => {
     } else if (signupStep === 4) {
       signup(signupParams, {
         onSuccess: () => {
-          alert('회원가입이 완료되었습니다.');
+          message.success('회원가입이 완료되었습니다.');
           router.push('/login');
         },
       });
@@ -181,9 +182,9 @@ const Signup = () => {
         onClickLeft={() => router.push('/')}
         onClickOutside={() => setModalVisible(false)}
         type={'question'}
-        question='회원가입을 종료하시겠습니까?'
-        left='예'
-        right='아니오'
+        question="회원가입을 종료하시겠습니까?"
+        left="예"
+        right="아니오"
       />
       <ProgressBarBackground>
         <ProgressBar signupStep={signupStep} />

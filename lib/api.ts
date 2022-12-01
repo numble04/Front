@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import axios from 'axios';
 import Router from 'next/router';
 
@@ -40,6 +41,11 @@ api.interceptors.response.use(
       }
     }
 
+    if (response.message) {
+      message.error(response.message);
+    } else {
+      message.error('알수 없는 오류가 발생했습니다.');
+    }
     return Promise.reject(error);
   },
 );

@@ -138,6 +138,7 @@ const MyEdit = () => {
             height={88}
           />
           <Upload
+            showUploadList={false}
             beforeUpload={async (file) => {
               // updateUserProfile(createFormData(file), {
               //   onSuccess: () => {

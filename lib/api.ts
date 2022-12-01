@@ -41,11 +41,12 @@ api.interceptors.response.use(
       }
     }
 
-    if (response.message) {
-      message.error(response.message);
+    if (response.data.message) {
+      message.error(response.data.message);
     } else {
-      message.error('알수 없는 오류가 발생했습니다.');
+      message.error('알 수 없는 오류가 발생했습니다.');
     }
+
     return Promise.reject(error);
   },
 );

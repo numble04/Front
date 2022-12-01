@@ -96,7 +96,7 @@ const My = () => {
           <ProfileImageWrapper>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={userDetail?.img || ''}
+              src={userDetail?.img || '/images/default_profile.png'}
               alt="profile"
               width={88}
               height={88}

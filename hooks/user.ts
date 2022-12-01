@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 
 import api from 'lib/api';
@@ -147,8 +147,8 @@ export const useWithdrawlUser = () => {
 };
 
 export const useUpdateUserProfile = () => {
-  const { mutate: updateUserProfile } = useMutation(() =>
-    api.put(`/users/profile`),
+  const { mutate: updateUserProfile } = useMutation((file: FormData) =>
+    api.put(`/users/profile`, { file }),
   );
 
   return { updateUserProfile };

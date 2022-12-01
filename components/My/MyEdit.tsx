@@ -1,12 +1,9 @@
-import { Form, Input, message } from 'antd';
+import { Form, Input, message, Upload } from 'antd';
+import { RcFile } from 'antd/es/upload';
 import { Flex } from 'components/UI/Flex/Flex';
-import { FormItem } from 'components/UI/FormItem/FormItem';
 import { Typography } from 'components/UI/Typography/Typography';
 import {
   useLogout,
-  useMyComments,
-  useMyMeetingsLike,
-  useMyPostsLike,
   useUpdateUserInfo,
   useUpdateUserProfile,
   useUserDetail,
@@ -61,6 +58,7 @@ const LogoutAndWithdrawlSection = styled(Flex)`
 const MyEdit = () => {
   const router = useRouter();
   const [form] = Form.useForm();
+  const [profileImage, setProfileImage] = useState<RcFile>();
   const refreshToken =
     typeof window !== 'undefined' ? localStorage.getItem('refreshToken') : null;
   const { userDetail } = useUserDetail();
@@ -134,18 +132,29 @@ const MyEdit = () => {
         <ProfileImageWrapper>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={userDetail?.img || ''}
+            src={userDetail?.img || '/images/default_profile.png'}
             alt="profile"
             width={88}
             height={88}
           />
-          <PenImageWrapper
-            onClick={() => router.push('/my/edit')}
-            justify="center"
-            align="center"
+          <Upload
+            beforeUpload={async (file) => {
+              // updateUserProfile(createFormData(file), {
+              //   onSuccess: () => {
+              //     message.success('변경되었습니다.');
+              //   },
+              // });
+              return false;
+            }}
           >
-            <Image src="/icons/pen.svg" alt="back" width={16} height={16} />
-          </PenImageWrapper>
+            <PenImageWrapper
+              onClick={() => router.push('/my/edit')}
+              justify="center"
+              align="center"
+            >
+              <Image src="/icons/pen.svg" alt="back" width={16} height={16} />
+            </PenImageWrapper>
+          </Upload>
         </ProfileImageWrapper>
       </ProfileSection>
       <EditSection>

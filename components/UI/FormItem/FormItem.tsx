@@ -72,7 +72,7 @@ export const FormItem = React.forwardRef(
           })}
         {!successMessage && error && (
           <Typography.Text
-            type="b2"
+            type="b3"
             color="ERROR"
             style={{
               position: 'absolute',
@@ -84,7 +84,7 @@ export const FormItem = React.forwardRef(
         )}
         {successMessage && (
           <Typography.Text
-            type="b2"
+            type="b3"
             color="SUCCESS"
             style={{
               position: 'absolute',

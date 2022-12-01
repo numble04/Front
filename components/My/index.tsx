@@ -81,11 +81,10 @@ const Post = styled(Flex)<{ thumbnail: string | null }>`
 
 const My = () => {
   const router = useRouter();
-  const [page, setPage] = useState(1);
   const [tab, setTab] = useState<'community' | 'meeting'>('community');
   const { userDetail } = useUserDetail();
-  const { myPosts } = useMyPosts({ page, tab });
-  const { myMeetings } = useMyMeetings({ page, tab });
+  const { myPosts } = useMyPosts({ tab });
+  const { myMeetings } = useMyMeetings({ tab });
 
   console.log('userDetail: ', userDetail);
   console.log('myMeetings: ', myMeetings);

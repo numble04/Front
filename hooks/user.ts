@@ -81,23 +81,6 @@ export const useLogin = () => {
 export const useLogout = () => {
   const setUserState = useSetRecoilState(userState);
 
-  // TODO: 로그아웃시 token 오류남
-  // const { mutate: logout } = useMutation(
-  //   (refreshToken: string | null) =>
-  //     api.post(`/users/logout`, undefined, {
-  //       headers: {
-  //         refreshToken: refreshToken || false,
-  //       },
-  //     }),
-  //   {
-  //     onSuccess: () => {
-  //       localStorage.clear();
-  //       delete api.defaults.headers.common['Authorization'];
-  //       setUserState(null);
-  //     },
-  //   },
-  // );
-
   const logout = (refreshToken: string | null) => {
     localStorage.clear();
     delete api.defaults.headers.common['Authorization'];
@@ -144,64 +127,39 @@ export const useUserDetail = () => {
 };
 
 export const useUpdateUserInfo = () => {
-  const { mutate } = useMutation((params) => api.put(`/users`, params));
+  const { mutate: updateUserInfo } = useMutation((params: any) =>
+    api.put(`/users`, params),
+  );
 
-  return;
+  return { updateUserInfo };
 };
 
 export const useWithdrawlUser = () => {
-  const { mutate } = useMutation(() => api.delete(`/users`));
+  const { mutate: withdrawlUser } = useMutation((refreshToken: string | null) =>
+    api.delete(`/users`, {
+      headers: {
+        refreshToken: refreshToken || false,
+      },
+    }),
+  );
+
+  return { withdrawlUser };
 };
 
 export const useUpdateUserProfile = () => {
-  const { mutate } = useMutation(() => api.put(`/users/profile`));
+  const { mutate: updateUserProfile } = useMutation(() =>
+    api.put(`/users/profile`),
+  );
+
+  return { updateUserProfile };
 };
 
-// export const useMyPosts = () => {
-//   const { data, fetchNextPage, hasNextPage, refetch, isFetching, isLoading } =
-//     useInfiniteQuery(
-//       ['posts/my'],
-//       ({ pageParam: page }) =>
-//         api.get(`/posts/my`, {
-//           params: {
-//             page: page || 0,
-//             size: 10,
-//           },
-//         }),
-//       {
-//         getNextPageParam: (lastPage, pages) => {
-//           return lastPage.data.result.totalElements >= pages.length * 10 + 1
-//             ? pages.length + 1
-//             : undefined;
-//         },
-//       },
-//     );
-
-//   console.log('data: ', data);
-
-//   return {
-//     // myPosts: data?.pages || [],
-//     fetchNextPage,
-//     refetch,
-//     hasNextPage,
-//     isFetching,
-//     isLoading,
-//   };
-// };
-
-export const useMyPosts = ({
-  page,
-  tab,
-}: {
-  page: number;
-  tab: 'community' | 'meeting';
-}) => {
+export const useMyPosts = ({ tab }: { tab: 'community' | 'meeting' }) => {
   const { data: myPosts } = useQuery(
-    ['/posts/my', page, tab],
+    ['/posts/my', tab],
     () =>
       api.get(`/posts/my`, {
         params: {
-          // page: 0,
           size: 10,
         },
       }),
@@ -214,19 +172,12 @@ export const useMyPosts = ({
   return { myPosts };
 };
 
-export const useMyMeetings = ({
-  page,
-  tab,
-}: {
-  page: number;
-  tab: 'community' | 'meeting';
-}) => {
+export const useMyMeetings = ({ tab }: { tab: 'community' | 'meeting' }) => {
   const { data: myMeetings } = useQuery(
-    ['/meetings/my', page, tab],
+    ['/meetings/my', tab],
     () =>
       api.get(`/meetings/my`, {
         params: {
-          // page: 0,
           size: 10,
         },
       }),
@@ -240,18 +191,15 @@ export const useMyMeetings = ({
 };
 
 export const useMyMeetingsLike = ({
-  page,
   tab,
 }: {
-  page: number;
   tab: 'meeting' | 'comment' | 'post';
 }) => {
   const { data: myMeetingsLike } = useQuery(
-    ['/meetings/like', page, tab],
+    ['/meetings/like', tab],
     () =>
       api.get(`/meetings/like`, {
         params: {
-          // page: 0,
           size: 10,
         },
       }),
@@ -265,23 +213,20 @@ export const useMyMeetingsLike = ({
 };
 
 export const useMyComments = ({
-  page,
   tab,
 }: {
-  page: number;
   tab: 'meeting' | 'comment' | 'post';
 }) => {
   const { data: myComments } = useQuery(
-    ['/comments/my', page, tab],
+    ['/comments/my', tab],
     () =>
       api.get(`/comments/my`, {
         params: {
-          // page: 0,
           size: 10,
         },
       }),
     {
-      select: (res) => res.data.data.content,
+      select: (res) => res.data.data,
       enabled: tab === 'comment',
     },
   );
@@ -290,18 +235,15 @@ export const useMyComments = ({
 };
 
 export const useMyPostsLike = ({
-  page,
   tab,
 }: {
-  page: number;
   tab: 'meeting' | 'comment' | 'post';
 }) => {
   const { data: myPostsLike } = useQuery(
-    ['/posts/like', page, tab],
+    ['/posts/like', tab],
     () =>
       api.get(`/posts/like`, {
         params: {
-          // page: 0,
           size: 10,
         },
       }),

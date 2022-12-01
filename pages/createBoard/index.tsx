@@ -9,6 +9,7 @@ import Button from 'components/Button';
 import Label from 'components/UI/Label';
 import Textarea from 'components/UI/Textarea';
 import Dropdown from 'components/UI/Dropdown';
+import { message } from 'antd';
 
 const HeaderButton = styled(Button)`
   color: #7b2ef0;
@@ -162,7 +163,7 @@ const Page: NextPage = () => {
     const nowImageList = [...previews];
 
     if (!nowSelectImageList) {
-      alert('이미지가 없습니다.');
+      message.error('이미지가 없습니다.');
       return;
     }
 
@@ -203,7 +204,7 @@ const Page: NextPage = () => {
     // 아래 게시글등록 로직 수정 필요
     try {
       const response = await api.post('/posts', formData);
-      alert('게시글이 정상적으로 등록되었습니다.');
+      message.success('게시글이 정상적으로 등록되었습니다.');
       router.back();
     } catch (e) {
       console.error(e);

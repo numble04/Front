@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import api from 'lib/api';
 import { useQuery } from 'react-query';
 import { timeForToday } from 'hooks/useTimeToday';
+import { message } from 'antd';
 
 type PageProps = {
   id: number;
@@ -111,7 +112,7 @@ const Page = ({ id }: PageProps) => {
     () => getCommunityDetail(),
     {
       onError: (error: Error) => {
-        alert(error.message);
+        message.error(error.message);
       },
     },
   );

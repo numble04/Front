@@ -18,6 +18,7 @@ import UrlStep from './UrlStep';
 import AreaSearch from './AreaSearch';
 import api from 'lib/api';
 import { BackIcon } from 'components/UI/Icon/Icon';
+import { message } from 'antd';
 
 const Container = styled.div`
   margin-top: 30px;
@@ -55,8 +56,8 @@ const convertURLtoFile = async (url: string) => {
   });
   const response = await fetch(url, { headers });
   const data = await response.blob();
-  const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
-  const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+  const ext = url.split('.').pop(); // url 구조에 맞게 수정할 것
+  const filename = url.split('/').pop(); // url 구조에 맞게 수정할 것
   const metadata = { type: `image/${ext}` };
   return new File([data], filename!, metadata);
 };
@@ -81,20 +82,24 @@ const CreateMeeting = () => {
       kakaoUrl: '',
       img: null,
     });
-    
+
   useEffect(() => {
-    if(!router.isReady) return;
-    if(id === undefined) return;
+    if (!router.isReady) return;
+    if (id === undefined) return;
     api.get(`/meetings/${id}`).then((data) => {
       let meeting = data.data.data;
-      meeting = {...meeting, day: new Date(meeting.day), capacity: meeting.maxPersonnel};
-      if(!meeting.isLeader){
+      meeting = {
+        ...meeting,
+        day: new Date(meeting.day),
+        capacity: meeting.maxPersonnel,
+      };
+      if (!meeting.isLeader) {
         router.push('/meeting');
         return;
       }
       setCreateMeetingParams(meeting);
     });
-  }, [router.isReady])
+  }, [router.isReady]);
 
   const isNextButtonActive = useMemo(() => {
     if (createMeetingStep === 1 && createMeetingParams.title) {
@@ -195,67 +200,55 @@ const CreateMeeting = () => {
     if (createMeetingStep >= 1 && createMeetingStep < 7) {
       setCreateMeetingStep((createMeetingStep) => createMeetingStep + 1);
     } else if (createMeetingStep === 7) {
-      if(id === undefined) {
+      if (id === undefined) {
         let formData = new FormData();
-        if(createMeetingParams.img !== null) {
+        if (createMeetingParams.img !== null) {
           formData.append(`file`, createMeetingParams.img);
         }
         formData.append(
           'meetingRequest',
-          new Blob(
-            [
-              JSON.stringify(createMeetingParams),
-            ],
-            { type: 'application/json' },
-          ),
+          new Blob([JSON.stringify(createMeetingParams)], {
+            type: 'application/json',
+          }),
         );
         try {
-          const res = await api.post(
-            `/meetings`,
-            formData, 
-          );
-          if(res.status === 201){
-            alert('모임 열기를 성공하였습니다!');
+          const res = await api.post(`/meetings`, formData);
+          if (res.status === 201) {
+            message.success('모임 열기를 성공하였습니다!');
             router.push('/meeting');
             return;
-          } 
+          }
         } catch (error) {
-          alert('모임 열기를 실패하였습니다.');
+          message.error('모임 열기를 실패하였습니다.');
           throw new Error('meeting create error');
         }
         return;
       }
       let formData = new FormData();
-      if(typeof(createMeetingParams.img) === 'string') {
+      if (typeof createMeetingParams.img === 'string') {
         const img = await convertURLtoFile(createMeetingParams.img);
         formData.append(`file`, img);
-      } else if(createMeetingParams.img !== null) {
+      } else if (createMeetingParams.img !== null) {
         formData.append(`file`, createMeetingParams.img);
       }
       formData.append(
         'meetingRequest',
-        new Blob(
-          [
-            JSON.stringify(createMeetingParams),
-          ],
-          { type: 'application/json' },
-        ),
+        new Blob([JSON.stringify(createMeetingParams)], {
+          type: 'application/json',
+        }),
       );
       try {
-        const res = await api.put(
-          `/meetings/${id}`,
-          formData, 
-        );
-        if(res.status === 204){
-          alert('모임 수정을 성공하였습니다!');
+        const res = await api.put(`/meetings/${id}`, formData);
+        if (res.status === 204) {
+          message.success('모임 수정을 성공하였습니다!');
           router.push(`/meeting/${id}`);
           return;
-        } 
+        }
       } catch (error) {
-        alert('모임 수정을 실패하였습니다.');
+        message.error('모임 수정을 실패하였습니다.');
         throw new Error('meeting modify error');
       }
-    } 
+    }
   };
 
   if (isAreaSearching) {
@@ -275,9 +268,9 @@ const CreateMeeting = () => {
         onClickLeft={() => router.push('/meeting')}
         onClickOutside={() => setModalVisible(false)}
         type={'question'}
-        question='모임 모집을 종료하시겠습니까?'
-        left='예'
-        right='아니오'
+        question="모임 모집을 종료하시겠습니까?"
+        left="예"
+        right="아니오"
       />
       <ProgressBarBackground>
         <ProgressBar createMeetingStep={createMeetingStep} />

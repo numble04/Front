@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from 'react';
 
 import { CreateMeetingParamsType } from 'types/uesrs';
-import { CameraIcon } from 'components/UI/atoms/Icon';
+import { CameraIcon } from 'components/UI/Icon/Icon';
 
 const ContentStep = ({
   content,

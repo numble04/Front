@@ -1,5 +1,4 @@
-import { BackIcon, CalendarIcon, CostIcon, HeartIcon, InfoIcon, InquiryIcon, MemberIcon, ModifyIcon, RedHeartIcon, TimeIcon } from 'components/UI/atoms/Icon';
-import SmallMap from 'components/Meeting/SmallMap';
+import { BackIcon, CalendarIcon, CostIcon, HeartIcon, MemberIcon, ModifyIcon, RedHeartIcon, TimeIcon } from 'components/UI/Icon/Icon';
 import api from 'lib/api';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -7,8 +6,6 @@ import { Fragment, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { theme } from 'styles/theme';
-import Profile from 'components/Meeting/Profile';
-import { MeetingUser } from 'types/meeting';
 import Modal from 'components/UI/Modal';
 import Tab from 'components/Meeting/Tab';
 

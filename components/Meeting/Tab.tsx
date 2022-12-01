@@ -1,4 +1,4 @@
-import { InquiryIcon, InfoIcon, MoreSeeIcon } from 'components/UI/atoms/Icon';
+import { InquiryIcon, InfoIcon, MoreSeeIcon } from 'components/UI/Icon/Icon';
 import router from 'next/router';
 import { useState } from 'react';
 import styled from 'styled-components';

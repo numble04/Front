@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { CreateMeetingParamsType } from 'types/uesrs';
 import { Flex } from 'components/UI/Flex/Flex';
 import { Typography } from 'components/UI/Typography/Typography';
-import { AddIcon, InfoIcon, SubIcon } from 'components/UI/atoms/Icon';
+import { AddIcon, InfoIcon, SubIcon } from 'components/UI/Icon/Icon';
 import { theme } from 'styles/theme';
 
 const CapacityStep = ({

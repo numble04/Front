@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { createPortal } from 'react-dom';
 import { AreaFilterProps } from 'types/meeting';
-import { BackIcon } from 'components/UI/atoms/Icon';
+import { BackIcon } from 'components/UI/Icon/Icon';
 import { Input } from 'components/UI/Input/Input';
 import { Typography } from 'components/UI/Typography/Typography';
 import { Flex } from 'components/UI/Flex/Flex';

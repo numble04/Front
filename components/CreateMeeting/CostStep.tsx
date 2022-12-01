@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 import { CreateMeetingParamsType } from 'types/uesrs';
-import { InfoIcon } from 'components/UI/atoms/Icon';
+import { InfoIcon } from 'components/UI/Icon/Icon';
 
 const CostStep = ({
   cost,

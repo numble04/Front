@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
-import {  NavbarIcon } from '../atoms/Icon';
+import {  NavbarIcon } from '../Icon/Icon';
 
 const NAVBAR = [
   {type: 'home', pathname: '/', push: '/', content: '홈'},

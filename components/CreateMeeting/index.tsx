@@ -17,7 +17,7 @@ import CostStep from './CostStep';
 import UrlStep from './UrlStep';
 import AreaSearch from './AreaSearch';
 import api from 'lib/api';
-import { BackIcon } from 'components/UI/atoms/Icon';
+import { BackIcon } from 'components/UI/Icon/Icon';
 
 const Container = styled.div`
   margin-top: 30px;

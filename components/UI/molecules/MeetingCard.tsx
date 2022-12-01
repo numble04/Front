@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { DateIcon, LocationIcon, MeetingIcon } from 'components/UI/atoms/Icon';
+import { DateIcon, LocationIcon, MeetingIcon } from 'components/UI/Icon/Icon';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { MeetingCardProps } from 'types/meeting';
@@ -41,6 +41,7 @@ const Container = styled.div`
   height: 5.5rem;
   display: flex;
   margin: 0.2rem 0;
+  cursor: pointer;
 `;
 
 const Img = styled.img`

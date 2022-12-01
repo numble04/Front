@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { createPortal } from 'react-dom';
 import { SortMeetingProps } from 'types/meeting';
 import { RadioChangeEvent, Radio, Input, Space } from 'antd';
-import { DeleteIcon } from 'components/UI/atoms/Icon';
+import { DeleteIcon } from 'components/UI/Icon/Icon';
 import { theme } from 'styles/theme';
 
 const ModalOverlay = styled.div`

@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { CreateMeetingParamsType } from 'types/uesrs';
 import { Typography } from 'components/UI/Typography/Typography';
-import { InfoIcon, MeetingDateIcon, TimeIcon } from 'components/UI/atoms/Icon';
+import { InfoIcon, MeetingDateIcon, TimeIcon } from 'components/UI/Icon/Icon';
 import { theme } from 'styles/theme';
 
 import Calendar from 'react-calendar';

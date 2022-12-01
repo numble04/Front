@@ -1,4 +1,4 @@
-import { CreateIcon, ExpandMoreIcon, SortIcon } from 'components/UI/atoms/Icon';
+import { CreateIcon, ExpandMoreIcon, SortIcon } from 'components/UI/Icon/Icon';
 import Map from 'components/Meeting/Map';
 import useGeolocation, { useLocalInfos } from 'hooks/local';
 import { useMeetingInfos } from 'hooks/meeting';
@@ -109,7 +109,7 @@ const Page: NextPage = () => {
         <TitleContent>
           <FilterWrapper>
             <Filter onClick={() => setAreaFilterVisible(true)}>지역</Filter>
-            <Filter>날짜</Filter>
+            {/* <Filter>날짜</Filter> */}
           </FilterWrapper>
           <IconWrapper>
             <div onClick={() => setSortVisible(true)}>

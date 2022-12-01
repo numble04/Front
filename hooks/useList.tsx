@@ -203,6 +203,7 @@ const useList = (sort: string, lat: number | undefined, lng: number | undefined,
       window.innerHeight - HEIGHT_MARGIN
     }px`;
   };
+  console.log(meetings);
 
   const List = useCallback(() => {
     return (
@@ -216,11 +217,18 @@ const useList = (sort: string, lat: number | undefined, lng: number | undefined,
         </Header>
         <Content>
           <CardWrapper ref={$cardWrapper}>
-            {meetings !== undefined && meetings.map((meeting: MeetingProps) => (
-              <div key={meeting.id}>
-                <MeetingCard meeting={meeting} />
-              </div>
-            ))}
+            {
+              meetings !== undefined && meetings.length > 0 ? meetings.map((meeting: MeetingProps) => (
+                <div key={meeting.id}>
+                  <MeetingCard meeting={meeting} />
+                </div>
+              )) 
+              :
+              <NoMeeting>
+                <div>모임이 없습니다.😢</div>
+                <div><Span>{area.dong}</Span>에 새로운 모임을 생성해보세요.</div>
+              </NoMeeting>
+            }
           </CardWrapper>
         </Content>
       </Container>
@@ -291,4 +299,16 @@ const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+`;
+
+const NoMeeting = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #6a6a6a;
+`;
+
+const Span = styled.span`
+  color: #7B2EF0;
 `;

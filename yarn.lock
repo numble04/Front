@@ -9400,6 +9400,11 @@ normalize-url@^4.1.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-4.5.1.tgz#0dd90cf1288ee1d1313b87081c9a5932ee48518a"
   integrity sha512-9UZCFRHQdNrfTpGg8+1INIg93B6zE0aXMVFkw1WFwvO4SlZywU6aLg5Of0Ap/PgcbSw4LNxvMWXMeugwMCX0AA==
 
+normalize-wheel@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/normalize-wheel/-/normalize-wheel-1.0.1.tgz#aec886affdb045070d856447df62ecf86146ec45"
+  integrity sha512-1OnlAPZ3zgrk8B91HyRj+eVv+kS5u+Z0SCsak6Xil/kmgEia50ga7zfkumayonZrImffAxPU/5WcyGhzetHNPA==
+
 npm-normalize-package-bin@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/npm-normalize-package-bin/-/npm-normalize-package-bin-1.0.1.tgz#6e79a41f23fd235c0623218228da7d9c23b8f6e2"
@@ -10849,6 +10854,13 @@ react-calendar@^4.0.0:
     clsx "^1.2.1"
     get-user-locale "^1.2.0"
     prop-types "^15.6.0"
+
+react-cropper-custom@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/react-cropper-custom/-/react-cropper-custom-1.2.5.tgz#98f6fa945d806eefa9ec7aab6927bc8b7f4da3e5"
+  integrity sha512-RljUh7sJ2//+62e5rtZOreMQ9KY0hfeJ2BsUmr0oZFId9VvtKFPUu77JC7tUwhGlVzlANPH16izGFOfgOv1VLQ==
+  dependencies:
+    normalize-wheel "^1.0.1"
 
 react-docgen-typescript@^2.1.1:
   version "2.2.2"

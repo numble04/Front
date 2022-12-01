@@ -203,9 +203,8 @@ const Page: NextPage = () => {
     // 아래 게시글등록 로직 수정 필요
     try {
       const response = await api.post('/posts', formData);
-      if (response.status === 200 || 201) {
-        alert('상품등록 성공');
-      }
+      alert('게시글이 정상적으로 등록되었습니다.');
+      router.back();
     } catch (e) {
       console.error(e);
     }

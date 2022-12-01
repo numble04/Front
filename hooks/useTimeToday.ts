@@ -1,6 +1,7 @@
 export const timeForToday = (value: string) => {
   const today = new Date();
   const timeValue = new Date(value);
+  timeValue.setHours(timeValue.getHours() + 9);
 
   const betweenTime = Math.floor(
     (today.getTime() - timeValue.getTime()) / 1000 / 60,

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 
 import api from 'lib/api';
@@ -155,4 +155,161 @@ export const useWithdrawlUser = () => {
 
 export const useUpdateUserProfile = () => {
   const { mutate } = useMutation(() => api.put(`/users/profile`));
+};
+
+// export const useMyPosts = () => {
+//   const { data, fetchNextPage, hasNextPage, refetch, isFetching, isLoading } =
+//     useInfiniteQuery(
+//       ['posts/my'],
+//       ({ pageParam: page }) =>
+//         api.get(`/posts/my`, {
+//           params: {
+//             page: page || 0,
+//             size: 10,
+//           },
+//         }),
+//       {
+//         getNextPageParam: (lastPage, pages) => {
+//           return lastPage.data.result.totalElements >= pages.length * 10 + 1
+//             ? pages.length + 1
+//             : undefined;
+//         },
+//       },
+//     );
+
+//   console.log('data: ', data);
+
+//   return {
+//     // myPosts: data?.pages || [],
+//     fetchNextPage,
+//     refetch,
+//     hasNextPage,
+//     isFetching,
+//     isLoading,
+//   };
+// };
+
+export const useMyPosts = ({
+  page,
+  tab,
+}: {
+  page: number;
+  tab: 'community' | 'meeting';
+}) => {
+  const { data: myPosts } = useQuery(
+    ['/posts/my', page, tab],
+    () =>
+      api.get(`/posts/my`, {
+        params: {
+          // page: 0,
+          size: 10,
+        },
+      }),
+    {
+      select: (res) => res.data.data.content,
+      enabled: tab === 'community',
+    },
+  );
+
+  return { myPosts };
+};
+
+export const useMyMeetings = ({
+  page,
+  tab,
+}: {
+  page: number;
+  tab: 'community' | 'meeting';
+}) => {
+  const { data: myMeetings } = useQuery(
+    ['/meetings/my', page, tab],
+    () =>
+      api.get(`/meetings/my`, {
+        params: {
+          // page: 0,
+          size: 10,
+        },
+      }),
+    {
+      select: (res) => res.data.data.content,
+      enabled: tab === 'meeting',
+    },
+  );
+
+  return { myMeetings };
+};
+
+export const useMyMeetingsLike = ({
+  page,
+  tab,
+}: {
+  page: number;
+  tab: 'meeting' | 'comment' | 'post';
+}) => {
+  const { data: myMeetingsLike } = useQuery(
+    ['/meetings/like', page, tab],
+    () =>
+      api.get(`/meetings/like`, {
+        params: {
+          // page: 0,
+          size: 10,
+        },
+      }),
+    {
+      select: (res) => res.data.data.content,
+      enabled: tab === 'meeting',
+    },
+  );
+
+  return { myMeetingsLike };
+};
+
+export const useMyComments = ({
+  page,
+  tab,
+}: {
+  page: number;
+  tab: 'meeting' | 'comment' | 'post';
+}) => {
+  const { data: myComments } = useQuery(
+    ['/comments/my', page, tab],
+    () =>
+      api.get(`/comments/my`, {
+        params: {
+          // page: 0,
+          size: 10,
+        },
+      }),
+    {
+      select: (res) => res.data.data.content,
+      enabled: tab === 'comment',
+    },
+  );
+
+  return { myComments };
+};
+
+export const useMyPostsLike = ({
+  page,
+  tab,
+}: {
+  page: number;
+  tab: 'meeting' | 'comment' | 'post';
+}) => {
+  const { data: myPostsLike } = useQuery(
+    ['/posts/like', page, tab],
+    () =>
+      api.get(`/posts/like`, {
+        params: {
+          // page: 0,
+          size: 10,
+        },
+      }),
+    {
+      select: (res) => res.data.data.content,
+      enabled: tab === 'post',
+    },
+  );
+
+  return { myPostsLike };
 };

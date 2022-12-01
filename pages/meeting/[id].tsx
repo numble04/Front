@@ -1,4 +1,4 @@
-import { BackIcon, CalendarIcon, CostIcon, HeartIcon, InfoIcon, InquiryIcon, MemberIcon, ModifyIcon, TimeIcon } from 'components/UI/atoms/Icon';
+import { BackIcon, CalendarIcon, CostIcon, HeartIcon, InfoIcon, InquiryIcon, MemberIcon, ModifyIcon, RedHeartIcon, TimeIcon } from 'components/UI/atoms/Icon';
 import SmallMap from 'components/Meeting/SmallMap';
 import api from 'lib/api';
 import type { NextPage } from 'next';
@@ -68,6 +68,11 @@ const Page: NextPage = () => {
     refetch();
   }
 
+  const onClickHeart = async () => {
+    await api.put(`/meetings/${id}/like`);
+    refetch();
+  }
+
   return (
     <Container>
       <Header>
@@ -110,8 +115,8 @@ const Page: NextPage = () => {
         <Tab data={data} refetch={refetch}/>
       </MainWrapper>
       <Footer>
-        <HeartButton>
-          <HeartIcon />
+        <HeartButton onClick={onClickHeart}>
+          {data.myLike ? <RedHeartIcon /> : <HeartIcon />}
         </HeartButton>
         <Button onClick={onClick} isLeader={data.isLeader} isRegistered={data.isRegistered}>
           {data.isLeader ? '수정하기' : (!data.isRegistered ? '참여하기' : (!data.isAttended ? '참여 등록 취소하기' : '참여 취소하기'))}

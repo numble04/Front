@@ -60,7 +60,6 @@ const EmailStep = ({
                     return true;
                   }
                 } catch (e) {
-                  console.log(e);
                   onChangeSignupParams((signupParams) => ({
                     ...signupParams,
                     email,

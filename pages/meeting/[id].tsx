@@ -1,5 +1,13 @@
-import { BackIcon, CalendarIcon, CostIcon, HeartIcon, InfoIcon, InquiryIcon, MemberIcon, ModifyIcon, TimeIcon } from 'components/UI/atoms/Icon';
-import SmallMap from 'components/Meeting/SmallMap';
+import {
+  BackIcon,
+  CalendarIcon,
+  CostIcon,
+  HeartIcon,
+  MemberIcon,
+  ModifyIcon,
+  RedHeartIcon,
+  TimeIcon,
+} from 'components/UI/Icon/Icon';
 import api from 'lib/api';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -7,10 +15,9 @@ import { Fragment, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { theme } from 'styles/theme';
-import Profile from 'components/Meeting/Profile';
-import { MeetingUser } from 'types/meeting';
 import Modal from 'components/UI/Modal';
 import Tab from 'components/Meeting/Tab';
+import { message } from 'antd';
 
 const Page: NextPage = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -22,7 +29,7 @@ const Page: NextPage = () => {
     () => getCommunityDetail(),
     {
       onError: (error: Error) => {
-        alert(error.message);
+        message.error(error.message);
       },
     },
   );
@@ -30,7 +37,6 @@ const Page: NextPage = () => {
   const getCommunityDetail = async () => {
     try {
       const res = await api.get(`/meetings/${id}`);
-      console.log(res.data.data);
       return res.data.data;
     } catch (error) {
       throw new Error('error');
@@ -44,29 +50,35 @@ const Page: NextPage = () => {
   const deleteMeeting = async () => {
     await api.delete(`/meetings/${id}`);
     router.push('/meeting');
-  }
+  };
 
   const leaveMeeting = async () => {
     await api.delete(`/meetings/${id}/leave`);
     setLeaveModalVisible(false);
     refetch();
-  }
+  };
 
   const onClick = async () => {
-    if(data.isLeader) {
+    if (data.isLeader) {
+      router.push(`/createMeeting/${data.id}`);
       return;
     }
-    if(data.isFull) {
-      alert('인원이 가득찬 모임입니다.');
+    if (data.isFull) {
+      message.warning('인원이 가득찬 모임입니다.');
       return;
     }
-    if(data.isRegistered) {
+    if (data.isRegistered) {
       setLeaveModalVisible(true);
       return;
     }
     await api.post(`/meetings/${id}/register`);
     refetch();
-  }
+  };
+
+  const onClickHeart = async () => {
+    await api.put(`/meetings/${id}/like`);
+    refetch();
+  };
 
   return (
     <Container>
@@ -79,7 +91,10 @@ const Page: NextPage = () => {
         </IconWrapper>
       </Header>
       <ImgWrapper>
-        <Img src={`${data.img === null ? `/image.png` : data.img}`} alt={data.id} />
+        <Img
+          src={`${data.img === null ? `/image.png` : data.img}`}
+          alt={data.id}
+        />
       </ImgWrapper>
       <MainWrapper>
         <TitleWrapper>
@@ -107,14 +122,24 @@ const Page: NextPage = () => {
             </div>
           </GridWrapper>
         </GuideWrapper>
-        <Tab data={data} refetch={refetch}/>
+        <Tab data={data} refetch={refetch} />
       </MainWrapper>
       <Footer>
-        <HeartButton>
-          <HeartIcon />
+        <HeartButton onClick={onClickHeart}>
+          {data.myLike ? <RedHeartIcon /> : <HeartIcon />}
         </HeartButton>
-        <Button onClick={onClick} isLeader={data.isLeader} isRegistered={data.isRegistered}>
-          {data.isLeader ? '수정하기' : (!data.isRegistered ? '참여하기' : (!data.isAttended ? '참여 등록 취소하기' : '참여 취소하기'))}
+        <Button
+          onClick={onClick}
+          isLeader={data.isLeader}
+          isRegistered={data.isRegistered}
+        >
+          {data.isLeader
+            ? '수정하기'
+            : !data.isRegistered
+            ? '참여하기'
+            : !data.isAttended
+            ? '참여 등록 취소하기'
+            : '참여 취소하기'}
         </Button>
       </Footer>
       <Modal
@@ -123,8 +148,8 @@ const Page: NextPage = () => {
         onClickDown={() => setDeleteModalVisible(false)}
         onClickOutside={() => setDeleteModalVisible(false)}
         type={'twoButton'}
-        up='모임 삭제하기'
-        down='취소하기'
+        up="모임 삭제하기"
+        down="취소하기"
       />
       <Modal
         isOpen={leaveModalVisible}
@@ -132,12 +157,16 @@ const Page: NextPage = () => {
         onClickRight={leaveMeeting}
         onClickOutside={() => setLeaveModalVisible(false)}
         type={'question'}
-        question={data.isAttended ? '모임을 취소하시겠어요?' : '모임 등록을 취소하시겠어요?'}
-        left='유지'
-        right='취소하기'
+        question={
+          data.isAttended
+            ? '모임을 취소하시겠어요?'
+            : '모임 등록을 취소하시겠어요?'
+        }
+        left="유지"
+        right="취소하기"
       />
     </Container>
-  ); 
+  );
 };
 
 export default Page;
@@ -241,15 +270,17 @@ const HeartButton = styled.button`
   cursor: pointer;
 `;
 
-const Button = styled.button<{isLeader: string; isRegistered: string;}>`
+const Button = styled.button<{ isLeader: string; isRegistered: string }>`
   outline: none;
   border: none;
   width: 100%;
   height: 3rem;
   border-radius: 52px;
   cursor: pointer;
-  color: ${({isLeader, isRegistered}) => isLeader || isRegistered ? theme.colors.PRIMARY : '#FFFFFF'};
-  background-color: ${({isLeader, isRegistered}) => isLeader || isRegistered ? '#EBDEFF' : theme.colors.PRIMARY};
+  color: ${({ isLeader, isRegistered }) =>
+    isLeader || isRegistered ? theme.colors.PRIMARY : '#FFFFFF'};
+  background-color: ${({ isLeader, isRegistered }) =>
+    isLeader || isRegistered ? '#EBDEFF' : theme.colors.PRIMARY};
   font-weight: 500;
   font-size: 16px;
 `;

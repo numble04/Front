@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { MeetingCard } from 'components/UI/molecules/MeetingCard';
-import { MeetingProps } from 'types/meeting';
+import { Area, MeetingProps } from 'types/meeting';
 import { useMeetingInfos } from './meeting';
 
 const HEADER = 110;
@@ -11,10 +11,10 @@ const NAVBAR = 60;
 const HEIGHT_MARGIN = INNER_HEADER + NAVBAR;
 const PERCENTAGE = 0.7;
 
-const useList = () => {
+const useList = (sort: string, lat: number | undefined, lng: number | undefined, area: Area) => {
   const $list = useRef<HTMLDivElement>(null);
   const $cardWrapper = useRef<HTMLDivElement>(null);
-  const { meetings } = useMeetingInfos();
+  const { meetings } = useMeetingInfos(sort, lat, lng, area);
 
   useLayoutEffect(() => {
     if (!$list.current || !$cardWrapper.current) return;
@@ -25,10 +25,13 @@ const useList = () => {
   }, []);
 
   useEffect(() => {
-    if (!$list.current) return;
+    if (!$list.current || !$cardWrapper.current) return;
     const MARGIN = window.innerHeight * (1 - PERCENTAGE);
     $list.current.classList.add('open');
     $list.current.style.top = `${MARGIN}px`;
+    $cardWrapper.current.style.height = `${
+      window.innerHeight * PERCENTAGE - HEIGHT_MARGIN
+    }px`;
 
     let touchStartTime: Date, touchEndTime: Date;
     let touchStartPoint = 0,
@@ -200,6 +203,7 @@ const useList = () => {
       window.innerHeight - HEIGHT_MARGIN
     }px`;
   };
+  console.log(meetings);
 
   const List = useCallback(() => {
     return (
@@ -213,11 +217,18 @@ const useList = () => {
         </Header>
         <Content>
           <CardWrapper ref={$cardWrapper}>
-            {meetings !== undefined && meetings.map((meeting: MeetingProps) => (
-              <div key={meeting.id}>
-                <MeetingCard meeting={meeting} />
-              </div>
-            ))}
+            {
+              meetings !== undefined && meetings.length > 0 ? meetings.map((meeting: MeetingProps) => (
+                <div key={meeting.id}>
+                  <MeetingCard meeting={meeting} />
+                </div>
+              )) 
+              :
+              <NoMeeting>
+                <div>모임이 없습니다.😢</div>
+                <div><Span>{area.dong}</Span>에 새로운 모임을 생성해보세요.</div>
+              </NoMeeting>
+            }
           </CardWrapper>
         </Content>
       </Container>
@@ -236,9 +247,7 @@ const Container = styled.div`
   position: fixed;
   z-index: 4;
   border-radius: 10px 10px 0 0;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  box-shadow: 0px -8px 8px rgba(0, 0, 0, 0.15);
 `;
 
 const Header = styled.div`
@@ -290,4 +299,16 @@ const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+`;
+
+const NoMeeting = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #6a6a6a;
+`;
+
+const Span = styled.span`
+  color: #7B2EF0;
 `;

@@ -1,32 +1,118 @@
-import { CreateIcon, ExpandMoreIcon, SortIcon } from 'components/UI/atoms/Icon';
+import { CreateIcon, ExpandMoreIcon, SortIcon } from 'components/UI/Icon/Icon';
 import Map from 'components/Meeting/Map';
-import useGeolocation from 'hooks/local';
+import useGeolocation, { useLocalInfos } from 'hooks/local';
 import { useMeetingInfos } from 'hooks/meeting';
 import useList from 'hooks/useList';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import SortMeeting from 'components/Meeting/SortMeeting';
+import { useEffect, useState } from 'react';
+import AreaFilter from 'components/Meeting/AreaFilter';
+import { Area, MeetingProps } from 'types/meeting';
+import { useLocalArea } from 'lib/zustand/store';
+import { MeetingCard } from 'components/UI/molecules/MeetingCard';
 
 const Page: NextPage = () => {
-  const { meetings } = useMeetingInfos();
-  const { List, openList, closeList } = useList();
-  const router = useRouter();
+  const { localArea, setLocalArea } = useLocalArea();
+  const [sortVisible, setSortVisible] = useState<boolean>(false);
+  const [areaFilterVisible, setAreaFilterVisible] = useState<boolean>(false);
+  const [meetingVisible, setMeetingVisible] = useState<boolean>(false);
+  const [mapMeeting, setMapMeeting] = useState<MeetingProps>({
+      cafeName : '',
+      day : '',
+      id : 0,
+      img : null,
+      isFull : false,
+      latitude : 0,
+      longitude : 0,
+      maxPersonnel :  0,
+      nowPersonnel : 0,
+      title : '',
+  });
+  const [sort, setSort] = useState<string>('createdAt');
   const location = useGeolocation();
-  console.log(location, meetings);
+  const { lat, lng } = location.coordinates || {};
+  const { localInfos, isLoading } = useLocalInfos({
+    enabled: location.loaded && location.coordinates !== undefined,
+    lng,
+    lat,
+  });
+  const [area, setArea] = useState<Area>(localArea);
+
+  const { meetings, refetch } = useMeetingInfos(
+    sort,
+    area.y,
+    area.x,
+    area,
+  );
+  const { List, openList, closeList } = useList(
+    sort,
+    area.y,
+    area.x,
+    area,
+  );
+  const router = useRouter();
+
+  useEffect(() => {
+    if(area.dong !== '') {
+    refetch();
+  }
+  }, [sort, area.dong]);
+
+  useEffect(() => {
+    if (localInfos.length > 0) {
+      setArea({
+        city:
+          localInfos[0].region_1depth_name === '서울'
+            ? '서울특별시'
+            : localInfos[0].region_2depth_name,
+        dong: localInfos[0].region_3depth_name,
+        x: localInfos[0].x,
+        y: localInfos[0].y
+      });
+      setLocalArea({
+        city:
+          localInfos[0].region_1depth_name === '서울'
+            ? '서울특별시'
+            : localInfos[0].region_2depth_name,
+        dong: localInfos[0].region_3depth_name,
+        x: localInfos[0].x,
+        y: localInfos[0].y
+      });
+    }
+  }, [localInfos]);
+
   return (
     <Container>
+      <SortMeeting
+        isOpen={sortVisible}
+        setIsOpen={setSortVisible}
+        sort={sort}
+        setSort={setSort}
+      />
+      <AreaFilter
+        isOpen={areaFilterVisible}
+        setIsOpen={setAreaFilterVisible}
+        setArea={setArea}
+      />
       <Header>
         <Title>
-          <div>삼성동</div>
-          <ExpandMoreIcon />
+          <div>{area.dong}</div>
+          <div
+            onClick={() => setAreaFilterVisible(true)}
+            style={{ cursor: 'pointer' }}
+          >
+            <ExpandMoreIcon />
+          </div>
         </Title>
         <TitleContent>
           <FilterWrapper>
-            <Filter>지역</Filter>
-            <Filter>날짜</Filter>
+            <Filter onClick={() => setAreaFilterVisible(true)}>지역</Filter>
+            {/* <Filter>날짜</Filter> */}
           </FilterWrapper>
           <IconWrapper>
-            <div>
+            <div onClick={() => setSortVisible(true)}>
               <SortIcon />
             </div>
             <div onClick={() => router.push('/createMeeting')}>
@@ -36,14 +122,20 @@ const Page: NextPage = () => {
         </TitleContent>
       </Header>
       <MapWrapper onClick={closeList}>
-        {/* <Map latitude={location.coordinates?.lat} longitude={location.coordinates?.lng} /> */}
         <Map
-          latitude={37.5076514}
-          longitude={127.0272817}
+          longitude={area.x}
+          latitude={area.y}
           meetings={meetings}
+          setMeetingVisible={setMeetingVisible}
+          setMapMeeting={setMapMeeting}
         />
       </MapWrapper>
-      <ListButton onClick={openList}>목록보기</ListButton>
+      <ListButton onClick={openList} meetingVisible={meetingVisible}>목록보기</ListButton>
+      {meetingVisible &&
+        <MapMeetingCardWrapper>
+          <MeetingCard meeting={mapMeeting}/>
+        </MapMeetingCardWrapper>
+      }
       <List />
     </Container>
   );
@@ -99,6 +191,7 @@ const Filter = styled.button`
   border-radius: 20px;
   border: none;
   margin-right: 8px;
+  cursor: pointer;
 `;
 
 const IconWrapper = styled.div`
@@ -111,11 +204,11 @@ const IconWrapper = styled.div`
   }
 `;
 
-const ListButton = styled.button`
+const ListButton = styled.button<{meetingVisible: boolean}>`
   width: 84px;
   height: 40px;
   position: fixed;
-  bottom: 100px;
+  bottom: ${({meetingVisible}) => meetingVisible ? '200px' : '100px'};
   left: 50%;
   transform: translateX(-50%);
   font-size: 12px;
@@ -125,7 +218,19 @@ const ListButton = styled.button`
   margin-right: 8px;
   z-index: 3;
   cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+`;
+
+const MapMeetingCardWrapper = styled.div`
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  background-color: #ffffff;
+  padding: 6px;
+  width: 90%;
+  max-width: 30rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
 `;

@@ -15,6 +15,7 @@ export interface ITextProps extends ITypographyProps {
     | 's2'
     | 'b1'
     | 'b2'
+    | 'b3'
     | 'button'
     | 'overline'
     | 'caption';
@@ -91,6 +92,12 @@ const Text = styled.span<ITextProps>`
     type === 'b2' &&
     css`
       font-size: 14px;
+    `}
+
+    ${({ type }) =>
+    type === 'b3' &&
+    css`
+      font-size: 12px;
     `}
 
   ${({ type }) =>

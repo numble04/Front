@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import axios from 'axios';
 import Router from 'next/router';
 
@@ -38,6 +39,12 @@ api.interceptors.response.use(
         localStorage.clear();
         return Promise.reject(error);
       }
+    }
+
+    if (response.data.message) {
+      message.error(response.data.message);
+    } else {
+      message.error('알 수 없는 오류가 발생했습니다.');
     }
 
     return Promise.reject(error);

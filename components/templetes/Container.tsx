@@ -56,6 +56,7 @@ export const Container = ({ children }: Props) => {
     pathname === '/signup' ||
     pathname === '/login' ||
     pathname === '/createMeeting' ||
+    pathname === '/createMeeting/[id]' ||
     pathname === '/meeting/[id]'
   ) {
     return (

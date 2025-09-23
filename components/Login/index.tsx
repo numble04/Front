@@ -10,6 +10,8 @@ import { Typography } from 'components/UI/Typography/Typography';
 import { theme } from 'styles/theme';
 import { useLogin } from 'hooks/user';
 import { LoginParamsType } from 'types/uesr';
+import { Flex } from 'components/UI/Flex/Flex';
+import { message } from 'antd';
 
 const Login = () => {
   const router = useRouter();
@@ -46,9 +48,8 @@ const Login = () => {
       />
       <Typography.Text
         bold
-        type="h2"
-        gutter={{ top: 28, bottom: 28 }}
-        light
+        type="h6"
+        gutter={{ top: 36, bottom: 36 }}
         color="SLATEGRAY80"
       >
         로그인
@@ -86,30 +87,24 @@ const Login = () => {
           css={css`
             margin: 16px 0;
           `}
-          buttonStyle={{
-            borderRadius: 28,
-            background: theme.colors.MAIN_A,
-            color: theme.colors.WHITE,
-            fontSize: 14,
-            fontWeight: 400,
-          }}
         >
           로그인
         </Button>
       </form>
-      <Button
-        full
-        buttonStyle={{
-          borderRadius: 28,
-          fontSize: 14,
-          fontWeight: 400,
-        }}
-        size="h48"
-        variant="line"
-        onClick={handleClickSignup}
-      >
-        회원가입
-      </Button>
+      <Flex justify="center">
+        <Typography.Text type="b2" color="SLATEGRAY70">
+          아이디가 없나요?{' '}
+          <Typography.Text
+            inline
+            style={{ color: '#283bf1' }}
+            underline
+            type="b2"
+            onClick={handleClickSignup}
+          >
+            회원가입
+          </Typography.Text>
+        </Typography.Text>
+      </Flex>
     </div>
   );
 };

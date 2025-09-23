@@ -8,6 +8,7 @@ import Board from 'components/Community/Board/Board';
 import Header from 'components/UI/Header';
 import Tab from 'components/UI/Tab';
 import api from 'lib/api';
+import { message } from 'antd';
 
 type TabType = {
   name: string;
@@ -72,7 +73,7 @@ const Page: NextPage = () => {
     () => getCommunityList(),
     {
       onError: (error: Error) => {
-        alert(error.message);
+        message.error(error.message);
       },
     },
   );

@@ -6,6 +6,7 @@ import api from 'lib/api';
 import Image from 'next/image';
 import { communityDetailType } from 'types/community';
 import { Input } from 'components/UI/Input/Input';
+import { message } from 'antd';
 
 const Header = styled.div`
   display: flex;
@@ -29,7 +30,7 @@ const Search = () => {
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (keyword === '') {
-      alert('검색어를 입력하세요.');
+      message.warning('검색어를 입력하세요.');
       return;
     }
     try {

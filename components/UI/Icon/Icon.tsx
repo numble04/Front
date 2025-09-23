@@ -115,8 +115,8 @@ export const NavbarIcon = (props: { type: string; isRoute: boolean }) => {
           d="M9.5 5L4 8.5V19L9.5 15.5L15 19L20 15.5V5L15 9L9.5 5Z"
           fill="#7B2EF0"
         />
-        <path d="M9 4V18" stroke="white" stroke-linecap="round" />
-        <path d="M15 7V21" stroke="white" stroke-linecap="round" />
+        <path d="M9 4V18" stroke="white" strokeLinecap="round" />
+        <path d="M15 7V21" stroke="white" strokeLinecap="round" />
       </svg>
     );
 
@@ -541,6 +541,27 @@ export const HeartIcon = () => {
   );
 };
 
+export const RedHeartIcon = () => {
+  return (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 21 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M10.8197 1.59648L9.99895 2.42906L9.17565 1.59573C7.07663 -0.529042 3.67336 -0.529042 1.5743 1.59573C-0.524768 3.72049 -0.524768 7.16543 1.5743 9.29023L9.46965 17.2822C9.76255 17.5787 10.2375 17.5787 10.5304 17.2822L18.4318 9.28871C20.5262 7.15692 20.5298 3.72164 18.4304 1.59648C16.3275 -0.53216 12.9226 -0.53216 10.8197 1.59648ZM17.3682 8.21806L9.99995 15.6718L2.63496 8.21654C1.12167 6.68471 1.12167 4.20119 2.63496 2.66938C4.14824 1.13756 6.60175 1.13756 8.11505 2.66938L9.47245 4.04344C9.77035 4.34496 10.2551 4.33908 10.5457 4.03043L11.8804 2.67013C13.3975 1.13445 15.8526 1.13445 17.3697 2.67013C18.8834 4.20231 18.8808 6.67854 17.3682 8.21806Z"
+        fill="#ED4954"
+      />
+      <path
+        d="M1 5.06122L2 2.53061L4 1.01225H7L9.5 3.54286L10.5 3.03674L13.5 1.01225L17 1.51837L19.5 4.5551L18.5 8.09796L10 16.702L2.5 9.1102L0.5 5.56735L1 5.06122Z"
+        fill="#ED4954"
+      />
+    </svg>
+  );
+};
+
 export const ModifyIcon = () => {
   return (
     <svg
@@ -570,6 +591,43 @@ export const MoreSeeIcon = () => {
       <path
         d="M3.56782 3.99984L0.737458 1.09084C0.641158 0.991884 0.643325 0.833607 0.742291 0.737324C0.841258 0.641037 0.999525 0.643207 1.09579 0.742164L4.09579 3.8255C4.19022 3.92254 4.19022 4.07714 4.09579 4.17417L1.09579 7.2575C0.999525 7.35647 0.841258 7.35864 0.742291 7.26234C0.643325 7.16607 0.641158 7.0078 0.737458 6.90884L3.56782 3.99984Z"
         fill="#575757"
+      />
+    </svg>
+  );
+};
+
+export const DeleteIcon = () => {
+  return (
+    <svg
+      width="15"
+      height="16"
+      viewBox="0 0 15 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1.25 14.5L13.75 1.5"
+        stroke="#222222"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M1.25 14.5L13.75 1.5"
+        stroke="#222222"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M14 14.25L0.999999 1.75"
+        stroke="#222222"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M14 14.25L0.999999 1.75"
+        stroke="#222222"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
     </svg>
   );

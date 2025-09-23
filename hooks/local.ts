@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 
 import { LocalInfoItemType, SearchAddressType } from 'types/local';
 import api from 'lib/api';
+import { message } from 'antd';
 
 export interface KakaoAPIResponse<TData> {
   documents: TData;
@@ -123,12 +124,10 @@ export const useSearchAddress = (query: string) => {
 };
 
 // 검색을 통한 카페 정보 가져오기
-export const useCafeInfos = (searchValue : string) => {
+export const useCafeInfos = (searchValue: string) => {
   const getCafeId = async () => {
     try {
-      const res = await api.get(
-        `/cafes?keyword=${searchValue}`,
-      );
+      const res = await api.get(`/cafes?keyword=${searchValue}`);
       return res.data.data.content;
     } catch (error) {
       throw new Error('error');
@@ -140,7 +139,7 @@ export const useCafeInfos = (searchValue : string) => {
     () => getCafeId(),
     {
       onError: (error: Error) => {
-        alert(error.message);
+        message.error(error.message);
       },
     },
   );

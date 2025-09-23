@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from 'react';
 
 import { CreateMeetingParamsType } from 'types/uesrs';
-import { CameraIcon } from 'components/UI/atoms/Icon';
+import { CameraIcon } from 'components/UI/Icon/Icon';
 
 const ContentStep = ({
   content,
@@ -10,7 +10,7 @@ const ContentStep = ({
   onChangeCreateMeetingParams,
 }: {
   content: string;
-  file: File | null;
+  file: File | null | string;
   onChangeCreateMeetingParams: Dispatch<
     SetStateAction<CreateMeetingParamsType>
   >;
@@ -26,7 +26,7 @@ const ContentStep = ({
 
     onChangeCreateMeetingParams((param) => ({
       ...param,
-      file: files,
+      img: files,
     }));
   };
 
@@ -47,7 +47,7 @@ const ContentStep = ({
           </InputLabel>
           :
           <InputLabel onClick={() => inputRef.current && inputRef.current.click()}>
-            <Img src={URL.createObjectURL(file)} alt={file.name}/>
+            <Img src={typeof(file) === 'string' ? file : URL.createObjectURL(file)} alt={'file'}/>
           </InputLabel>
         }
         <Input

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { createPortal } from 'react-dom';
 import { MeetingUser, WaitingMemberProps } from 'types/meeting';
 import WaitingProfile from './WaitingProfile';
-import { BackIcon } from 'components/UI/atoms/Icon';
+import { BackIcon } from 'components/UI/Icon/Icon';
 
 const ModalOverlay = styled.div`
   position: fixed;

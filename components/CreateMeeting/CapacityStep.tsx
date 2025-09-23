@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { CreateMeetingParamsType } from 'types/uesrs';
 import { Flex } from 'components/UI/Flex/Flex';
 import { Typography } from 'components/UI/Typography/Typography';
-import { AddIcon, InfoIcon, SubIcon } from 'components/UI/atoms/Icon';
+import { AddIcon, InfoIcon, SubIcon } from 'components/UI/Icon/Icon';
 import { theme } from 'styles/theme';
 
 const CapacityStep = ({
@@ -57,9 +57,8 @@ const Container = styled.div``;
 const CapacityWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin: 32px 0;
-  padding: 0 160px;
 `;
 
 const buttonCss = css`
@@ -88,6 +87,8 @@ const AddButton = styled.button`
 
 const Capacity = styled.div`
   font-size: 24px;
+  width: 100px;
+  text-align: center;
 `;
 
 const Infomation = styled.div`
